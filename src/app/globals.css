@@ -1,26 +1,41 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --book-cream: #F5F1E8;
+  --book-cream-dark: #EBE5D5;
+  --book-green: #1B3B36;
+  --book-green-light: #2D5249;
+  --book-gold: #C9A86A;
+  --book-gold-light: #DDB87A;
+  --book-burgundy: #722F37;
+  --book-navy: #1A2B3D;
+  --book-text: #2A2520;
+  --book-text-muted: #6B5D4F;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--book-cream);
+  color: var(--book-text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.font-serif { font-family: Georgia, "Times New Roman", serif; }
+
+.book-btn-primary {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  background: var(--book-green); color: #fff; font-weight: 600;
+  padding: 0.75rem 2rem; border-radius: 8px; transition: all 0.2s;
+}
+.book-btn-primary:hover { background: var(--book-green-light); transform: translateY(-1px); }
+
+.book-btn-outline {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  background: transparent; color: var(--book-green); font-weight: 600;
+  padding: 0.75rem 2rem; border-radius: 8px; border: 2px solid var(--book-green); transition: all 0.2s;
+}
+.book-btn-outline:hover { background: var(--book-green); color: #fff; }
+
+.book-card {
+  background: #fff; border: 1px solid var(--book-cream-dark); border-radius: 12px; padding: 2rem;
 }
