@@ -17,9 +17,13 @@ interface Article {
 
 const CATEGORIES = [
   { value: 'all', label: 'All' },
-  { value: 'family-systems', label: 'Family Systems' },
+  { value: 'dogs-family', label: 'Dogs & Family' },
   { value: 'business-strategy', label: 'Business & Strategy' },
   { value: 'marketing-growth', label: 'Marketing & Growth' },
+  { value: 'writing-publishing', label: 'Writing & Publishing' },
+  { value: 'contrarian-thinking', label: 'Contrarian Thinking' },
+  { value: 'life-reflection', label: 'Life & Reflection' },
+  { value: 'behind-the-scenes', label: 'Behind the Scenes' },
 ]
 
 export default function InsightsPage() {

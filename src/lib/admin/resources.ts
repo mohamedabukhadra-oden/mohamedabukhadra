@@ -55,7 +55,7 @@ export const RESOURCES: ResourceDef[] = [
       { name: 'slug', label: 'Slug', type: 'text', required: true, help: 'The URL: /insights/<slug>. Changing this breaks existing links.' },
       { name: 'excerpt', label: 'Excerpt', type: 'textarea', help: 'Shown in listings, social previews and the newsletter.' },
       { name: 'content', label: 'Content', type: 'markdown', required: true },
-      { name: 'category', label: 'Category', type: 'select', options: ['family-systems', 'business-strategy', 'marketing-growth'] },
+      { name: 'category', label: 'Category', type: 'select', options: ['dogs-family', 'business-strategy', 'marketing-growth', 'writing-publishing', 'contrarian-thinking', 'life-reflection', 'behind-the-scenes'] },
       { name: 'tags', label: 'Tags', type: 'text', help: 'Comma-separated.' },
       { name: 'status', label: 'Status', type: 'select', options: ['DRAFT', 'PUBLISHED', 'UNPUBLISHED'], help: 'Drafts are the queue the auto-publisher works through.' },
       { name: 'featured', label: 'Featured', type: 'boolean' },

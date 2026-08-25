@@ -64,7 +64,7 @@ model Article {
   title           String
   excerpt         String    @default("")
   content         String
-  category        String    @default("family-systems") // family-systems | business-strategy | marketing-growth
+  category        String    @default("life-reflection") // dogs-family | business-strategy | marketing-growth | writing-publishing | contrarian-thinking | life-reflection | behind-the-scenes
   tags            String    @default("") // comma-separated
   status          String    @default("DRAFT") // DRAFT | PUBLISHED | UNPUBLISHED
   featured        Boolean   @default(false)

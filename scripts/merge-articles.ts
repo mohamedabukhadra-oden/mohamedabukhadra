@@ -91,15 +91,39 @@ function readTime(content: string): number {
 }
 
 /**
- * Mowebsite tagged articles with a free-text `topic`. The merged site uses three
- * fixed categories, so topics are bucketed by keyword. Anything unrecognised
- * falls to family-systems, which is where the dog/family book material belongs.
+ * Mowebsite tagged articles with a free-text `topic`. Each topic maps 1:1 to a
+ * category — no regex bucketing, no silent default.
+ *
+ * The 15 source topics collapse into 8 categories. Topics that are already
+ * valid category slugs map directly; the rest are grouped by subject area.
  */
+const TOPIC_CATEGORY: Record<string, string> = {
+  // Dog & family — the books' core audience
+  'dog ownership':       'dogs-family',
+  'dog behaviour':       'dogs-family',
+  'puppy care':          'dogs-family',
+  'family dogs':         'dogs-family',
+  'german shepherd':     'dogs-family',
+  // Business
+  'business strategy':   'business-strategy',
+  'ai & technology':     'business-strategy',
+  // Marketing
+  'marketing':           'marketing-growth',
+  // Writing & publishing
+  'writing & publishing': 'writing-publishing',
+  'book launch':         'writing-publishing',
+  // Thinking & ideas
+  'contrarian thinking': 'contrarian-thinking',
+  'behavioural science': 'contrarian-thinking',
+  'life & reflection':   'life-reflection',
+  // Education & backstage
+  'education':           'behind-the-scenes',
+  'behind the scenes':   'behind-the-scenes',
+}
+
 function categoryFromTopic(topic: string | undefined): string {
-  const t = (topic || '').toLowerCase()
-  if (/(marketing|growth|brand|seo|audience|content)/.test(t)) return 'marketing-growth'
-  if (/(business|strategy|leadership|management|venture|consult|ai)/.test(t)) return 'business-strategy'
-  return 'family-systems'
+  if (!topic) return 'life-reflection'
+  return TOPIC_CATEGORY[topic.toLowerCase()] || 'life-reflection'
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */

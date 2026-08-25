@@ -38,7 +38,7 @@ export const POST = withAdmin(async (req) => {
       slug,
       excerpt: excerpt || '',
       content,
-      category: category || 'family-systems',
+      category: category || 'life-reflection',
       tags: tags || '',
       status: status || 'DRAFT',
       featured: featured || false,
