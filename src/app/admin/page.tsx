@@ -24,7 +24,11 @@ const CATEGORIES = [
 ]
 
 export default function AdminPage() {
-  const [loggedIn, setLoggedIn] = useState(false)
+  // null = still checking the server session. The signed-in state is derived
+  // from an httpOnly cookie via /api/admin/me, never from client state alone —
+  // the API enforces auth independently, so flipping this in devtools gains
+  // nothing but an empty screen.
+  const [loggedIn, setLoggedIn] = useState<boolean | null>(null)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loginLoading, setLoginLoading] = useState(false)
@@ -39,8 +43,13 @@ export default function AdminPage() {
     setLoading(true)
     try {
       const res = await fetch('/api/admin/articles')
+      if (res.status === 401) {
+        // Session expired or revoked — drop back to the login form.
+        setLoggedIn(false)
+        return
+      }
       const data = await res.json()
-      setArticles(data)
+      setArticles(Array.isArray(data) ? data : [])
     } catch {
       console.error('Failed to fetch articles')
     } finally {
@@ -48,9 +57,30 @@ export default function AdminPage() {
     }
   }, [])
 
+  // Ask the server whether the session cookie is valid.
+  useEffect(() => {
+    let cancelled = false
+    fetch('/api/admin/me')
+      .then((res) => {
+        if (!cancelled) setLoggedIn(res.ok)
+      })
+      .catch(() => {
+        if (!cancelled) setLoggedIn(false)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
   useEffect(() => {
     if (loggedIn) fetchArticles()
   }, [loggedIn, fetchArticles])
+
+  const handleLogout = async () => {
+    await fetch('/api/admin/login', { method: 'DELETE' }).catch(() => {})
+    setLoggedIn(false)
+    setArticles([])
+  }
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -114,6 +144,16 @@ export default function AdminPage() {
     fetchArticles()
   }
 
+  // Still verifying the session cookie — render nothing decisive yet, so the
+  // login form doesn't flash for an already-authenticated admin.
+  if (loggedIn === null) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-5 w-5 animate-spin text-[#6B5D4F]" />
+      </div>
+    )
+  }
+
   // Login screen
   if (!loggedIn) {
     return (
@@ -137,7 +177,7 @@ export default function AdminPage() {
             <button type="submit" disabled={loginLoading} className="w-full h-11 rounded-lg bg-[#1B3B36] text-white font-semibold hover:bg-[#2D5249] disabled:opacity-50 flex items-center justify-center gap-2">
               {loginLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Sign In'}
             </button>
-            <p className="text-xs text-[#6B5D4F] text-center">First login creates the admin account.</p>
+            <p className="text-xs text-[#6B5D4F] text-center">Authorised access only.</p>
           </form>
         </div>
       </div>
@@ -162,7 +202,7 @@ export default function AdminPage() {
             <button onClick={() => { setEditing(null); setShowEditor(true) }} className="inline-flex items-center gap-1.5 bg-[#1B3B36] text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-[#2D5249]">
               <Plus className="h-4 w-4" /> New Article
             </button>
-            <button onClick={() => setLoggedIn(false)} className="inline-flex items-center gap-1.5 text-sm text-[#6B5D4F] hover:text-[#1B3B36] px-3 py-2">
+            <button onClick={handleLogout} className="inline-flex items-center gap-1.5 text-sm text-[#6B5D4F] hover:text-[#1B3B36] px-3 py-2">
               <LogOut className="h-4 w-4" /> Logout
             </button>
           </div>

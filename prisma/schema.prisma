@@ -1,33 +1,244 @@
+// MohamedAbuKhadra.com — merged schema
+//
+// Consolidates the two personal-site repos:
+//   - mohamedabukhadra (this one) contributed the real page routes and the
+//     Article editorial model (status/category/tags/SEO fields)
+//   - Mowebsite contributed the richer content models (Book, SpeakingEvent,
+//     TeachingEntry, ConsultingHighlight, Venture, Recognition) and the
+//     auto-publish engine (AutoPublishConfig, PublishLog)
+//
+// Postgres, not SQLite: on Vercel a file-backed database lives in /tmp, which is
+// ephemeral and per-instance. DB-driven pages then 404 on cold starts, which is
+// what knocks them out of Google's index.
+
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model Article {
-  id          String   @id @default(cuid())
-  slug        String   @unique
-  title       String
-  excerpt     String
-  content     String
-  category    String   @default("family-systems") // family-systems | business-strategy | marketing-growth
-  tags        String   @default("") // comma-separated
-  status      String   @default("DRAFT") // DRAFT | PUBLISHED | UNPUBLISHED
-  featured    Boolean  @default(false)
-  metaDescription String?
-  ogImage     String?
-  publishedAt DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
+// ─────────────────────────── Auth ───────────────────────────
 
 model AdminUser {
   id           String    @id @default(cuid())
   email        String    @unique
   passwordHash String
   name         String?
+  role         String    @default("admin")
   createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  sessions AdminSession[]
+}
+
+/// Server-side sessions. The previous build set no cookie at all and gated the
+/// admin on React state, so the API was effectively public.
+model AdminSession {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+// ─────────────────────── Editorial content ───────────────────────
+
+/// Merged Article model.
+///
+/// Reconciles the two versions: this repo's `status` + `category` + SEO fields
+/// won over Mowebsite's `published` boolean + `topic`, because `status`
+/// distinguishes DRAFT / PUBLISHED / UNPUBLISHED (the auto-publish engine needs
+/// to tell "never published" from "deliberately pulled"), and the SEO fields are
+/// required for per-article metadata.
+model Article {
+  id              String    @id @default(cuid())
+  slug            String    @unique
+  title           String
+  excerpt         String    @default("")
+  content         String
+  category        String    @default("family-systems") // family-systems | business-strategy | marketing-growth
+  tags            String    @default("") // comma-separated
+  status          String    @default("DRAFT") // DRAFT | PUBLISHED | UNPUBLISHED
+  featured        Boolean   @default(false)
+  readTime        Int       @default(0)
+  coverImage      String?
+  ogImage         String?
+  metaDescription String?
+  publishedAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([status, publishedAt])
+  @@index([category])
+}
+
+model Book {
+  id               String   @id @default(cuid())
+  slug             String   @unique
+  title            String
+  subtitle         String?
+  description      String
+  proposition      String   @default("")
+  whyExists        String   @default("")
+  whoFor           String   @default("")
+  coreIdeas        String   @default("")
+  whatReaderLearns String   @default("")
+  keyFrameworks    String   @default("")
+  excerpts         String   @default("")
+  coverImage       String?
+  buyLink          String?
+  themeColors      String   @default("{}") // JSON: {primary, accent, bg, gold}
+  order            Int      @default(0)
+  published        Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model SpeakingEvent {
+  id          String    @id @default(cuid())
+  title       String
+  eventType   String // keynote, workshop, panel, etc.
+  audience    String?
+  location    String?
+  date        DateTime?
+  description String
+  videoLink   String?
+  published   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model TeachingEntry {
+  id          String   @id @default(cuid())
+  institution String
+  subject     String
+  level       String?
+  description String
+  period      String?
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ConsultingHighlight {
+  id          String   @id @default(cuid())
+  title       String
+  client      String?
+  description String
+  recognition String?
+  order       Int      @default(0)
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Venture {
+  id          String   @id @default(cuid())
+  name        String
+  tagline     String?
+  description String
+  role        String?
+  website     String?
+  logoUrl     String?
+  current     Boolean  @default(true)
+  order       Int      @default(0)
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Recognition {
+  id           String   @id @default(cuid())
+  title        String
+  organization String?
+  year         String?
+  description  String
+  order        Int      @default(0)
+  published    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model SiteSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   @default("")
+  updatedAt DateTime @updatedAt
+}
+
+// ─────────────────────── Automation ───────────────────────
+
+model AutoPublishConfig {
+  id             String    @id @default(cuid())
+  enabled        Boolean   @default(true)
+  postsPerDay    Int       @default(2)
+  makeWebhookUrl String    @default("")
+  siteBaseUrl    String    @default("https://mohamedabukhadra.com")
+  hashtagSuffix  String    @default("")
+  /// Send the new article to the newsletter list as well as to social.
+  notifySubscribers Boolean @default(true)
+  lastRunAt      DateTime?
+  updatedAt      DateTime  @updatedAt
+}
+
+model PublishLog {
+  id              String   @id @default(cuid())
+  articleId       String
+  articleTitle    String
+  articleSlug     String
+  articleCategory String   @default("")
+  publishedAt     DateTime @default(now())
+  webhookSent     Boolean  @default(false)
+  webhookStatus   Int?
+  webhookResponse String?
+  /// How many subscribers the article was emailed to, if any.
+  emailsSent      Int      @default(0)
+  error           String?
+  triggeredBy     String   @default("cron") // "cron" | "manual"
+
+  @@index([publishedAt])
+}
+
+// ─────────────────────── Newsletter ───────────────────────
+
+model NewsletterSubscriber {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String?
+  active       Boolean   @default(true)
+  source       String    @default("site") // where they signed up
+  /// Opaque token used to build one-click unsubscribe links.
+  unsubToken   String    @unique
+  confirmedAt  DateTime?
+  unsubscribedAt DateTime?
+  createdAt    DateTime  @default(now())
+
+  @@index([active])
+}
+
+// ─────────────────────── Lead capture ───────────────────────
+
+model Lead {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  company   String?
+  phone     String?
+  type      String   @default("contact") // contact | speaking | consulting | media
+  message   String?
+  status    String   @default("new") // new | contacted | qualified | closed
+  /// Marketing attribution captured at submit time (JSON: utm_*, referrer, landing page).
+  attribution String @default("{}")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt])
 }

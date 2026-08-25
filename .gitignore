@@ -3,3 +3,8 @@ node_modules/
 dev.log
 
 /src/generated/prisma
+
+# Environment files — never commit these
+.env
+.env.*
+!.env.example
