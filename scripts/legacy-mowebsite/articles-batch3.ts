@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Articles Batch 3 — Book 2: After You Say Yes to the Dog
 // 50 SEO articles, each expanding one quote into a full article (800-1200 words)
 

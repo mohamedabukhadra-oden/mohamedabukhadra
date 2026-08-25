@@ -1,41 +1,335 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================
+   MOHAMED ABU KHADRA — Design System
+   ============================================ */
+
+@theme inline {
+  /* Brand Colors */
+  --color-plum: #4F2754;
+  --color-plum-light: #6B3A72;
+  --color-plum-dark: #3A1B3E;
+  --color-plum-50: #f5f0f7;
+  --color-plum-100: #ebe0ef;
+  --color-plum-200: #d4bddc;
+
+  --color-turquoise: #70B9B5;
+  --color-turquoise-light: #8FCCC9;
+  --color-turquoise-dark: #5A9996;
+  --color-turquoise-50: #f0f8f8;
+
+  --color-near-black: #131217;
+  --color-warm-white: #F7F5F0;
+  --color-warm-cream: #FDF8F0;
+  --color-antique-gold: #B58A3A;
+  --color-antique-gold-light: #C9A35C;
+  --color-antique-gold-dark: #9A7430;
+
+  /* Book 1 — Before You Say Yes to the Dog */
+  --color-book1-navy: #1B2A4A;
+  --color-book1-burgundy: #7A2E3B;
+  --color-book1-cream: #FAF6EF;
+
+  /* Book 2 — After You Say Yes to the Dog */
+  --color-book2-forest: #2D4A3E;
+  --color-book2-navy: #1B2A4A;
+
+  /* System Mappings */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-cormorant);
+  --font-mono: var(--font-geist-mono);
+
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* Light Mode — Warm White canvas */
 :root {
-  --book-cream: #F5F1E8;
-  --book-cream-dark: #EBE5D5;
-  --book-green: #1B3B36;
-  --book-green-light: #2D5249;
-  --book-gold: #C9A86A;
-  --book-gold-light: #DDB87A;
-  --book-burgundy: #722F37;
-  --book-navy: #1A2B3D;
-  --book-text: #2A2520;
-  --book-text-muted: #6B5D4F;
+  --radius: 0.625rem;
+  --background: #F7F5F0;
+  --foreground: #131217;
+  --card: #FFFFFF;
+  --card-foreground: #131217;
+  --popover: #FFFFFF;
+  --popover-foreground: #131217;
+  --primary: #4F2754;
+  --primary-foreground: #F7F5F0;
+  --secondary: #F0EDE6;
+  --secondary-foreground: #131217;
+  --muted: #F0EDE6;
+  --muted-foreground: #6B6570;
+  --accent: #70B9B5;
+  --accent-foreground: #131217;
+  --destructive: #DC2626;
+  --border: #E2DED6;
+  --input: #E2DED6;
+  --ring: #4F2754;
+  --chart-1: #4F2754;
+  --chart-2: #70B9B5;
+  --chart-3: #B58A3A;
+  --chart-4: #1B2A4A;
+  --chart-5: #2D4A3E;
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #131217;
+  --sidebar-primary: #4F2754;
+  --sidebar-primary-foreground: #F7F5F0;
+  --sidebar-accent: #F0EDE6;
+  --sidebar-accent-foreground: #131217;
+  --sidebar-border: #E2DED6;
+  --sidebar-ring: #4F2754;
 }
 
-body {
-  background: var(--book-cream);
-  color: var(--book-text);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+/* Dark Mode — Near Black canvas */
+.dark {
+  --background: #131217;
+  --foreground: #F7F5F0;
+  --card: #1E1C22;
+  --card-foreground: #F7F5F0;
+  --popover: #1E1C22;
+  --popover-foreground: #F7F5F0;
+  --primary: #70B9B5;
+  --primary-foreground: #131217;
+  --secondary: #2A2730;
+  --secondary-foreground: #F7F5F0;
+  --muted: #2A2730;
+  --muted-foreground: #A09AA6;
+  --accent: #B58A3A;
+  --accent-foreground: #F7F5F0;
+  --destructive: #EF4444;
+  --border: #3A3640;
+  --input: #3A3640;
+  --ring: #70B9B5;
+  --chart-1: #70B9B5;
+  --chart-2: #B58A3A;
+  --chart-3: #C9A35C;
+  --chart-4: #8FCCC9;
+  --chart-5: #6B3A72;
+  --sidebar: #1E1C22;
+  --sidebar-foreground: #F7F5F0;
+  --sidebar-primary: #70B9B5;
+  --sidebar-primary-foreground: #131217;
+  --sidebar-accent: #2A2730;
+  --sidebar-accent-foreground: #F7F5F0;
+  --sidebar-border: #3A3640;
+  --sidebar-ring: #70B9B5;
 }
 
-.font-serif { font-family: Georgia, "Times New Roman", serif; }
-
-.book-btn-primary {
-  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-  background: var(--book-green); color: #fff; font-weight: 600;
-  padding: 0.75rem 2rem; border-radius: 8px; transition: all 0.2s;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
-.book-btn-primary:hover { background: var(--book-green-light); transform: translateY(-1px); }
 
-.book-btn-outline {
-  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-  background: transparent; color: var(--book-green); font-weight: 600;
-  padding: 0.75rem 2rem; border-radius: 8px; border: 2px solid var(--book-green); transition: all 0.2s;
-}
-.book-btn-outline:hover { background: var(--book-green); color: #fff; }
+/* ============================================
+   TYPOGRAPHY
+   ============================================
+   Serif: Cormorant Garamond — names, headlines, book titles, essays, quotes
+   Sans: Inter — nav, buttons, labels, metadata, UI
+   ============================================ */
 
-.book-card {
-  background: #fff; border: 1px solid var(--book-cream-dark); border-radius: 12px; padding: 2rem;
+@layer utilities {
+  .font-serif {
+    font-family: var(--font-cormorant), Georgia, 'Times New Roman', serif;
+  }
+  .font-sans {
+    font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  }
 }
+
+/* ============================================
+   EDITORIAL LAYOUT HELPERS
+   ============================================ */
+
+@layer components {
+  .section-container {
+    @apply mx-auto max-w-7xl px-6 md:px-10 lg:px-16;
+  }
+
+  .section-padding {
+    @apply py-20 md:py-28 lg:py-32;
+  }
+
+  .editorial-headline {
+    @apply font-serif text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight;
+  }
+
+  .editorial-subheadline {
+    @apply font-serif text-2xl md:text-3xl lg:text-4xl font-light tracking-tight leading-snug;
+  }
+
+  .section-label {
+    @apply font-sans text-xs uppercase tracking-[0.2em] font-medium text-muted-foreground;
+  }
+
+  .prose-editorial {
+    @apply font-serif text-lg md:text-xl leading-relaxed text-foreground/80;
+  }
+
+  .gold-accent {
+    color: #B58A3A;
+  }
+
+  .gold-accent-bg {
+    background-color: #B58A3A;
+  }
+
+  .plum-gradient {
+    background: linear-gradient(135deg, #4F2754 0%, #6B3A72 100%);
+  }
+
+  .dark-section {
+    @apply bg-near-black text-warm-white;
+  }
+
+  .warm-section {
+    @apply bg-warm-white text-near-black;
+  }
+
+  .book1-world {
+    --book-accent: #7A2E3B;
+    --book-primary: #1B2A4A;
+    --book-bg: #FAF6EF;
+    --book-gold: #B58A3A;
+  }
+
+  .book2-world {
+    --book-accent: #2D4A3E;
+    --book-primary: #1B2A4A;
+    --book-bg: #FAF6EF;
+    --book-gold: #B58A3A;
+  }
+}
+
+/* ============================================
+   SMOOTH SCROLL & SELECTION
+   ============================================ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: #4F2754;
+  color: #F7F5F0;
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F0EDE6;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C4BEB5;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4F2754;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #1E1C22;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #3A3640;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #70B9B5;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.5s ease-out forwards;
+}
+
+.animation-delay-100 { animation-delay: 100ms; }
+.animation-delay-200 { animation-delay: 200ms; }
+.animation-delay-300 { animation-delay: 300ms; }
+.animation-delay-400 { animation-delay: 400ms; }
+.animation-delay-500 { animation-delay: 500ms; }

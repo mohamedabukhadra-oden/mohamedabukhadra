@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Articles Batch 2 — Book 1 remaining quotes + Book 2: The First Month
 // 50 SEO articles, each expanding one quote into a full article (800-1200 words)
 

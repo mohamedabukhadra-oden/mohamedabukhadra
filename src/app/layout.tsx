@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Playfair_Display } from 'next/font/google'
+import { Cormorant_Garamond, Inter, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { Nav } from '@/components/nav'
 import { Footer } from '@/components/footer'
@@ -8,37 +8,91 @@ import { Analytics } from '@/components/analytics'
 import { CookieConsent } from '@/components/cookie-consent'
 import { FirstPartyAnalytics } from '@/components/first-party-analytics'
 
-const inter = Inter({ variable: '--font-inter', subsets: ['latin'], display: 'swap' })
-const playfair = Playfair_Display({ variable: '--font-playfair', subsets: ['latin'], display: 'swap', weight: ['400','500','600','700'] })
+const cormorant = Cormorant_Garamond({
+  variable: '--font-cormorant',
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  display: 'swap',
+})
+
+const inter = Inter({
+  variable: '--font-inter',
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  display: 'swap',
+})
+
+const geistMono = Geist_Mono({
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
+})
 
 export const metadata: Metadata = {
-  // Without metadataBase, relative Open Graph image paths resolve against
-  // localhost and social previews come out blank.
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://mohamedabukhadra.com'),
-  title: 'Mohamed Abu Khadra — Business Leader · Strategist · Author',
-  description: 'Business leader, marketing and growth strategist, visiting professor, and author. I build systems that have to work in real life — in business and at home.',
-  keywords: ['Mohamed Abu Khadra','business strategist','marketing strategy','visiting professor','author','Before You Say Yes to the Dog','Family Readiness Test','DBA Strategic Management'],
+  title: 'Mohamed Abu Khadra — Author',
+  description:
+    'Everyone sells you the dream. Mohamed Abu Khadra asks the questions behind it. Author of Before You Say Yes to the Dog and After You Say Yes to the Dog.',
+  keywords: [
+    'Mohamed Abu Khadra',
+    'Before You Say Yes to the Dog',
+    'After You Say Yes to the Dog',
+    'business strategy',
+    'marketing strategy',
+    'visiting professor',
+    'family dog system',
+    'German Shepherd puppy',
+    'first time dog owner',
+    'puppy readiness',
+    'dog ownership preparation',
+  ],
+  authors: [{ name: 'Mohamed Abu Khadra' }],
+  icons: {
+    icon: '/favicon.ico',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: 'https://mohamedabukhadra.com',
+  },
   openGraph: {
-    title: 'Mohamed Abu Khadra — Business Leader · Strategist · Author',
-    description: 'I build systems that have to work in real life — in business and at home.',
+    title: 'Mohamed Abu Khadra — Author',
+    description:
+      'Everyone sells you the dream. Mohamed Abu Khadra asks the questions behind it.',
+    url: 'https://mohamedabukhadra.com',
+    siteName: 'Mohamed Abu Khadra',
     type: 'website',
+    images: [],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Mohamed Abu Khadra — Author',
+    description:
+      'Author of Before You Say Yes to the Dog. Everyone sells you the dream. Mohamed asks the questions behind it.',
+  },
+  verification: {
+    ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+      ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+      : {}),
+    ...(process.env.NEXT_PUBLIC_META_DOMAIN_VERIFICATION
+      ? { other: { 'facebook-domain-verification': process.env.NEXT_PUBLIC_META_DOMAIN_VERIFICATION } }
+      : {}),
   },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${playfair.variable} antialiased`}>
-        <div className="min-h-screen flex flex-col bg-[#F5F1E8]">
+      <body
+        className={`${cormorant.variable} ${inter.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
+      >
+        <div className="min-h-screen flex flex-col bg-background">
           <Nav />
           <main className="flex-1">{children}</main>
           <Footer />
         </div>
-        {/* Every SDK below no-ops unless its NEXT_PUBLIC_* env var is set, and
-            each waits on the visitor's consent choice before firing. */}
         <Analytics />
-        {/* useSearchParams needs a Suspense boundary, or it opts every page into
-            dynamic rendering and we lose static generation site-wide. */}
         <Suspense fallback={null}>
           <FirstPartyAnalytics />
         </Suspense>

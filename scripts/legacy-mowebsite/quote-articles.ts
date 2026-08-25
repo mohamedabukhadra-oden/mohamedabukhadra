@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Extracted from Mowebsite's seed-quote-articles.ts, where the array was declared
 // inside main(). Hoisted to a module export so the merge script can import it.
 export const quoteArticles = [

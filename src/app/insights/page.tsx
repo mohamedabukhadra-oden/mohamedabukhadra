@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Loader2, ArrowRight, Search } from 'lucide-react'
+import { ArrowRight, Clock, Loader2 } from 'lucide-react'
 
 interface Article {
   id: string
@@ -11,12 +11,13 @@ interface Article {
   excerpt: string
   category: string
   tags: string
+  featured: boolean
   publishedAt: string | null
 }
 
 const CATEGORIES = [
   { value: 'all', label: 'All' },
-  { value: 'family-systems', label: 'Family Systems & Dog Ownership' },
+  { value: 'family-systems', label: 'Family Systems' },
   { value: 'business-strategy', label: 'Business & Strategy' },
   { value: 'marketing-growth', label: 'Marketing & Growth' },
 ]
@@ -24,90 +25,145 @@ const CATEGORIES = [
 export default function InsightsPage() {
   const [articles, setArticles] = useState<Article[]>([])
   const [loading, setLoading] = useState(true)
-  const [category, setCategory] = useState('all')
-  const [search, setSearch] = useState('')
+  const [activeCategory, setActiveCategory] = useState('all')
 
   useEffect(() => {
-    fetch(`/api/articles?category=${category}`)
-      .then(res => res.json())
-      .then(data => { setArticles(data); setLoading(false) })
+    setLoading(true)
+    fetch(`/api/articles?category=${activeCategory}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setArticles(Array.isArray(data) ? data : [])
+        setLoading(false)
+      })
       .catch(() => setLoading(false))
-  }, [category])
+  }, [activeCategory])
 
-  const filtered = articles.filter(a =>
-    !search || a.title.toLowerCase().includes(search.toLowerCase()) || a.excerpt.toLowerCase().includes(search.toLowerCase())
-  )
+  const featured = articles.filter((a) => a.featured)
+  const regular = articles.filter((a) => !a.featured)
 
   return (
-    <div className="pt-24 pb-16 md:pt-32 md:pb-24 min-h-screen bg-[#F5F1E8]">
-      <div className="max-w-4xl mx-auto px-5 md:px-8">
-        <div className="text-center mb-12">
-          <h1 className="font-serif text-3xl md:text-5xl font-bold text-[#1B3B36] mb-4">Insights</h1>
-          <p className="text-lg text-[#6B5D4F] italic">Thinking at the intersection of strategy, execution, and real life.</p>
-          <div className="w-16 h-1 bg-[#C9A86A] rounded-full mx-auto mt-6" />
+    <div className="pt-24 pb-16 md:pt-32 md:pb-24 min-h-screen bg-warm-white">
+      <div className="section-container">
+        {/* Header */}
+        <div className="mb-10">
+          <p className="section-label">Thinking</p>
+          <h2 className="font-serif text-3xl md:text-4xl font-light tracking-tight mt-3 mb-4">
+            What I&apos;ve noticed. What I&apos;ve changed my mind about. What I&apos;m still figuring out.
+          </h2>
+          <p className="prose-editorial max-w-2xl text-muted-foreground">
+            Strategy, marketing, growth, and the questions most people don&apos;t stop to ask.
+          </p>
         </div>
 
-        {/* Filters */}
-        <div className="flex flex-col sm:flex-row gap-3 mb-8">
-          <div className="flex flex-wrap gap-2 flex-1">
-            {CATEGORIES.map(c => (
-              <button
-                key={c.value}
-                onClick={() => setCategory(c.value)}
-                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                  category === c.value
-                    ? 'bg-[#1B3B36] text-white'
-                    : 'bg-white text-[#6B5D4F] border border-[#EBE5D5] hover:bg-[#EBE5D5]'
-                }`}
-              >
-                {c.label}
-              </button>
-            ))}
-          </div>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#6B5D4F]" />
-            <input
-              type="text"
-              placeholder="Search..."
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              className="h-10 w-full sm:w-48 rounded-lg border border-[#EBE5D5] pl-9 pr-3 text-sm bg-white"
-            />
-          </div>
+        {/* Category pills */}
+        <div className="flex flex-wrap gap-2 mt-10 mb-12">
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat.value}
+              onClick={() => setActiveCategory(cat.value)}
+              className={`font-sans text-xs tracking-wider uppercase px-4 py-2 rounded-full border transition-all duration-300 ${
+                activeCategory === cat.value
+                  ? 'bg-plum text-warm-white border-plum'
+                  : 'bg-transparent text-muted-foreground border-border hover:border-plum hover:text-plum'
+              }`}
+            >
+              {cat.label}
+            </button>
+          ))}
         </div>
 
-        {/* Articles */}
+        {/* Loading */}
         {loading ? (
-          <div className="flex items-center justify-center py-20"><Loader2 className="h-6 w-6 animate-spin text-[#1B3B36]" /></div>
-        ) : filtered.length === 0 ? (
-          <div className="text-center py-20">
-            <p className="text-[#6B5D4F]">No articles found. Check back soon!</p>
+          <div className="flex items-center justify-center py-20">
+            <Loader2 className="h-6 w-6 animate-spin text-plum" />
           </div>
+        ) : articles.length === 0 ? (
+          <p className="font-sans text-muted-foreground text-center py-16">
+            No articles found for this category.
+          </p>
         ) : (
-          <div className="grid gap-6">
-            {filtered.map(article => (
-              <Link key={article.id} href={`/insights/${article.slug}`} className="group">
-                <div className="bg-white rounded-xl border border-[#EBE5D5] p-6 hover:shadow-lg hover:border-[#C9A86A]/30 transition-all">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-xs font-medium text-[#C9A86A] uppercase tracking-wider">
-                      {CATEGORIES.find(c => c.value === article.category)?.label || article.category}
-                    </span>
-                    {article.publishedAt && (
-                      <span className="text-xs text-[#6B5D4F]">
-                        · {new Date(article.publishedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+          <div className="space-y-12">
+            {/* Featured articles */}
+            {featured.length > 0 && (
+              <div className="grid md:grid-cols-2 gap-8">
+                {featured.map((article) => (
+                  <Link
+                    key={article.id}
+                    href={`/insights/${article.slug}`}
+                    className="group p-8 rounded-lg bg-card border border-border hover:-translate-y-1 hover:shadow-md transition-all duration-500"
+                  >
+                    {article.category && (
+                      <span className="font-sans text-xs tracking-wider uppercase bg-plum-50 text-plum px-3 py-1 rounded-full">
+                        {CATEGORIES.find((c) => c.value === article.category)?.label || article.category}
                       </span>
                     )}
-                  </div>
-                  <h2 className="font-serif text-xl font-bold text-[#1B3B36] mb-2 group-hover:text-[#C9A86A] transition-colors">
-                    {article.title}
-                  </h2>
-                  <p className="text-sm text-[#6B5D4F] leading-relaxed mb-3">{article.excerpt}</p>
-                  <span className="inline-flex items-center gap-1 text-sm font-medium text-[#1B3B36] group-hover:text-[#C9A86A] transition-colors">
-                    Read more <ArrowRight className="h-3.5 w-3.5" />
-                  </span>
-                </div>
-              </Link>
-            ))}
+                    <h3 className="font-serif text-2xl md:text-3xl font-light tracking-tight mt-4 mb-3 group-hover:text-plum transition-colors">
+                      {article.title}
+                    </h3>
+                    <p className="prose-editorial text-base">
+                      {(article.excerpt || '').slice(0, 200)}
+                      {(article.excerpt || '').length > 200 ? '...' : ''}
+                    </p>
+                    <div className="flex items-center gap-4 mt-4">
+                      <span className="inline-flex items-center gap-1.5 font-sans text-sm text-plum group-hover:gap-2.5 transition-all duration-300">
+                        Read <ArrowRight className="w-4 h-4" />
+                      </span>
+                      {article.publishedAt && (
+                        <span className="font-sans text-xs text-muted-foreground flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          {new Date(article.publishedAt).toLocaleDateString('en-GB', {
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric',
+                          })}
+                        </span>
+                      )}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+
+            {/* Regular articles */}
+            {regular.length > 0 && (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {regular.map((article) => (
+                  <Link
+                    key={article.id}
+                    href={`/insights/${article.slug}`}
+                    className="group p-6 rounded-lg border border-border hover:-translate-y-1 hover:shadow-md transition-all duration-500"
+                  >
+                    {article.category && (
+                      <span className="font-sans text-xs tracking-wider uppercase bg-plum-50 text-plum px-3 py-1 rounded-full">
+                        {CATEGORIES.find((c) => c.value === article.category)?.label || article.category}
+                      </span>
+                    )}
+                    <h3 className="font-serif text-xl font-light tracking-tight mt-3 mb-2 group-hover:text-plum transition-colors">
+                      {article.title}
+                    </h3>
+                    <p className="font-sans text-sm text-muted-foreground leading-relaxed">
+                      {(article.excerpt || '').slice(0, 120)}
+                      {(article.excerpt || '').length > 120 ? '...' : ''}
+                    </p>
+                    <div className="flex items-center gap-4 mt-4">
+                      <span className="inline-flex items-center gap-1.5 font-sans text-sm text-plum group-hover:gap-2.5 transition-all duration-300">
+                        Read <ArrowRight className="w-4 h-4" />
+                      </span>
+                      {article.publishedAt && (
+                        <span className="font-sans text-xs text-muted-foreground flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          {new Date(article.publishedAt).toLocaleDateString('en-GB', {
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric',
+                          })}
+                        </span>
+                      )}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>

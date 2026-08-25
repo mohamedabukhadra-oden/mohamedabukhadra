@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Articles Batch 1 — Book 1: Before You Say Yes to the Dog
 // 50 SEO articles, each expanding one quote into a full article (800-1200 words)
 import { PrismaClient } from '@prisma/client';

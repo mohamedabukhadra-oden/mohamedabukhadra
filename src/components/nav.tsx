@@ -1,45 +1,90 @@
 'use client'
+
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { Menu, X } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 
-const NAV = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
-  { href: '/books', label: 'Books' },
-  { href: '/speaking', label: 'Speaking & Teaching' },
-  { href: '/insights', label: 'Insights' },
-  { href: '/contact', label: 'Contact' },
+const navLinks = [
+  { href: '/books/before-you-say-yes-to-the-dog', label: 'Before You Say Yes' },
+  { href: '/books/after-you-say-yes-to-the-dog', label: 'After You Say Yes' },
+  { href: '/about', label: 'About Mohamed' },
+  { href: '/insights', label: 'Thinking' },
+  { href: '/speaking', label: 'Speaking' },
 ]
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  const pathname = usePathname()
+
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12)
-    onScroll(); window.addEventListener('scroll', onScroll, { passive: true })
+    const onScroll = () => setScrolled(window.scrollY > 40)
+    window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  useEffect(() => {
+    setOpen(false)
+  }, [pathname])
+
   return (
-    <header className={`fixed inset-x-0 top-0 z-50 transition-all ${scrolled ? 'bg-[#F5F1E8]/95 backdrop-blur-xl shadow-sm border-b border-[#EBE5D5]' : 'bg-transparent'}`}>
-      <nav className="max-w-6xl mx-auto flex h-16 items-center justify-between px-5 md:px-8">
-        <Link href="/" className="font-serif text-base font-bold text-[#1B3B36]">
-          Mohamed Abu Khadra
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+        scrolled
+          ? 'bg-warm-white/95 backdrop-blur-md shadow-[0_1px_0_0_rgba(0,0,0,0.05)]'
+          : 'bg-transparent'
+      }`}
+    >
+      <nav className="section-container flex items-center justify-between h-16 md:h-20">
+        <Link
+          href="/"
+          className="font-serif text-xl md:text-2xl text-plum tracking-wide hover:opacity-80 transition-opacity"
+        >
+          MAK
         </Link>
-        <div className="hidden lg:flex items-center gap-1">
-          {NAV.map(l => (
-            <Link key={l.href} href={l.href} className="rounded-md px-3 py-2 text-sm font-medium text-[#2A2520]/80 hover:text-[#1B3B36] hover:bg-[#EBE5D5]/50 transition-colors">{l.label}</Link>
+
+        <div className="hidden lg:flex items-center gap-7">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`font-sans text-sm tracking-wide uppercase transition-colors duration-300 hover:text-plum whitespace-nowrap ${
+                pathname === link.href || (link.href !== '/' && pathname?.startsWith(link.href))
+                  ? 'text-plum font-medium'
+                  : 'text-muted-foreground'
+              }`}
+            >
+              {link.label}
+            </Link>
           ))}
         </div>
-        <button onClick={() => setOpen(!open)} className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-[#1B3B36]/20 text-[#1B3B36] lg:hidden">
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+
+        <button
+          onClick={() => setOpen(!open)}
+          className="lg:hidden p-2 text-foreground hover:text-plum transition-colors duration-300"
+          aria-label="Toggle menu"
+        >
+          {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
       </nav>
+
       {open && (
-        <div className="border-b border-[#EBE5D5] bg-[#F5F1E8]/95 backdrop-blur-xl lg:hidden">
-          <div className="flex flex-col gap-1 px-5 py-4">
-            {NAV.map(l => <Link key={l.href} href={l.href} onClick={() => setOpen(false)} className="rounded-md px-3 py-2.5 text-sm font-medium text-[#2A2520]/90 hover:bg-[#EBE5D5]">{l.label}</Link>)}
+        <div className="border-t border-border bg-warm-white/95 backdrop-blur-xl lg:hidden">
+          <div className="section-container flex flex-col gap-1 py-4">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`font-sans text-sm tracking-wide uppercase px-3 py-2.5 rounded-md transition-colors ${
+                  pathname === link.href
+                    ? 'text-plum bg-plum/5'
+                    : 'text-foreground/90 hover:bg-muted'
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
       )}

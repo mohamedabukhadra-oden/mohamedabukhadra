@@ -1,200 +1,208 @@
 import Link from 'next/link'
-import { ArrowRight, Briefcase, GraduationCap, BookOpen, Sparkles } from 'lucide-react'
+import { BookOpen, Lightbulb, MessageCircle, Brain, ChevronDown } from 'lucide-react'
+import { SubscribeCTA } from '@/components/subscribe-cta'
+import { StayBackstageSection } from '@/components/stay-backstage-section'
 
+/* ─── Hero Section (server component — no state) ─── */
+function HeroSection() {
+  return (
+    <section className="relative min-h-screen flex items-center justify-center bg-warm-white overflow-hidden">
+      {/* Subtle plum gradient at bottom edge */}
+      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-plum/5 to-transparent pointer-events-none" />
+
+      <div className="section-container relative z-10 flex flex-col items-center text-center max-w-4xl mx-auto">
+        {/* Label — author first */}
+        <p className="section-label mb-6 md:mb-8">Author</p>
+
+        {/* Name */}
+        <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light tracking-tight text-foreground leading-[1.05]">
+          MOHAMED
+          <br />
+          ABU KHADRA
+        </h1>
+
+        {/* Tagline — the repositioning anchor */}
+        <p className="font-serif text-xl md:text-2xl lg:text-3xl text-plum/80 mt-6 md:mt-8 max-w-2xl leading-relaxed">
+          Everyone sells you the dream.
+          <br className="hidden sm:block" />
+          <span className="text-foreground">I ask the questions behind it.</span>
+        </p>
+
+        {/* Gold divider */}
+        <div className="w-24 h-px bg-antique-gold mt-10 md:mt-14" />
+
+        {/* Book CTAs */}
+        <div className="flex flex-col sm:flex-row gap-4 mt-8 md:mt-12">
+          <Link
+            href="/books/before-you-say-yes-to-the-dog"
+            className="font-sans text-sm tracking-wide uppercase bg-plum text-warm-white px-8 py-3 rounded-full hover:bg-plum-dark transition-colors duration-300"
+          >
+            Before You Say Yes
+          </Link>
+          <Link
+            href="/books/after-you-say-yes-to-the-dog"
+            className="font-sans text-sm tracking-wide uppercase border border-plum/30 text-plum px-8 py-3 rounded-full hover:bg-plum/5 transition-colors duration-300"
+          >
+            After You Say Yes
+          </Link>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="mt-10 md:mt-14">
+          <ChevronDown className="w-5 h-5 text-muted-foreground" />
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ─── Front Stage & Backstage Section (server component) ─── */
+const frontStageItems = [
+  {
+    icon: BookOpen,
+    title: 'The Books',
+    description: 'Two books. One question: are you actually ready for this? Neither book sugarcoats the answer.',
+    href: '/books',
+  },
+  {
+    icon: Lightbulb,
+    title: 'The Ideas',
+    description: 'What I write about when I am not writing books. Things I have noticed after 25 years of watching people and businesses.',
+    href: '/insights',
+  },
+  {
+    icon: MessageCircle,
+    title: 'The Thinking',
+    description: 'From marketing departments, university classrooms, startup offices, and the moments in between.',
+    href: '/insights',
+  },
+]
+
+const backstageItems = [
+  {
+    title: 'Strategist',
+    description: 'Advises leaders and organisations through The KnowHow.',
+  },
+  {
+    title: 'Educator',
+    description: 'Visiting professor of marketing.',
+  },
+  {
+    title: 'Founder',
+    description: 'Built Oden and helped scale CowPay from concept to 10x GMV.',
+  },
+  {
+    title: 'Speaker',
+    description: 'Keynotes and workshops at international conferences and institutions.',
+  },
+]
+
+function FrontStageSection() {
+  return (
+    <section className="py-24 md:py-32 bg-warm-white">
+      <div className="section-container">
+        {/* Section header */}
+        <div className="text-center mb-16 md:mb-20">
+          <p className="section-label mb-4">What You See</p>
+          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-light tracking-tight">
+            Front Stage{' '}
+            <span className="text-plum">&</span>{' '}
+            Backstage
+          </h2>
+          <p className="prose-editorial mt-6 max-w-2xl mx-auto">
+            Some things are written for the audience. Others live behind the curtain.
+            Both matter.
+          </p>
+        </div>
+
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
+          {/* FRONT STAGE */}
+          <div>
+            <div className="border-l-2 border-plum pl-8 md:pl-10">
+              <h3 className="font-serif text-2xl md:text-3xl font-light tracking-tight text-plum mb-8">
+                Front Stage
+              </h3>
+              <p className="prose-editorial text-muted-foreground mb-10">
+                What gets published. What you can read, share, or use.
+                This is the visible part.
+              </p>
+            </div>
+
+            <div className="space-y-8">
+              {frontStageItems.map((item) => (
+                <Link key={item.title} href={item.href} className="group block">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-full bg-plum/10 flex items-center justify-center flex-shrink-0 mt-1">
+                      <item.icon className="w-5 h-5 text-plum" />
+                    </div>
+                    <div>
+                      <h4 className="font-serif text-lg font-medium tracking-tight mb-1 group-hover:text-plum transition-colors">
+                        {item.title}
+                      </h4>
+                      <p className="font-sans text-sm text-muted-foreground leading-relaxed">
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* BACKSTAGE */}
+          <div>
+            <div className="border-l-2 border-turquoise pl-8 md:pl-10">
+              <h3 className="font-serif text-2xl md:text-3xl font-light tracking-tight text-turquoise mb-8">
+                Backstage
+              </h3>
+              <p className="prose-editorial text-muted-foreground mb-10">
+                What happens before any of it gets published.
+                The advising, teaching, building, and leading.
+              </p>
+            </div>
+
+            <div className="space-y-8">
+              {backstageItems.map((item) => (
+                <div key={item.title}>
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-full bg-turquoise/10 flex items-center justify-center flex-shrink-0 mt-1">
+                      <Brain className="w-5 h-5 text-turquoise" />
+                    </div>
+                    <div>
+                      <h4 className="font-serif text-lg font-medium tracking-tight mb-1">
+                        {item.title}
+                      </h4>
+                      <p className="font-sans text-sm text-muted-foreground leading-relaxed">
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ─── Homepage (server component) ─── */
 export default function Home() {
   return (
     <>
-      {/* HERO — Professional identity */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 bg-gradient-to-br from-[#F5F1E8] to-[#EBE5D5] overflow-hidden">
-        <div className="max-w-4xl mx-auto px-5 md:px-8 text-center">
-          <h1 className="font-serif text-4xl md:text-6xl font-bold text-[#1B3B36] mb-4">
-            Mohamed Abu Khadra
-          </h1>
-          <p className="text-lg md:text-xl text-[#6B5D4F] mb-6">
-            Business Leader · Strategist · Visiting Professor · Author
-          </p>
-          <div className="w-16 h-1 bg-[#C9A86A] rounded-full mx-auto mb-8" />
-          <p className="text-xl md:text-2xl text-[#2A2520] leading-relaxed max-w-3xl mx-auto">
-            I work at the intersection of strategy, marketing, growth and real-world execution —
-            and I write about what happens when ideas have to work in real life.
-          </p>
-          <p className="mt-6 font-serif text-lg text-[#1B3B36] italic">
-            I build systems that have to work in real life.
-          </p>
+      <HeroSection />
+      <FrontStageSection />
+
+      {/* Subscribe CTA */}
+      <section className="section-padding bg-warm-white">
+        <div className="section-container max-w-4xl">
+          <SubscribeCTA />
         </div>
       </section>
 
-      {/* THREE PATHS */}
-      <section className="py-16 md:py-24 bg-[#F5F1E8]">
-        <div className="max-w-5xl mx-auto px-5 md:px-8">
-          <div className="grid gap-8 md:grid-cols-3">
-            {/* Business & Strategy */}
-            <Link href="/about" className="group">
-              <div className="book-card h-full hover:shadow-lg transition-shadow">
-                <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#1B3B36]/10 mb-4">
-                  <Briefcase className="h-7 w-7 text-[#1B3B36]" />
-                </div>
-                <h3 className="font-serif text-xl font-bold text-[#1B3B36] mb-2">Business & Strategy</h3>
-                <p className="text-sm text-[#6B5D4F] leading-relaxed">
-                  Leadership, marketing, growth, partnerships and execution. Two decades of turning
-                  good ideas into things that actually work.
-                </p>
-                <span className="inline-flex items-center gap-1 mt-4 text-sm font-medium text-[#1B3B36] group-hover:text-[#C9A86A] transition-colors">
-                  Learn more <ArrowRight className="h-3.5 w-3.5" />
-                </span>
-              </div>
-            </Link>
-
-            {/* Teaching & Speaking */}
-            <Link href="/speaking" className="group">
-              <div className="book-card h-full hover:shadow-lg transition-shadow">
-                <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#C9A86A]/10 mb-4">
-                  <GraduationCap className="h-7 w-7 text-[#C9A86A]" />
-                </div>
-                <h3 className="font-serif text-xl font-bold text-[#1B3B36] mb-2">Teaching & Speaking</h3>
-                <p className="text-sm text-[#6B5D4F] leading-relaxed">
-                  Visiting Professor. Postgraduate teaching, executive education and practical
-                  business learning for universities and organisations.
-                </p>
-                <span className="inline-flex items-center gap-1 mt-4 text-sm font-medium text-[#1B3B36] group-hover:text-[#C9A86A] transition-colors">
-                  Learn more <ArrowRight className="h-3.5 w-3.5" />
-                </span>
-              </div>
-            </Link>
-
-            {/* Books */}
-            <Link href="/books" className="group">
-              <div className="book-card h-full hover:shadow-lg transition-shadow border-[#C9A86A]/30">
-                <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#722F37]/10 mb-4">
-                  <BookOpen className="h-7 w-7 text-[#722F37]" />
-                </div>
-                <div className="inline-flex items-center gap-1.5 mb-2">
-                  <Sparkles className="h-3.5 w-3.5 text-[#C9A86A]" />
-                  <span className="text-xs font-semibold text-[#C9A86A] uppercase tracking-wider">Current Project</span>
-                </div>
-                <h3 className="font-serif text-xl font-bold text-[#1B3B36] mb-2">Books</h3>
-                <p className="text-sm text-[#6B5D4F] leading-relaxed">
-                  The Before You Say Yes two-book system — a practical framework for families
-                  preparing for life with a dog.
-                </p>
-                <span className="inline-flex items-center gap-1 mt-4 text-sm font-medium text-[#1B3B36] group-hover:text-[#C9A86A] transition-colors">
-                  Explore the books <ArrowRight className="h-3.5 w-3.5" />
-                </span>
-              </div>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* THE BRIDGE — Professional to personal */}
-      <section className="py-16 md:py-24 bg-[#1B3B36] text-white">
-        <div className="max-w-3xl mx-auto px-5 md:px-8 text-center">
-          <h2 className="font-serif text-2xl md:text-4xl font-bold mb-6">
-            How Business Strategy Became a Family System
-          </h2>
-          <div className="w-16 h-1 bg-[#C9A86A] rounded-full mx-auto mb-8" />
-          <div className="space-y-4 text-lg text-white/90 leading-relaxed">
-            <p>
-              You spent your career solving execution problems in business.
-            </p>
-            <p>
-              Then you discovered that your own family had an execution problem at home.
-            </p>
-            <p className="font-serif text-xl text-[#C9A86A] italic">
-              After three failed attempts to bring a dog into my family, I realised that wanting
-              the dog wasn't the problem. The family system was.
-            </p>
-            <p>
-              That question became the foundation for a two-book family system — one for deciding
-              and preparing before the dog arrives, and one for operating successfully after.
-            </p>
-          </div>
-          <div className="mt-8">
-            <Link href="/books" className="inline-flex items-center justify-center gap-2 bg-[#C9A86A] text-white font-semibold px-6 py-3 rounded-lg hover:bg-[#DDB87A] transition-colors">
-              Explore the Books
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* BOOK COVERS — Visual showcase */}
-      <section className="py-16 md:py-24 bg-[#F5F1E8]">
-        <div className="max-w-4xl mx-auto px-5 md:px-8 text-center">
-          <h2 className="font-serif text-2xl md:text-3xl font-bold text-[#1B3B36] mb-2">
-            Two Books. Two Moments.
-          </h2>
-          <p className="text-[#6B5D4F] italic mb-8">One family system.</p>
-          <div className="w-16 h-1 bg-[#C9A86A] rounded-full mx-auto mb-12" />
-
-          <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12">
-            {/* Book 1 */}
-            <Link href="/books/before-you-say-yes-to-the-dog" className="group text-center">
-              <div className="relative">
-                <div className="absolute inset-0 bg-[#C9A86A]/20 blur-2xl rounded-full" />
-                <img
-                  src="/book-cover-1.png"
-                  alt="Before You Say Yes to the Dog — book cover"
-                  className="relative w-48 md:w-56 rounded-lg shadow-xl group-hover:shadow-2xl transition-shadow"
-                  width={280}
-                  height={420}
-                />
-              </div>
-              <p className="mt-4 font-serif text-lg font-bold text-[#1B3B36]">Before You Say Yes</p>
-              <p className="text-sm text-[#6B5D4F]">Decision + Foundation</p>
-              <p className="text-xs text-[#C9A86A] mt-1">Coming Soon</p>
-            </Link>
-
-            {/* Arrow / Divider */}
-            <div className="hidden md:flex flex-col items-center gap-2">
-              <div className="w-12 h-px bg-[#C9A86A]" />
-              <p className="font-serif text-sm text-[#C9A86A] italic whitespace-nowrap">System first.<br />Puppy second.<br />Family always.</p>
-              <div className="w-12 h-px bg-[#C9A86A]" />
-            </div>
-
-            {/* Book 2 */}
-            <Link href="/books/after-you-say-yes-to-the-dog" className="group text-center opacity-70 hover:opacity-100 transition-opacity">
-              <div className="relative w-48 md:w-56 aspect-[2/3] rounded-lg shadow-xl bg-gradient-to-br from-[#722F37] to-[#1B3B36] flex items-center justify-center">
-                <div className="text-center p-6">
-                  <p className="font-serif text-white text-lg font-bold leading-tight">After You<br />Say Yes<br />to the Dog</p>
-                  <p className="text-[#C9A86A] text-xs mt-3">Coming 2026</p>
-                </div>
-              </div>
-              <p className="mt-4 font-serif text-lg font-bold text-[#1B3B36]">After You Say Yes</p>
-              <p className="text-sm text-[#6B5D4F]">Operations + Execution</p>
-              <p className="text-xs text-[#6B5D4F] mt-1">2026</p>
-            </Link>
-          </div>
-
-          <div className="mt-12">
-            <Link href="/books" className="book-btn-primary">
-              About the Two-Book System
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* QUICK CHECK TEASER */}
-      <section className="py-16 md:py-20 bg-gradient-to-br from-[#722F37] to-[#1B3B36] text-white">
-        <div className="max-w-2xl mx-auto px-5 md:px-8 text-center">
-          <h2 className="font-serif text-2xl md:text-3xl font-bold mb-4">
-            Is Your Family Actually Ready for a Dog?
-          </h2>
-          <div className="w-16 h-1 bg-[#C9A86A] rounded-full mx-auto mb-6" />
-          <p className="text-lg text-white/80 mb-8">
-            Take the free Family Dog Readiness Quick Check — 10 questions, one honest conversation,
-            three possible outcomes: PASS, PAUSE, or NOT READY.
-          </p>
-          <Link
-            href="/quick-check"
-            className="inline-flex items-center justify-center gap-2 bg-[#C9A86A] text-white font-semibold px-6 py-3 rounded-lg hover:bg-[#DDB87A] transition-colors"
-          >
-            Take the Free Quick Check
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </section>
+      {/* Stay Backstage */}
+      <StayBackstageSection />
     </>
   )
 }
