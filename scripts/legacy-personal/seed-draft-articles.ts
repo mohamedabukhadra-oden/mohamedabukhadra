@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { db } from '../src/lib/db'
+// NOTE: db import removed — this file is now a data source for merge-articles.ts only.
 
 export const articles = [
   // ─── STRATEGY & GROWTH ─────────────────────────────────────────
@@ -1455,22 +1455,5 @@ And it applies to everything — not just dogs.
   },
 ]
 
-async function seed() {
-  console.log('🌱 Seeding draft articles...')
-  for (const article of articles) {
-    const existing = await db.article.findUnique({ where: { slug: article.slug } })
-    if (!existing) {
-      await db.article.create({
-        data: {
-          ...article,
-          publishedAt: null, // All drafts — no publishedAt
-        },
-      })
-      console.log(`  ✅ ${article.slug} [DRAFT]`)
-    } else {
-      console.log(`  ⏭️  ${article.slug} (already exists)`)
-    }
-  }
-  console.log(`🎉 Done! ${articles.length} draft articles seeded.`)
-}
+
 

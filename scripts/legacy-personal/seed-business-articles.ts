@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { db } from '../src/lib/db'
+// NOTE: db import removed — this file is now a data source for merge-articles.ts only.
 
 export const articles = [
   {
@@ -860,22 +860,5 @@ That's not indecision. That's wisdom.
   },
 ]
 
-async function seed() {
-  console.log('🌱 Seeding business articles...')
-  for (const article of articles) {
-    const existing = await db.article.findUnique({ where: { slug: article.slug } })
-    if (!existing) {
-      await db.article.create({
-        data: {
-          ...article,
-          publishedAt: article.status === 'PUBLISHED' ? new Date() : null,
-        },
-      })
-      console.log(`  ✅ ${article.slug}`)
-    } else {
-      console.log(`  ⏭️  ${article.slug} (already exists)`)
-    }
-  }
-  console.log('🎉 Done!')
-}
+
 

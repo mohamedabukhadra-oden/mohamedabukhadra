@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+// NOTE: PrismaClient import and seed() removed — this file is now a data source
+// for merge-articles.ts only. Original seed logic is no longer needed.
 
 export const missingArticles = [
   {
@@ -132,19 +132,3 @@ A morning routine might look like this: wake up, go outside for potty, come in f
 The mistake most families make is changing the routine based on convenience. One day the puppy goes out at seven, the next day at nine. One evening the family stays up late, the next they go to bed early. Each variation resets the puppy\'s internal clock and makes the routine less reliable as a calming signal. Consistency does not mean rigidity. It means the puppy can predict the broad shape of his day, which gives him the security he needs to settle.`,
   },
 ];
-
-async function seed() {
-  for (const article of missingArticles) {
-    const exists = await prisma.article.findUnique({ where: { slug: article.slug } });
-    if (!exists) {
-      await prisma.article.create({ data: article });
-      console.log(`Created: ${article.slug}`);
-    } else {
-      console.log(`Skipped (exists): ${article.slug}`);
-    }
-  }
-}
-
-seed()
-  .then(() => prisma.$disconnect())
-  .catch((e) => { console.error(e); prisma.$disconnect(); });

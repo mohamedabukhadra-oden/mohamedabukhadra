@@ -19,6 +19,14 @@
  */
 import { PrismaClient } from '@prisma/client'
 
+// Lazy DB — only instantiated when --write is passed, so the dry run works
+// without a DATABASE_URL or a running Postgres instance.
+let _db: PrismaClient | null = null
+function getDb(): PrismaClient {
+  if (!_db) _db = new PrismaClient()
+  return _db
+}
+
 import { articlesBatch1 } from './legacy-mowebsite/articles-batch1'
 import { articlesBatch2 } from './legacy-mowebsite/articles-batch2'
 import { articlesBatch3 } from './legacy-mowebsite/articles-batch3'
@@ -49,7 +57,7 @@ import { articles as personalArticles } from './legacy-personal/seed-articles'
 import { articles as personalBusiness } from './legacy-personal/seed-business-articles'
 import { articles as personalDrafts } from './legacy-personal/seed-draft-articles'
 
-const db = new PrismaClient()
+// db replaced by getDb() — see top of file
 
 type Normalised = {
   slug: string
@@ -255,6 +263,7 @@ async function main() {
       publishedAt: a.status === 'PUBLISHED' ? new Date() : null,
     }
 
+    const db = getDb()
     const existing = await db.article.findUnique({ where: { slug: a.slug } })
     if (existing) {
       await db.article.update({ where: { slug: a.slug }, data })
@@ -273,4 +282,4 @@ main()
     console.error(e)
     process.exit(1)
   })
-  .finally(() => db.$disconnect())
+  .finally(() => _db?.$disconnect())
