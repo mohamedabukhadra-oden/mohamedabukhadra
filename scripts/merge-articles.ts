@@ -29,6 +29,22 @@ import { articles as finalKeywords } from './legacy-mowebsite/seed-final-keyword
 import { remainingArticles as remainingKeywords } from './legacy-mowebsite/seed-remaining-keywords'
 import { quoteArticles } from './legacy-mowebsite/quote-articles'
 
+// These twelve batches define articles without a `slug` field — the original
+// seed scripts derived it from the title at insert time. Missing them was an
+// undercount of roughly 270 articles.
+import { articles as aiFuture } from './legacy-mowebsite/seed-ai-future'
+import { articles as authorBatch3 } from './legacy-mowebsite/seed-author-batch3'
+import { articles as authorBatch4 } from './legacy-mowebsite/seed-author-batch4'
+import { articles as authorLibrary1 } from './legacy-mowebsite/seed-author-library-batch1'
+import { articles as authorLibrary2 } from './legacy-mowebsite/seed-author-library-batch2'
+import { articles as backstage } from './legacy-mowebsite/seed-backstage'
+import { articles as bookLaunch } from './legacy-mowebsite/seed-book-launch'
+import { articles as contrarian } from './legacy-mowebsite/seed-contrarian'
+import { articles as culture } from './legacy-mowebsite/seed-culture'
+import { articles as dogFacts } from './legacy-mowebsite/seed-dog-facts'
+import { articles as dogsHumans } from './legacy-mowebsite/seed-dogs-humans'
+import { articles as humanNature } from './legacy-mowebsite/seed-human-nature'
+
 import { articles as personalArticles } from './legacy-personal/seed-articles'
 import { articles as personalBusiness } from './legacy-personal/seed-business-articles'
 import { articles as personalDrafts } from './legacy-personal/seed-draft-articles'
@@ -47,6 +63,17 @@ type Normalised = {
   readTime: number
   metaDescription: string | null
   source: string
+}
+
+/**
+ * Same slug derivation the original seed scripts used, so articles that were
+ * already live on the old site keep their existing URLs.
+ */
+function slugify(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
 }
 
 /** Rough reading time — 200 wpm, floor of 1 minute. */
@@ -70,7 +97,9 @@ function categoryFromTopic(topic: string | undefined): string {
 /* eslint-disable @typescript-eslint/no-explicit-any */
 function fromMowebsite(a: any, source: string): Normalised {
   return {
-    slug: a.slug,
+    // Several batches carry no slug — derive it from the title exactly as the
+    // original seed scripts did.
+    slug: a.slug || slugify(a.title || ''),
     title: a.title,
     excerpt: a.excerpt || '',
     content: a.content,
@@ -116,6 +145,18 @@ function collect(): Normalised[] {
     ['final-keywords', finalKeywords],
     ['remaining-keywords', remainingKeywords],
     ['quote-articles', quoteArticles],
+    ['ai-future', aiFuture],
+    ['author-batch3', authorBatch3],
+    ['author-batch4', authorBatch4],
+    ['author-library1', authorLibrary1],
+    ['author-library2', authorLibrary2],
+    ['backstage', backstage],
+    ['book-launch', bookLaunch],
+    ['contrarian', contrarian],
+    ['culture', culture],
+    ['dog-facts', dogFacts],
+    ['dogs-humans', dogsHumans],
+    ['human-nature', humanNature],
   ]
   for (const [name, list] of mowebsite) {
     for (const a of list) out.push(fromMowebsite(a, `mowebsite/${name}`))
