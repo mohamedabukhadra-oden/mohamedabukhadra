@@ -3,8 +3,10 @@ import { Inter, Playfair_Display } from 'next/font/google'
 import './globals.css'
 import { Nav } from '@/components/nav'
 import { Footer } from '@/components/footer'
+import { Suspense } from 'react'
 import { Analytics } from '@/components/analytics'
 import { CookieConsent } from '@/components/cookie-consent'
+import { FirstPartyAnalytics } from '@/components/first-party-analytics'
 
 const inter = Inter({ variable: '--font-inter', subsets: ['latin'], display: 'swap' })
 const playfair = Playfair_Display({ variable: '--font-playfair', subsets: ['latin'], display: 'swap', weight: ['400','500','600','700'] })
@@ -35,6 +37,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Every SDK below no-ops unless its NEXT_PUBLIC_* env var is set, and
             each waits on the visitor's consent choice before firing. */}
         <Analytics />
+        {/* useSearchParams needs a Suspense boundary, or it opts every page into
+            dynamic rendering and we lose static generation site-wide. */}
+        <Suspense fallback={null}>
+          <FirstPartyAnalytics />
+        </Suspense>
         <CookieConsent />
       </body>
     </html>

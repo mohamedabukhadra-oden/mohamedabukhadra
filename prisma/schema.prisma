@@ -242,3 +242,127 @@ model Lead {
 
   @@index([status, createdAt])
 }
+
+// ═══════════════════ Marketing Center ═══════════════════
+// Modules: content management, SEO management, website analytics.
+
+// ─────────────────── SEO management ───────────────────
+
+/// Per-route metadata, editable from the admin without a redeploy.
+model SeoMeta {
+  id          String   @id @default(cuid())
+  path        String   @unique // "/", "/books", "/insights/some-slug"
+  title       String?
+  description String?
+  ogImage     String?
+  keywords    String? // comma-separated
+  jsonLd      String? // optional JSON-LD override
+  noIndex     Boolean  @default(false)
+  updatedAt   DateTime @updatedAt
+}
+
+/// URL redirects, applied by src/middleware.ts.
+///
+/// Oden shipped this table with an admin screen but nothing that read it, so
+/// configured redirects silently did nothing and the old URLs 404'd. The
+/// middleware here is what makes the table real.
+model Redirect {
+  id        String   @id @default(cuid())
+  fromPath  String   @unique
+  toPath    String
+  status    Int      @default(301) // 301 permanent | 302 temporary
+  enabled   Boolean  @default(true)
+  hits      Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([enabled])
+}
+
+// ─────────────────── Website analytics ───────────────────
+
+/// One row per page view. First-party, so it survives ad blockers that stop GA4.
+model Pageview {
+  id         String   @id @default(cuid())
+  sessionId  String
+  path       String
+  referrer   String?
+  country    String?
+  device     String? // desktop | mobile | tablet
+  browser    String?
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([path])
+  @@index([sessionId])
+}
+
+/// A visitor session, used to derive unique visitors, bounce rate and duration.
+model VisitorSession {
+  id            String   @id @default(cuid())
+  visitorId     String // first-party cookie, not personally identifying
+  entryPath     String
+  exitPath      String?
+  referrer      String?
+  utmSource     String?
+  utmMedium     String?
+  utmCampaign   String?
+  pageviewCount Int      @default(1)
+  durationSec   Int      @default(0)
+  country       String?
+  device        String?
+  startedAt     DateTime @default(now())
+  lastSeenAt    DateTime @default(now())
+
+  @@index([startedAt])
+  @@index([visitorId])
+}
+
+/// Named conversion events — form submits, CTA clicks, downloads.
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  sessionId String?
+  name      String // "lead_submitted", "newsletter_signup", "cta_click"
+  path      String?
+  value     Float?
+  meta      String   @default("{}") // JSON
+  createdAt DateTime @default(now())
+
+  @@index([name, createdAt])
+}
+
+// ─────────────────── Content management ───────────────────
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  author    String
+  role      String?
+  company   String?
+  content   String
+  rating    Int      @default(5)
+  published Boolean  @default(false)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Faq {
+  id        String   @id @default(cuid())
+  category  String   @default("General")
+  question  String
+  answer    String
+  published Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MediaFile {
+  id        String   @id @default(cuid())
+  filename  String
+  url       String
+  alt       String?
+  mime      String   @default("")
+  size      Int      @default(0)
+  createdAt DateTime @default(now())
+}
