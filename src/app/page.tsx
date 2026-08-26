@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { RevealObserver } from '@/components/reveal-observer'
 
 /* ─── 7.1 Hero — the one dark band ─── */
@@ -48,61 +49,48 @@ function HeroSection() {
           </p>
         </div>
 
-        {/* Right column (5/12) — book cover placeholder */}
+        {/*
+          Right column (5/12) — the actual cover artwork.
+
+          This was a CSS approximation of the cover. However closely it matched,
+          it was still a placeholder: no og:image for shares, nothing for alt
+          text, nothing for crawlers to see, and it would drift the moment a
+          token changed. public/book-cover-1.png is the real front cover
+          (853×1280; book-cover-0 is the back, -2 is the spine).
+
+          No rotation. A tilted cover is the signature of a stock 3D mockup and
+          reads infomercial — the one cue that would undercut an otherwise
+          restrained page. The depth comes from the shadow and the page edges
+          instead, and straight-on is the more confident position.
+
+          The negative bottom margin lets it hang past the dark band into the
+          bone section below — §7.1's "the reader crosses from dark into light
+          exactly where the book appears".
+        */}
         <div className="flex justify-center md:justify-end animate-fade-in-up stagger-3">
-          <div
-            className="relative w-56 sm:w-60 md:w-64 lg:w-72 rounded-[4px] flex-shrink-0"
-            style={{
-              backgroundColor: 'var(--paper)',
-              color: 'var(--ink-navy)',
-              padding: '2.5rem 1.75rem',
-              boxShadow:
-                '8px 8px 24px rgba(0,0,0,0.35), 2px 2px 6px rgba(0,0,0,0.2)',
-            }}
-          >
-            {/* Spine accent */}
+          <div className="relative z-10 lg:-mb-24">
+            {/* Page edges — a thin stack behind the right edge, so it reads as a
+                physical object rather than a flat image pasted on the band. */}
             <div
-              className="absolute left-0 top-0 bottom-0 w-[6px] rounded-l-[4px]"
-              style={{ backgroundColor: 'var(--teal)' }}
+              aria-hidden="true"
+              className="absolute inset-y-3 -right-[3px] w-[6px] rounded-r-[2px]"
+              style={{
+                background:
+                  'repeating-linear-gradient(to right, #FBF9F3 0 1px, #DAD3C2 1px 2px)',
+              }}
             />
-
-            {/* Top decorative line */}
-            <div
-              className="w-12 h-[2px] mb-6"
-              style={{ backgroundColor: 'var(--gold)' }}
-            />
-
-            {/* Title */}
-            <p
-              className="font-display text-[0.65rem] font-medium tracking-[0.1em] uppercase mb-3"
-              style={{ color: 'var(--teal)' }}
-            >
-              Before You Say Yes
-            </p>
-            <h3
-              className="font-display text-2xl sm:text-[1.65rem] leading-tight font-bold tracking-tight"
-              style={{ color: 'var(--ink-navy)' }}
-            >
-              to the Dog
-            </h3>
-
-            {/* Subtitle / accent line */}
-            <div
-              className="w-full h-[1px] mt-5 mb-4"
-              style={{ backgroundColor: 'var(--gold)', opacity: 0.5 }}
-            />
-
-            <p
-              className="font-text text-xs italic leading-relaxed"
-              style={{ color: 'var(--ink-navy)', opacity: 0.7 }}
-            >
-              What every family needs to decide before the puppy arrives.
-            </p>
-
-            {/* Bottom decorative line */}
-            <div
-              className="w-8 h-[2px] mt-auto pt-6"
-              style={{ backgroundColor: 'var(--gold)' }}
+            <Image
+              src="/book-cover-1.png"
+              alt="Before You Say Yes to the Dog — A Family Guide Before Bringing Home a Puppy, by Mohamed Abu Khadra. A family sits together in a hallway with a golden puppy on the doormat."
+              width={853}
+              height={1280}
+              priority
+              sizes="(min-width: 1024px) 288px, (min-width: 768px) 256px, 224px"
+              className="relative w-56 sm:w-60 md:w-64 lg:w-72 h-auto rounded-[2px]"
+              style={{
+                boxShadow:
+                  '0 18px 40px -12px rgba(0,0,0,0.55), 0 4px 10px rgba(0,0,0,0.25)',
+              }}
             />
           </div>
         </div>
@@ -154,16 +142,30 @@ function PatternSection() {
           We&rsquo;ve had the same week.
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+        {/*
+          An editorial list, not a card grid. Six identically sized boxes read as
+          a table — the eye finds no entry point and the page feels machined.
+          Hairline rows with an asymmetric split give the same content a reading
+          order: claim, then explanation.
+
+          Deliberately unnumbered. These six are not a sequence — "someone in the
+          house is afraid" pre-dates the puppy entirely, and the commands and
+          chasing games are concurrent; only the last item is temporal. Numbering
+          them would also fight the eyebrow above, which says "IF ANY OF THIS
+          SOUNDS LIKE YOUR HOUSE": a reader who recognises two of six should feel
+          seen, not measured against a progression she is failing to match.
+          Recognition is the job here, not diagnosis.
+        */}
+        <div className="border-t border-rule">
           {patternItems.map((item, i) => (
             <div
               key={i}
-              className="bg-bone-alt border border-rule rounded-[4px] p-5 md:p-6 flex flex-col gap-2 reveal"
+              className="reveal grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-8 border-b border-rule py-7 md:py-9"
             >
-              <h3 className="font-display text-base font-medium text-ink leading-snug">
+              <h3 className="md:col-span-5 font-display text-lg md:text-xl font-medium text-ink leading-snug">
                 {item.title}
               </h3>
-              <p className="text-body text-text-2 text-[0.9375rem] leading-relaxed">
+              <p className="md:col-span-7 text-body text-text-2 leading-relaxed md:pt-[0.15em]">
                 {item.description}
               </p>
             </div>
@@ -182,9 +184,20 @@ function PatternSection() {
 /* ─── 7.3 Signature — the four names ─── */
 function SignatureSection() {
   return (
-    <section className="bg-bone section-gap">
+    {/*
+      Deliberately more air than any other section. Uniform 128px everywhere is
+      what makes a page feel machined — rhythm is contrast, not consistency.
+      This is the signature element, so it gets the held breath.
+    */}
+    <section className="bg-bone py-24 md:py-36 lg:py-52">
       <div className="section-container reveal">
-        <div className="flex flex-wrap items-baseline gap-x-8 gap-y-2 md:gap-x-12 lg:gap-x-16">
+        {/*
+          On large screens the four names span the full measure rather than
+          sitting in a left-aligned clump — at 96px they total ~1040px in an
+          1180px container, so justify-between spreads them edge to edge and
+          keeps them on one line instead of wrapping "Oden" onto its own row.
+        */}
+        <div className="flex flex-wrap lg:flex-nowrap lg:justify-between items-baseline gap-x-8 gap-y-2 md:gap-x-12 lg:gap-x-4">
           <span className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-medium tracking-tight text-text-3">
             Koudy
           </span>
