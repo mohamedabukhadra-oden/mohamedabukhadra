@@ -1,111 +1,247 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, GraduationCap, Award, Briefcase, BookOpen, Heart } from 'lucide-react'
+import { RevealObserver } from '@/components/reveal-observer'
+
+export const metadata: Metadata = {
+  title: 'About | Mohamed Abu Khadra',
+  description:
+    'The real story behind three failed dogs and the system that made the fourth one stay. Mohamed Abu Khadra is a father who found that love was not enough.',
+  alternates: {
+    canonical: 'https://mohamedabukhadra.com/about',
+  },
+}
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': 'https://mohamedabukhadra.com/#person',
+  name: 'Mohamed Abu Khadra',
+  url: 'https://mohamedabukhadra.com',
+  jobTitle: 'Author and Founder',
+  knowsAbout: [
+    'family dog ownership',
+    'puppy readiness',
+    'dog owner education',
+    'pet business operations',
+  ],
+  sameAs: [
+    'https://eg.linkedin.com/in/abu-khadra',
+    'https://www.oden.pet/founder',
+    'https://theknowhow.uk/about',
+  ],
+  founder: [
+    { '@type': 'Organization', name: 'Oden Pet', url: 'https://www.oden.pet' },
+    { '@type': 'Organization', name: 'The KnowHow Company', url: 'https://theknowhow.uk' },
+  ],
+}
 
 export default function AboutPage() {
   return (
-    <div className="pt-24 pb-16 md:pt-32 md:pb-24 min-h-screen bg-[#F5F1E8]">
-      <div className="max-w-3xl mx-auto px-5 md:px-8">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="font-serif text-3xl md:text-5xl font-bold text-[#1B3B36] mb-4">About Mohamed</h1>
-          <p className="text-lg text-[#6B5D4F]">Business Leader | Marketing & Growth Strategist | Visiting Professor | Author</p>
-          <div className="w-16 h-1 bg-[#C9A86A] rounded-full mx-auto mt-6" />
-        </div>
+    <>
+      <RevealObserver />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
-        {/* Professional narrative */}
-        <div className="space-y-6 text-lg text-[#2A2520] leading-relaxed mb-12">
-          <p>
-            Mohamed Abu Khadra is a business leader, marketing and growth strategist, visiting
-            professor, and author with more than two decades of experience working across marketing,
-            go-to-market strategy, partnerships, business development and growth.
-          </p>
-          <p>
-            His career has spanned corporate leadership, entrepreneurship, payments, technology and
-            consulting, with a recurring focus on one question:
-          </p>
-          <p className="font-serif text-xl text-[#1B3B36] italic text-center">
-            How do you turn a good idea into something that actually works?
-          </p>
-          <p>
-            He has held senior leadership roles across technology and financial services, built and
-            led businesses, worked on market-entry and growth strategies, and teaches postgraduate
-            and executive audiences in areas including marketing, business planning and
-            international business.
-          </p>
-        </div>
+      <article className="bg-bone section-gap">
+        <div className="section-container">
+          <div style={{ maxWidth: '68ch' }} className="mx-auto">
 
-        {/* Credentials */}
-        <div className="grid gap-4 mb-12">
-          <div className="flex items-start gap-3 p-4 rounded-lg bg-white border border-[#EBE5D5]">
-            <GraduationCap className="h-5 w-5 text-[#1B3B36] shrink-0 mt-0.5" />
-            <div>
-              <p className="font-medium text-[#1B3B36]">Doctor of Business Administration (DBA)</p>
-              <p className="text-sm text-[#6B5D4F]">Strategic Management</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3 p-4 rounded-lg bg-white border border-[#EBE5D5]">
-            <GraduationCap className="h-5 w-5 text-[#1B3B36] shrink-0 mt-0.5" />
-            <div>
-              <p className="font-medium text-[#1B3B36]">Fellow Marketer, Chartered Institute of Marketing (CIM)</p>
-              <p className="text-sm text-[#6B5D4F]">Professional marketing accreditation</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3 p-4 rounded-lg bg-white border border-[#EBE5D5]">
-            <Award className="h-5 w-5 text-[#C9A86A] shrink-0 mt-0.5" />
-            <div>
-              <p className="font-medium text-[#1B3B36]">Most Innovative Payment Solutions CEO 2023</p>
-              <p className="text-sm text-[#6B5D4F]">MEA Markets CEO of the Year Awards</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3 p-4 rounded-lg bg-white border border-[#EBE5D5]">
-            <Briefcase className="h-5 w-5 text-[#1B3B36] shrink-0 mt-0.5" />
-            <div>
-              <p className="font-medium text-[#1B3B36]">Visiting Professor</p>
-              <p className="text-sm text-[#6B5D4F]">Postgraduate teaching in marketing, business planning and international business</p>
-            </div>
-          </div>
-        </div>
+            {/* ─── H1 ─── */}
+            <h1 className="text-h2 text-ink mb-12 md:mb-16 reveal">
+              I had raised dogs before I had children. Then I failed three times.
+            </h1>
 
-        {/* The bridge to books */}
-        <div className="p-8 rounded-xl bg-[#1B3B36] text-white mb-12">
-          <h2 className="font-serif text-2xl font-bold text-[#C9A86A] mb-4">A Different Kind of Problem</h2>
-          <div className="space-y-4 text-white/90 leading-relaxed">
-            <p>
-              But his work is not limited to business.
-            </p>
-            <p>
-              As a father, Mohamed experienced three failed attempts to bring a dog into his family
-              home. The experience eventually led him to apply the same systems thinking he had used
-              professionally to a very different problem: why can a family love the idea of having a
-              dog and still not be ready to live with one?
-            </p>
-            <p className="font-serif italic text-[#C9A86A]">
-              That question became the foundation for his first books.
-            </p>
-            <p>
-              Before You Say Yes to the Dog and After You Say Yes to the Dog turn that experience
-              into a practical two-book family system: one for deciding and preparing before the dog
-              arrives, and one for operating successfully after the decision has been made.
-            </p>
-            <p>
-              He does not present himself as a veterinarian, breeder or professional dog trainer.
-              His contribution is different. He is a father who found that love was not enough —
-              and built a system around what was missing.
-            </p>
+            {/* ─── 1. The setup ─── */}
+            <section className="mb-12 md:mb-20 reveal">
+              <p className="text-longform text-ink mb-6">
+                I grew up with dogs. Not the way some people grow up with dogs —
+                not a family pet that sat in the kitchen and got walked on
+                weekends. Dogs were part of the household. They were fed on
+                schedule, they had their place, and the house had rules that
+                everyone followed, including the children. I didn't think of it
+                as a system at the time. It was just how things were done.
+              </p>
+              <p className="text-longform text-ink mb-6">
+                By the time I was an adult, I had raised two dogs on my own. One
+                after the other. Both lived their full lives in my house. I knew
+                what I was doing — or I believed I did. When my own children
+                started asking for a dog, I didn't hesitate. I said yes the way
+                someone who has done something a dozen times says yes: quickly,
+                easily, with the confidence of experience.
+              </p>
+              <p className="text-longform text-ink">
+                That confidence lasted about ten days. Each time.
+              </p>
+            </section>
+
+            {/* ─── 2. The failures ─── */}
+            <section className="mb-12 md:mb-20 reveal">
+              <p className="text-longform text-ink mb-6">
+                The first was Koudy. A White Swiss Shepherd. Beautiful,
+                intelligent, the kind of dog that makes people stop on the
+                street. The children were ecstatic. I was at work most of the
+                day. My wife — who I will be honest about, because the honesty
+                matters — was afraid of dogs. Not in a way that she could hide.
+                In a way that made every interaction with a sixty-pound animal in
+                her kitchen a negotiation between fear and the commitment she had
+                made to the family.
+              </p>
+              <p className="text-longform text-ink mb-6">
+                The children loved him. That was the problem. They loved him the
+                way children love anything they are not responsible for:
+                completely and without rules. One would grab the leash while the
+                other was already giving commands. Both would run through the
+                house with him, no zones, no boundaries, the whole house a
+                racetrack. I would come home and find my wife retreating to
+                another room, the children arguing over whose turn it was to feed
+                him, and the dog — the dog was doing what any puppy does when
+                nobody in the house agrees on anything. He was confused.
+              </p>
+              <p className="text-longform text-ink mb-6">
+                By week eight, the house was exhausted. The children had stopped
+                following the rules we had discussed before he arrived — not
+                because they were defiant, but because no one had enforced them.
+                My wife's fear had not diminished; it had hardened into
+                resentment. I was the one who had wanted this. I was the one who
+                was rarely home. And when I was home, I was trying to fix in
+                thirty minutes what had been breaking for twelve hours.
+              </p>
+              <p className="text-longform text-ink">
+                Koudy went to a friend's family. Then we tried again. Milo. Same
+                breed. Same collapse. Two and a half months. Then Snoopy. Same
+                breed again. Same collapse. Slightly faster the third time, as if
+                the house had learned to fail more efficiently. The pattern was
+                identical: the father rarely home, the wife whose fear made her
+                involvement harder, children who followed no rules, commands
+                from every direction, fights over the leash, chasing games with
+                no zones, and by month three — everyone tired, including the
+                dog. Three White Swiss Shepherds. Three identical endings.
+              </p>
+            </section>
+
+            {/* ─── 3. The phobia, named ─── */}
+            <section className="mb-12 md:mb-20 reveal">
+              <p className="text-longform text-ink mb-6">
+                My wife is afraid of dogs. I need to name that directly because
+                most families in this situation don't. They work around it. They
+                pretend it will get better. They tell the afraid person to "just
+                give it time," as if time alone resolves a fear that no one has
+                actually addressed. In our house, the fear was real, it was
+                persistent, and it affected every interaction between my wife and
+                the dog — which meant it affected the entire family's
+                experience of living with one.
+              </p>
+              <p className="text-longform text-ink">
+                I decided to treat her fear not as an obstacle to work around,
+                but as a constraint the system had to account for. Not to
+                "protect" her, as if she were fragile, but to give the
+                least-ready person in the house a genuine say in whether and how
+                this could work. If the system could hold under her fear — if
+                it could make the dog's presence survivable, then manageable,
+                then eventually normal for the person who wanted it least —
+                then it could hold for anyone. She is the reason the system had
+                to work in the hardest case.
+              </p>
+            </section>
+
+            {/* ─── 4. Where the dogs went — pull-quote ─── */}
+            <section className="mb-12 md:mb-20 reveal">
+              <blockquote
+                className="border-l-2 border-rule pl-8 font-text italic text-text-2 text-longform"
+              >
+                Koudy, Milo, and Snoopy all went to families who could give them
+                what we couldn&rsquo;t. All three went to friends. My kids still
+                see them — at their homes, at gatherings. That is not a story I
+                hide. It is the reason I believe what I believe about resetting:
+                the honest answer is sometimes &ldquo;not us, not now,&rdquo; and
+                choosing it well is not failure. It is the last responsible thing
+                a family can do for a dog.
+              </blockquote>
+            </section>
+
+            {/* ─── 5. The turn ─── */}
+            <section className="mb-12 md:mb-20 reveal">
+              <p className="text-longform text-ink mb-6">
+                After the third time, I stopped. Not because I gave up on the
+                idea of a dog in the family, but because I stopped blaming myself
+                long enough to look at what had actually happened. I had been
+                approaching it the way most people do: with love, with
+                enthusiasm, with the assumption that if everyone wanted it badly
+                enough, it would work. It hadn't worked. Three times, it hadn't
+                worked. The variable wasn't the breed, the dog, or the desire. It
+                was the structure around the desire.
+              </p>
+              <p className="text-longform text-ink mb-6">
+                So I did what I do at work. I researched. I read everything I
+                could find — not about dog training, which is about the dog, but
+                about family systems, decision-making under pressure, household
+                operations, and why groups of people who agree on a goal still
+                fail to coordinate around it. I found that the failure pattern
+                in my house was not unusual. It was standard. The only thing
+                unusual about it was that I had been willing to fail three times
+                before I stopped and examined the cause.
+              </p>
+              <p className="text-longform text-ink">
+                I built a family operating system. Not a training programme — the
+                dog doesn't need training when he arrives. The family needs a
+                system. Who holds the leash. Who feeds. Where the dog sleeps.
+                What the rules are for the children. What happens when someone
+                breaks them. What the afraid person's actual boundaries are —
+                not aspirational ones, but real ones, written down before the
+                puppy walks through the door. I tested it on my own family.
+              </p>
+            </section>
+
+            {/* ─── 6. The line ─── */}
+            <section className="mb-12 md:mb-20 reveal">
+              <p className="font-text text-text-2 text-h3 text-center">
+                Three White Swiss Shepherds. The breed was never the problem.
+              </p>
+            </section>
+
+            {/* ─── 7. Oden ─── */}
+            <section className="mb-12 md:mb-20 reveal">
+              <p className="text-longform text-ink mb-6">
+                The fourth dog was Oden. Same breed. White Swiss Shepherd. He
+                arrived into a house that was, for the first time, prepared —
+                not with better intentions, but with an actual system. My wife
+                knew her boundaries and they were respected. The children knew
+                their rules and they were enforced. I was still at work, but the
+                schedule didn't depend on me being home. The system held when I
+                wasn't there. That was the difference.
+              </p>
+              <p className="text-longform text-ink">
+                Oden stayed. He is still here. And the system that made it
+                possible — the decision framework, the family operating model,
+                the readiness assessment — is now what canine behaviourists and
+                dog trainers use when they work with families. Not because I am
+                an expert in animal behaviour. I am not. But because someone
+                needed to solve the problem on the family side, and the family
+                side is where almost every failure actually lives. His name is
+                now on an operating system for canine behaviourists and dog
+                trainers. That system is called Oden.
+              </p>
+            </section>
+
+            {/* ─── 8. Close ─── */}
+            <section className="mb-8 reveal">
+              <p className="text-longform text-ink mb-4">
+                Mohamed Abu Khadra is the founder of Oden Pet and The KnowHow
+                Company. He lives in Cairo with his family and with Oden.
+              </p>
+              <p className="text-caption text-text-3">
+                the professional record is{' '}
+                <Link href="/press" className="text-accent hover:text-accent-hover transition-colors">
+                  here
+                </Link>
+              </p>
+            </section>
+
           </div>
         </div>
-
-        {/* CTAs */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href="/books" className="book-btn-primary">
-            Explore the Books
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-          <Link href="/speaking" className="book-btn-outline">
-            Speaking & Teaching
-          </Link>
-        </div>
-      </div>
-    </div>
+      </article>
+    </>
   )
 }

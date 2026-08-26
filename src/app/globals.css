@@ -1,153 +1,118 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-@custom-variant dark (&:is(.dark *));
-
 /* ============================================
-   MOHAMED ABU KHADRA — Design System
+   MOHAMED ABU KHADRA — Design System v2
+   Three-Tier Visual System
    ============================================ */
 
+/* --- TIER 1: Author chrome (nav, footer, home, about, press, contact, free) --- */
+/* --- TIER 2: Book 1 — cream, navy, teal, gold, dark red (/book-one) --- */
+/* --- TIER 3: Book 2 — teal-dominant (/book-two) --- */
+
 @theme inline {
-  /* Brand Colors */
-  --color-plum: #4F2754;
-  --color-plum-light: #6B3A72;
-  --color-plum-dark: #3A1B3E;
-  --color-plum-50: #f5f0f7;
-  --color-plum-100: #ebe0ef;
-  --color-plum-200: #d4bddc;
+  /* ── TIER 1 — Author Tokens ── */
+  --color-bone: #FAF8F5;
+  --color-bone-alt: #F0EDE8;
+  --color-ink-dark: #0F1114;
+  --color-ink: #14161A;
+  --color-text-2: #5C6169;
+  --color-text-3: #8B9097;
+  --color-on-dark: #F2F3F4;
+  --color-on-dark-2: #9AA0A7;
+  --color-rule: #E3DFD8;
+  --color-accent: #4A6E92;
+  --color-accent-hover: #3B5A79;
 
-  --color-turquoise: #70B9B5;
-  --color-turquoise-light: #8FCCC9;
-  --color-turquoise-dark: #5A9996;
-  --color-turquoise-50: #f0f8f8;
+  /* ── TIER 2 — Book 1 Tokens ── */
+  --color-paper: #EDE8D9;
+  --color-ink-navy: #0F2336;
+  --color-teal: #2F5D4F;
+  --color-gold: #B4893B;
+  --color-warn: #7A160F;
 
-  --color-near-black: #131217;
-  --color-warm-white: #F7F5F0;
-  --color-warm-cream: #FDF8F0;
-  --color-antique-gold: #B58A3A;
-  --color-antique-gold-light: #C9A35C;
-  --color-antique-gold-dark: #9A7430;
+  /* ── Typography ── */
+  --font-display: var(--font-inter), system-ui, sans-serif;
+  --font-text: var(--font-source-serif-4), Georgia, serif;
+  --font-ui: var(--font-inter), system-ui, sans-serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-serif: var(--font-source-serif-4), Georgia, serif;
 
-  /* Book 1 — Before You Say Yes to the Dog */
-  --color-book1-navy: #1B2A4A;
-  --color-book1-burgundy: #7A2E3B;
-  --color-book1-cream: #FAF6EF;
+  /* ── shadcn/ui mappings ── */
+  --color-background: var(--color-bone);
+  --color-foreground: var(--color-ink);
+  --color-primary: var(--color-ink);
+  --color-primary-foreground: var(--color-bone);
+  --color-secondary: var(--color-bone-alt);
+  --color-secondary-foreground: var(--color-ink);
+  --color-muted: var(--color-bone-alt);
+  --color-muted-foreground: var(--color-text-2);
+  --color-accent-foreground: var(--color-ink);
+  --color-destructive: #DC2626;
+  --color-border: var(--color-rule);
+  --color-input: var(--color-rule);
+  --color-ring: var(--color-accent);
+  --color-card: #FFFFFF;
+  --color-card-foreground: var(--color-ink);
+  --color-popover: #FFFFFF;
+  --color-popover-foreground: var(--color-ink);
 
-  /* Book 2 — After You Say Yes to the Dog */
-  --color-book2-forest: #2D4A3E;
-  --color-book2-navy: #1B2A4A;
+  /* ── Radius ── */
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-xl: 6px;
 
-  /* System Mappings */
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter);
-  --font-serif: var(--font-cormorant);
-  --font-mono: var(--font-geist-mono);
+  /* ── Chart (kept for shadcn compat) ── */
+  --color-chart-1: var(--color-ink);
+  --color-chart-2: var(--color-accent);
+  --color-chart-3: var(--color-teal);
+  --color-chart-4: var(--color-gold);
+  --color-chart-5: var(--color-warn);
 
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  /* ── Sidebar (kept for shadcn compat) ── */
+  --color-sidebar: #FFFFFF;
+  --color-sidebar-foreground: var(--color-ink);
+  --color-sidebar-primary: var(--color-ink);
+  --color-sidebar-primary-foreground: var(--color-bone);
+  --color-sidebar-accent: var(--color-bone-alt);
+  --color-sidebar-accent-foreground: var(--color-ink);
+  --color-sidebar-border: var(--color-rule);
+  --color-sidebar-ring: var(--color-accent);
 }
 
-/* Light Mode — Warm White canvas */
+/* ============================================
+   :root — CSS custom properties for non-Tailwind usage
+   ============================================ */
+
 :root {
-  --radius: 0.625rem;
-  --background: #F7F5F0;
-  --foreground: #131217;
-  --card: #FFFFFF;
-  --card-foreground: #131217;
-  --popover: #FFFFFF;
-  --popover-foreground: #131217;
-  --primary: #4F2754;
-  --primary-foreground: #F7F5F0;
-  --secondary: #F0EDE6;
-  --secondary-foreground: #131217;
-  --muted: #F0EDE6;
-  --muted-foreground: #6B6570;
-  --accent: #70B9B5;
-  --accent-foreground: #131217;
-  --destructive: #DC2626;
-  --border: #E2DED6;
-  --input: #E2DED6;
-  --ring: #4F2754;
-  --chart-1: #4F2754;
-  --chart-2: #70B9B5;
-  --chart-3: #B58A3A;
-  --chart-4: #1B2A4A;
-  --chart-5: #2D4A3E;
-  --sidebar: #FFFFFF;
-  --sidebar-foreground: #131217;
-  --sidebar-primary: #4F2754;
-  --sidebar-primary-foreground: #F7F5F0;
-  --sidebar-accent: #F0EDE6;
-  --sidebar-accent-foreground: #131217;
-  --sidebar-border: #E2DED6;
-  --sidebar-ring: #4F2754;
-}
+  /* Tier 1 */
+  --bone: #FAF8F5;
+  --bone-alt: #F0EDE8;
+  --ink-dark: #0F1114;
+  --ink: #14161A;
+  --text-2: #5C6169;
+  --text-3: #8B9097;
+  --on-dark: #F2F3F4;
+  --on-dark-2: #9AA0A7;
+  --rule: #E3DFD8;
+  --accent: #4A6E92;
+  --accent-hover: #3B5A79;
 
-/* Dark Mode — Near Black canvas */
-.dark {
-  --background: #131217;
-  --foreground: #F7F5F0;
-  --card: #1E1C22;
-  --card-foreground: #F7F5F0;
-  --popover: #1E1C22;
-  --popover-foreground: #F7F5F0;
-  --primary: #70B9B5;
-  --primary-foreground: #131217;
-  --secondary: #2A2730;
-  --secondary-foreground: #F7F5F0;
-  --muted: #2A2730;
-  --muted-foreground: #A09AA6;
-  --accent: #B58A3A;
-  --accent-foreground: #F7F5F0;
-  --destructive: #EF4444;
-  --border: #3A3640;
-  --input: #3A3640;
-  --ring: #70B9B5;
-  --chart-1: #70B9B5;
-  --chart-2: #B58A3A;
-  --chart-3: #C9A35C;
-  --chart-4: #8FCCC9;
-  --chart-5: #6B3A72;
-  --sidebar: #1E1C22;
-  --sidebar-foreground: #F7F5F0;
-  --sidebar-primary: #70B9B5;
-  --sidebar-primary-foreground: #131217;
-  --sidebar-accent: #2A2730;
-  --sidebar-accent-foreground: #F7F5F0;
-  --sidebar-border: #3A3640;
-  --sidebar-ring: #70B9B5;
+  /* Tier 2 */
+  --paper: #EDE8D9;
+  --ink-navy: #0F2336;
+  --teal: #2F5D4F;
+  --gold: #B4893B;
+  --warn: #7A160F;
+
+  /* Typography */
+  --font-display: var(--font-inter), system-ui, sans-serif;
+  --font-text: var(--font-source-serif-4), Georgia, serif;
+  --font-ui: var(--font-inter), system-ui, sans-serif;
+
+  /* Radius */
+  --radius: 4px;
 }
 
 @layer base {
@@ -155,87 +120,197 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-text);
   }
 }
 
 /* ============================================
-   TYPOGRAPHY
-   ============================================
-   Serif: Cormorant Garamond — names, headlines, book titles, essays, quotes
-   Sans: Inter — nav, buttons, labels, metadata, UI
+   FLUID TYPOGRAPHY
    ============================================ */
 
 @layer utilities {
-  .font-serif {
-    font-family: var(--font-cormorant), Georgia, 'Times New Roman', serif;
+  /* Display / Identity */
+  .font-display {
+    font-family: var(--font-display);
   }
-  .font-sans {
-    font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  .font-text {
+    font-family: var(--font-text);
+  }
+  .font-ui {
+    font-family: var(--font-ui);
+  }
+
+  /* Fluid type scale */
+  .text-hero {
+    font-size: clamp(2.75rem, 4vw + 1rem, 4.5rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    font-family: var(--font-display);
+  }
+
+  .text-h2 {
+    font-size: clamp(2rem, 2.5vw + 0.5rem, 2.75rem);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+    font-family: var(--font-display);
+  }
+
+  .text-h3 {
+    font-size: clamp(1.375rem, 1vw + 0.5rem, 1.625rem);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    font-family: var(--font-display);
+  }
+
+  .text-body {
+    font-size: clamp(1.125rem, 0.25vw + 1rem, 1.1875rem);
+    font-weight: 400;
+    line-height: 1.65;
+    max-width: 68ch;
+    font-family: var(--font-text);
+  }
+
+  .text-longform {
+    font-size: clamp(1.1875rem, 0.5vw + 1rem, 1.3125rem);
+    font-weight: 400;
+    line-height: 1.75;
+    max-width: 68ch;
+    font-family: var(--font-text);
+  }
+
+  .text-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    line-height: 1.5;
+    font-family: var(--font-ui);
+  }
+
+  .text-caption {
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    font-family: var(--font-text);
   }
 }
 
 /* ============================================
-   EDITORIAL LAYOUT HELPERS
+   LAYOUT HELPERS
    ============================================ */
 
 @layer components {
+  /* 12-col grid, 1180px max, 24px gutters */
   .section-container {
-    @apply mx-auto max-w-7xl px-6 md:px-10 lg:px-16;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1180px;
+    padding-left: 24px;
+    padding-right: 24px;
+    width: 100%;
   }
 
-  .section-padding {
-    @apply py-20 md:py-28 lg:py-32;
+  .section-gap {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+  @media (min-width: 768px) {
+    .section-gap {
+      padding-top: 96px;
+      padding-bottom: 96px;
+    }
+  }
+  @media (min-width: 1024px) {
+    .section-gap {
+      padding-top: 128px;
+      padding-bottom: 128px;
+    }
   }
 
-  .editorial-headline {
-    @apply font-serif text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight;
+  /* Hero 7/5 split */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  @media (min-width: 768px) {
+    .hero-grid {
+      grid-template-columns: 7fr 5fr;
+      gap: 64px;
+    }
   }
 
-  .editorial-subheadline {
-    @apply font-serif text-2xl md:text-3xl lg:text-4xl font-light tracking-tight leading-snug;
-  }
-
+  /* Section label (eyebrow) — plain CSS, no @apply on custom utilities */
   .section-label {
-    @apply font-sans text-xs uppercase tracking-[0.2em] font-medium text-muted-foreground;
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    line-height: 1.5;
+    color: var(--text-2);
   }
 
-  .prose-editorial {
-    @apply font-serif text-lg md:text-xl leading-relaxed text-foreground/80;
+  /* Buttons */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    font-family: var(--font-ui);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    border-radius: 4px;
+    background-color: var(--ink);
+    color: var(--bone);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  .btn-primary:hover {
+    background-color: var(--accent-hover);
   }
 
-  .gold-accent {
-    color: #B58A3A;
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    font-family: var(--font-ui);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    border-radius: 4px;
+    background-color: transparent;
+    color: var(--ink);
+    border: 1px solid var(--ink);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn-secondary:hover {
+    background-color: var(--ink);
+    color: var(--bone);
   }
 
-  .gold-accent-bg {
-    background-color: #B58A3A;
-  }
-
-  .plum-gradient {
-    background: linear-gradient(135deg, #4F2754 0%, #6B3A72 100%);
-  }
-
-  .dark-section {
-    @apply bg-near-black text-warm-white;
-  }
-
-  .warm-section {
-    @apply bg-warm-white text-near-black;
-  }
-
+  /* Tier 2 — Book 1 context */
   .book1-world {
-    --book-accent: #7A2E3B;
-    --book-primary: #1B2A4A;
-    --book-bg: #FAF6EF;
-    --book-gold: #B58A3A;
+    --book-accent: var(--warn);
+    --book-primary: var(--ink-navy);
+    --book-bg: var(--paper);
+    --book-gold: var(--gold);
+    --book-teal: var(--teal);
   }
 
+  /* Tier 3 — Book 2 context */
   .book2-world {
-    --book-accent: #2D4A3E;
-    --book-primary: #1B2A4A;
-    --book-bg: #FAF6EF;
-    --book-gold: #B58A3A;
+    --book-primary: var(--teal);
+    --book-bg: #F5F8F6;
   }
 }
 
@@ -247,9 +322,22 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 ::selection {
-  background-color: #4F2754;
-  color: #F7F5F0;
+  background-color: var(--accent);
+  color: var(--bone);
 }
 
 /* ============================================
@@ -261,7 +349,7 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  background: #F0EDE6;
+  background: var(--bone-alt);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -270,19 +358,7 @@ html {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #4F2754;
-}
-
-.dark ::-webkit-scrollbar-track {
-  background: #1E1C22;
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background: #3A3640;
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: #70B9B5;
+  background: var(--accent);
 }
 
 /* ============================================
@@ -292,7 +368,7 @@ html {
 @keyframes fade-in-up {
   from {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -305,31 +381,32 @@ html {
   to { opacity: 1; }
 }
 
-@keyframes slide-in-right {
-  from {
-    opacity: 0;
-    transform: translateX(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
+/* Hero page-load: staggered fade-up, ~400ms, 60ms stagger */
 .animate-fade-in-up {
-  animation: fade-in-up 0.6s ease-out forwards;
+  opacity: 0;
+  animation: fade-in-up 0.4s ease-out forwards;
 }
 
 .animate-fade-in {
-  animation: fade-in 0.5s ease-out forwards;
+  opacity: 0;
+  animation: fade-in 0.4s ease-out forwards;
 }
 
-.animate-slide-in-right {
-  animation: slide-in-right 0.5s ease-out forwards;
-}
+/* Stagger delays for hero sequence */
+.stagger-1 { animation-delay: 0ms; }
+.stagger-2 { animation-delay: 60ms; }
+.stagger-3 { animation-delay: 120ms; }
+.stagger-4 { animation-delay: 180ms; }
+.stagger-5 { animation-delay: 240ms; }
+.stagger-6 { animation-delay: 300ms; }
 
-.animation-delay-100 { animation-delay: 100ms; }
-.animation-delay-200 { animation-delay: 200ms; }
-.animation-delay-300 { animation-delay: 300ms; }
-.animation-delay-400 { animation-delay: 400ms; }
-.animation-delay-500 { animation-delay: 500ms; }
+/* Scroll-reveal (applied via JS/IntersectionObserver) */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

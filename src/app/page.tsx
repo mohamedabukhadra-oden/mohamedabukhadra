@@ -1,185 +1,109 @@
 import Link from 'next/link'
-import { BookOpen, Lightbulb, MessageCircle, Brain, ChevronDown } from 'lucide-react'
-import { SubscribeCTA } from '@/components/subscribe-cta'
-import { StayBackstageSection } from '@/components/stay-backstage-section'
+import { RevealObserver } from '@/components/reveal-observer'
 
-/* ─── Hero Section (server component — no state) ─── */
+/* ─── 7.1 Hero — the one dark band ─── */
 function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-warm-white overflow-hidden">
-      {/* Subtle plum gradient at bottom edge */}
-      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-plum/5 to-transparent pointer-events-none" />
-
-      <div className="section-container relative z-10 flex flex-col items-center text-center max-w-4xl mx-auto">
-        {/* Label — author first */}
-        <p className="section-label mb-6 md:mb-8">Author</p>
-
-        {/* Name */}
-        <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light tracking-tight text-foreground leading-[1.05]">
-          MOHAMED
-          <br />
-          ABU KHADRA
-        </h1>
-
-        {/* Tagline — the repositioning anchor */}
-        <p className="font-serif text-xl md:text-2xl lg:text-3xl text-plum/80 mt-6 md:mt-8 max-w-2xl leading-relaxed">
-          Everyone sells you the dream.
-          <br className="hidden sm:block" />
-          <span className="text-foreground">I ask the questions behind it.</span>
-        </p>
-
-        {/* Gold divider */}
-        <div className="w-24 h-px bg-antique-gold mt-10 md:mt-14" />
-
-        {/* Book CTAs */}
-        <div className="flex flex-col sm:flex-row gap-4 mt-8 md:mt-12">
-          <Link
-            href="/books/before-you-say-yes-to-the-dog"
-            className="font-sans text-sm tracking-wide uppercase bg-plum text-warm-white px-8 py-3 rounded-full hover:bg-plum-dark transition-colors duration-300"
+    <section className="bg-ink-dark pt-24 pb-20 md:pt-32 md:pb-28 lg:pt-36 lg:pb-32">
+      <div className="section-container hero-grid">
+        {/* Left column (7/12) */}
+        <div className="flex flex-col gap-5 md:gap-6">
+          <p
+            className="text-eyebrow text-on-dark-2 animate-fade-in-up stagger-1"
           >
-            Before You Say Yes
-          </Link>
-          <Link
-            href="/books/after-you-say-yes-to-the-dog"
-            className="font-sans text-sm tracking-wide uppercase border border-plum/30 text-plum px-8 py-3 rounded-full hover:bg-plum/5 transition-colors duration-300"
-          >
-            After You Say Yes
-          </Link>
-        </div>
+            BEFORE YOU SAY YES TO THE DOG
+          </p>
 
-        {/* Scroll indicator */}
-        <div className="mt-10 md:mt-14">
-          <ChevronDown className="w-5 h-5 text-muted-foreground" />
-        </div>
-      </div>
-    </section>
-  )
-}
+          <h1 className="text-hero text-on-dark animate-fade-in-up stagger-2">
+            Most dog books sell the dream.
+          </h1>
 
-/* ─── Front Stage & Backstage Section (server component) ─── */
-const frontStageItems = [
-  {
-    icon: BookOpen,
-    title: 'The Books',
-    description: 'Two books. One question: are you actually ready for this? Neither book sugarcoats the answer.',
-    href: '/books',
-  },
-  {
-    icon: Lightbulb,
-    title: 'The Ideas',
-    description: 'What I write about when I am not writing books. Things I have noticed after 25 years of watching people and businesses.',
-    href: '/insights',
-  },
-  {
-    icon: MessageCircle,
-    title: 'The Thinking',
-    description: 'From marketing departments, university classrooms, startup offices, and the moments in between.',
-    href: '/insights',
-  },
-]
-
-const backstageItems = [
-  {
-    title: 'Strategist',
-    description: 'Advises leaders and organisations through The KnowHow.',
-  },
-  {
-    title: 'Educator',
-    description: 'Visiting professor of marketing.',
-  },
-  {
-    title: 'Founder',
-    description: 'Built Oden and helped scale CowPay from concept to 10x GMV.',
-  },
-  {
-    title: 'Speaker',
-    description: 'Keynotes and workshops at international conferences and institutions.',
-  },
-]
-
-function FrontStageSection() {
-  return (
-    <section className="py-24 md:py-32 bg-warm-white">
-      <div className="section-container">
-        {/* Section header */}
-        <div className="text-center mb-16 md:mb-20">
-          <p className="section-label mb-4">What You See</p>
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-light tracking-tight">
-            Front Stage{' '}
-            <span className="text-plum">&</span>{' '}
-            Backstage
+          <h2 className="text-h2 text-on-dark animate-fade-in-up stagger-3">
+            This one prepares the family for reality.
           </h2>
-          <p className="prose-editorial mt-6 max-w-2xl mx-auto">
-            Some things are written for the audience. Others live behind the curtain.
-            Both matter.
+
+          <p className="text-body text-on-dark animate-fade-in-up stagger-4">
+            Three times I brought a puppy home. Three times it ended the same
+            way — everyone exhausted by month three, including the dog.
+          </p>
+
+          <p className="text-body text-on-dark animate-fade-in-up stagger-4">
+            It was never the dog. It was the system we didn&rsquo;t have.
+          </p>
+
+          <div className="flex flex-wrap gap-3 mt-2 animate-fade-in-up stagger-5">
+            <Link href="/book-one" className="btn-primary">
+              Get the book
+            </Link>
+            <Link
+              href="/free"
+              className="btn-secondary border-on-dark-2 text-on-dark hover:bg-on-dark hover:text-ink-dark transition-all"
+            >
+              Read the free chapter
+            </Link>
+          </div>
+
+          <p className="text-caption text-on-dark-2 mt-1 animate-fade-in-up stagger-6">
+            System first. Puppy second. Family always.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
-          {/* FRONT STAGE */}
-          <div>
-            <div className="border-l-2 border-plum pl-8 md:pl-10">
-              <h3 className="font-serif text-2xl md:text-3xl font-light tracking-tight text-plum mb-8">
-                Front Stage
-              </h3>
-              <p className="prose-editorial text-muted-foreground mb-10">
-                What gets published. What you can read, share, or use.
-                This is the visible part.
-              </p>
-            </div>
+        {/* Right column (5/12) — book cover placeholder */}
+        <div className="flex justify-center md:justify-end animate-fade-in-up stagger-3">
+          <div
+            className="relative w-56 sm:w-60 md:w-64 lg:w-72 rounded-[4px] flex-shrink-0"
+            style={{
+              backgroundColor: 'var(--paper)',
+              color: 'var(--ink-navy)',
+              padding: '2.5rem 1.75rem',
+              boxShadow:
+                '8px 8px 24px rgba(0,0,0,0.35), 2px 2px 6px rgba(0,0,0,0.2)',
+            }}
+          >
+            {/* Spine accent */}
+            <div
+              className="absolute left-0 top-0 bottom-0 w-[6px] rounded-l-[4px]"
+              style={{ backgroundColor: 'var(--teal)' }}
+            />
 
-            <div className="space-y-8">
-              {frontStageItems.map((item) => (
-                <Link key={item.title} href={item.href} className="group block">
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full bg-plum/10 flex items-center justify-center flex-shrink-0 mt-1">
-                      <item.icon className="w-5 h-5 text-plum" />
-                    </div>
-                    <div>
-                      <h4 className="font-serif text-lg font-medium tracking-tight mb-1 group-hover:text-plum transition-colors">
-                        {item.title}
-                      </h4>
-                      <p className="font-sans text-sm text-muted-foreground leading-relaxed">
-                        {item.description}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
+            {/* Top decorative line */}
+            <div
+              className="w-12 h-[2px] mb-6"
+              style={{ backgroundColor: 'var(--gold)' }}
+            />
 
-          {/* BACKSTAGE */}
-          <div>
-            <div className="border-l-2 border-turquoise pl-8 md:pl-10">
-              <h3 className="font-serif text-2xl md:text-3xl font-light tracking-tight text-turquoise mb-8">
-                Backstage
-              </h3>
-              <p className="prose-editorial text-muted-foreground mb-10">
-                What happens before any of it gets published.
-                The advising, teaching, building, and leading.
-              </p>
-            </div>
+            {/* Title */}
+            <p
+              className="font-display text-[0.65rem] font-medium tracking-[0.1em] uppercase mb-3"
+              style={{ color: 'var(--teal)' }}
+            >
+              Before You Say Yes
+            </p>
+            <h3
+              className="font-display text-2xl sm:text-[1.65rem] leading-tight font-bold tracking-tight"
+              style={{ color: 'var(--ink-navy)' }}
+            >
+              to the Dog
+            </h3>
 
-            <div className="space-y-8">
-              {backstageItems.map((item) => (
-                <div key={item.title}>
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full bg-turquoise/10 flex items-center justify-center flex-shrink-0 mt-1">
-                      <Brain className="w-5 h-5 text-turquoise" />
-                    </div>
-                    <div>
-                      <h4 className="font-serif text-lg font-medium tracking-tight mb-1">
-                        {item.title}
-                      </h4>
-                      <p className="font-sans text-sm text-muted-foreground leading-relaxed">
-                        {item.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            {/* Subtitle / accent line */}
+            <div
+              className="w-full h-[1px] mt-5 mb-4"
+              style={{ backgroundColor: 'var(--gold)', opacity: 0.5 }}
+            />
+
+            <p
+              className="font-text text-xs italic leading-relaxed"
+              style={{ color: 'var(--ink-navy)', opacity: 0.7 }}
+            >
+              What every family needs to decide before the puppy arrives.
+            </p>
+
+            {/* Bottom decorative line */}
+            <div
+              className="w-8 h-[2px] mt-auto pt-6"
+              style={{ backgroundColor: 'var(--gold)' }}
+            />
           </div>
         </div>
       </div>
@@ -187,22 +111,142 @@ function FrontStageSection() {
   )
 }
 
-/* ─── Homepage (server component) ─── */
+/* ─── 7.2 The pattern — 'We've had the same week.' ─── */
+const patternItems = [
+  {
+    title: 'Nobody actually owns the dog',
+    description:
+      'One adult is busy. One is unsure. The dog belongs to everyone, which means no one.',
+  },
+  {
+    title: 'Someone in the house is afraid',
+    description:
+      'Fear doesn\'t disappear because a puppy is cute. Unaddressed, it makes every interaction worse.',
+  },
+  {
+    title: 'Fifty commands at once',
+    description:
+      'Everyone gives orders. The dog hears noise. Nobody learns anything — including the dog.',
+  },
+  {
+    title: 'The kids are fighting over the dog',
+    description:
+      'Who holds the leash. Whose turn it was. Who gave the order. The dog watches the argument.',
+  },
+  {
+    title: 'Chasing games never stop',
+    description:
+      'The house has no zones, so the whole house is a racetrack.',
+  },
+  {
+    title: 'By month three, everyone is tired',
+    description:
+      'Including the puppy. This is where most families quietly give up.',
+  },
+]
+
+function PatternSection() {
+  return (
+    <section className="bg-bone section-gap">
+      <div className="section-container">
+        <p className="section-label mb-4 reveal">IF ANY OF THIS SOUNDS LIKE YOUR HOUSE</p>
+        <h2 className="text-h2 text-ink mb-12 md:mb-16 reveal">
+          We&rsquo;ve had the same week.
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+          {patternItems.map((item, i) => (
+            <div
+              key={i}
+              className="bg-bone-alt border border-rule rounded-[4px] p-5 md:p-6 flex flex-col gap-2 reveal"
+            >
+              <h3 className="font-display text-base font-medium text-ink leading-snug">
+                {item.title}
+              </h3>
+              <p className="text-body text-text-2 text-[0.9375rem] leading-relaxed">
+                {item.description}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <p className="font-text text-text-2 italic text-body mt-12 md:mt-16 reveal">
+          That list is not a guess. It&rsquo;s my house, three times over. Each
+          one has a chapter.
+        </p>
+      </div>
+    </section>
+  )
+}
+
+/* ─── 7.3 Signature — the four names ─── */
+function SignatureSection() {
+  return (
+    <section className="bg-bone section-gap">
+      <div className="section-container reveal">
+        <div className="flex flex-wrap items-baseline gap-x-8 gap-y-2 md:gap-x-12 lg:gap-x-16">
+          <span className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-medium tracking-tight text-text-3">
+            Koudy
+          </span>
+          <span className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-medium tracking-tight text-text-3">
+            Milo
+          </span>
+          <span className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-medium tracking-tight text-text-3">
+            Snoopy
+          </span>
+          <span className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-ink">
+            Oden
+          </span>
+        </div>
+
+        <p className="font-text text-text-2 italic text-body mt-8 md:mt-12 max-w-68ch">
+          Three went to new families. The fourth stayed.
+        </p>
+
+        <Link
+          href="/about"
+          className="inline-block font-ui text-sm text-accent hover:text-accent-hover transition-colors mt-6"
+        >
+          The whole story &rarr;
+        </Link>
+      </div>
+    </section>
+  )
+}
+
+/* ─── 7.4 Free chapter CTA ─── */
+function FreeChapterCTA() {
+  return (
+    <section className="bg-bone-alt section-gap">
+      <div className="section-container max-w-2xl reveal">
+        <p className="section-label mb-4">ALREADY HAVE THE PUPPY?</p>
+        <h2 className="text-h2 text-ink mb-6">Start here.</h2>
+        <p className="text-body text-text-2 mb-4">
+          The Reset chapter is the one people need most and the one nobody
+          writes. What to do when it&rsquo;s already going badly — why a bad
+          week is not a bad dog, and why &ldquo;try harder&rdquo; is the wrong
+          instruction.
+        </p>
+        <p className="text-body text-text-2 mb-8">
+          Free, in full. No purchase.
+        </p>
+        <Link href="/free" className="btn-primary">
+          Send me the Reset chapter
+        </Link>
+      </div>
+    </section>
+  )
+}
+
+/* ─── Home page (server component) ─── */
 export default function Home() {
   return (
     <>
+      <RevealObserver />
       <HeroSection />
-      <FrontStageSection />
-
-      {/* Subscribe CTA */}
-      <section className="section-padding bg-warm-white">
-        <div className="section-container max-w-4xl">
-          <SubscribeCTA />
-        </div>
-      </section>
-
-      {/* Stay Backstage */}
-      <StayBackstageSection />
+      <PatternSection />
+      <SignatureSection />
+      <FreeChapterCTA />
     </>
   )
 }

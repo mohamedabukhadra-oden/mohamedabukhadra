@@ -2,12 +2,24 @@ import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 
 /**
- * Applies the redirects managed at /admin/redirects.
+ * Middleware: static redirects (old URL structure) + database-managed redirects.
  *
  * Runs on the Node runtime because it queries Postgres through Prisma.
  */
 
 type Rule = { toPath: string; status: number }
+
+/* ── Static redirects: old URLs → new structure ── */
+const STATIC_REDIRECTS: Record<string, { to: string; status: 301 | 302 }> = {
+  '/insights':                                { to: '/',        status: 301 },
+  '/speaking':                                { to: '/about',   status: 301 },
+  '/books':                                   { to: '/book-one', status: 301 },
+  '/books/before-you-say-yes-to-the-dog':     { to: '/book-one', status: 301 },
+  '/books/after-you-say-yes-to-the-dog':      { to: '/book-two', status: 301 },
+  '/quick-check':                             { to: '/free',    status: 301 },
+  '/read-inside':                             { to: '/book-one', status: 301 },
+  '/faq':                                     { to: '/contact', status: 301 },
+}
 
 // This runs on every request, and redirects change rarely — so the table is
 // cached per instance and refreshed on a timer.
@@ -42,6 +54,15 @@ async function getRules(): Promise<Map<string, Rule>> {
 
 export async function middleware(req: NextRequest) {
   const pathname = normalise(req.nextUrl.pathname)
+
+  // 1. Check static redirects first (old URL structure)
+  const staticRule = STATIC_REDIRECTS[pathname]
+  if (staticRule) {
+    const target = new URL(staticRule.to, req.nextUrl.origin).toString()
+    return NextResponse.redirect(target, staticRule.status)
+  }
+
+  // 2. Fall back to database-managed redirects
   const rule = (await getRules()).get(pathname)
 
   if (!rule) return NextResponse.next()
