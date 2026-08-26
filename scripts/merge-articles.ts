@@ -153,7 +153,7 @@ function fromPersonal(a: any, source: string): Normalised {
     title: a.title,
     excerpt: a.excerpt || '',
     content: a.content,
-    category: a.category || 'family-systems',
+    category: a.category || 'life-reflection',
     tags: a.tags || '',
     status: a.status || 'DRAFT',
     featured: Boolean(a.featured),
