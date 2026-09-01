@@ -17,7 +17,7 @@ import { db } from '@/lib/db'
  * the initial HTML.
  */
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://mohamedabukhadra.com'
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.mohamedabukhadra.com'
 
 // Rebuild published articles every 5 minutes. Never set this to 0 — a fresh
 // render on every request means a transient DB error during a crawl becomes a

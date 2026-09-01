@@ -7,16 +7,16 @@ export const metadata: Metadata = {
   description:
     'The real story behind three failed dogs and the system that made the fourth one stay. Mohamed Abu Khadra is a father who found that love was not enough.',
   alternates: {
-    canonical: 'https://mohamedabukhadra.com/about',
+    canonical: 'https://www.mohamedabukhadra.com/about',
   },
 }
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  '@id': 'https://mohamedabukhadra.com/#person',
+  '@id': 'https://www.mohamedabukhadra.com/#person',
   name: 'Mohamed Abu Khadra',
-  url: 'https://mohamedabukhadra.com',
+  url: 'https://www.mohamedabukhadra.com',
   jobTitle: 'Author and Founder',
   knowsAbout: [
     'family dog ownership',

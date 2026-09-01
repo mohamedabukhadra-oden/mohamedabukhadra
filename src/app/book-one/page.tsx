@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     'A decision framework and a family operating system — so the puppy arrives into a house that\'s ready for him.',
   alternates: {
-    canonical: 'https://mohamedabukhadra.com/book-one',
+    canonical: 'https://www.mohamedabukhadra.com/book-one',
   },
 }
 

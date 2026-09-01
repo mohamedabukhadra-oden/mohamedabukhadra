@@ -23,7 +23,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://mohamedabukhadra.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.mohamedabukhadra.com'),
   title: 'Mohamed Abu Khadra — Author',
   description:
     'Author of Before You Say Yes to the Dog and After You Say Yes to the Dog. Questions behind the decisions that shape your life with a dog.',
@@ -46,13 +46,13 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: 'https://mohamedabukhadra.com',
+    canonical: 'https://www.mohamedabukhadra.com',
   },
   openGraph: {
     title: 'Mohamed Abu Khadra — Author',
     description:
       'Questions behind the decisions that shape your life with a dog.',
-    url: 'https://mohamedabukhadra.com',
+    url: 'https://www.mohamedabukhadra.com',
     siteName: 'Mohamed Abu Khadra',
     type: 'website',
     // Was an empty array, so every share — LinkedIn, WhatsApp, X — rendered a

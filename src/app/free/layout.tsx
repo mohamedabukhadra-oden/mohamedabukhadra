@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description:
     'Chapter 10 of Before You Say Yes to the Dog, free in full. What to do when the puppy is already home and the week has gone wrong.',
   alternates: {
-    canonical: 'https://mohamedabukhadra.com/free',
+    canonical: 'https://www.mohamedabukhadra.com/free',
   },
 }
 

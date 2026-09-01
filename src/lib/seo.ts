@@ -8,7 +8,7 @@ import { db } from '@/lib/db'
  * wins. This is what makes titles and descriptions editable without a redeploy.
  */
 
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://mohamedabukhadra.com').replace(/\/$/, '')
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.mohamedabukhadra.com').replace(/\/$/, '')
 
 export async function buildMetadata(opts: {
   path: string
