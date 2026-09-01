@@ -8,7 +8,9 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/'],
+        // /admin is gated, but an ungated crawl still surfaces the login page in
+        // search results. /unsubscribe is per-recipient and has no search value.
+        disallow: ['/api/', '/admin', '/unsubscribe'],
       },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
