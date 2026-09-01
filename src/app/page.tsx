@@ -182,13 +182,13 @@ function PatternSection() {
 }
 
 /* ─── 7.3 Signature — the four names ─── */
+/*
+  Deliberately more air than any other section. Uniform 128px everywhere is what
+  makes a page feel machined — rhythm is contrast, not consistency. This is the
+  signature element, so it gets the held breath.
+*/
 function SignatureSection() {
   return (
-    {/*
-      Deliberately more air than any other section. Uniform 128px everywhere is
-      what makes a page feel machined — rhythm is contrast, not consistency.
-      This is the signature element, so it gets the held breath.
-    */}
     <section className="bg-bone py-24 md:py-36 lg:py-52">
       <div className="section-container reveal">
         {/*
