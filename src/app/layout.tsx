@@ -55,13 +55,25 @@ export const metadata: Metadata = {
     url: 'https://mohamedabukhadra.com',
     siteName: 'Mohamed Abu Khadra',
     type: 'website',
-    images: [],
+    // Was an empty array, so every share — LinkedIn, WhatsApp, X — rendered a
+    // blank card. The cover is portrait (853×1280) and platforms expecting a
+    // 1.91:1 landscape card will crop it; a purpose-made 1200×630 card is the
+    // better long-term answer, but a cropped cover beats nothing.
+    images: [
+      {
+        url: '/book-cover-1.png',
+        width: 853,
+        height: 1280,
+        alt: 'Before You Say Yes to the Dog — A Family Guide Before Bringing Home a Puppy',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Mohamed Abu Khadra — Author',
     description:
       'Author of Before You Say Yes to the Dog. Questions behind the decisions that shape your life with a dog.',
+    images: ['/book-cover-1.png'],
   },
   verification: {
     ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
@@ -75,10 +87,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${sourceSerif4.variable} ${inter.variable} antialiased bg-bone text-ink`}
-      >
+    // The font variable classes must sit on <html>, not <body>. globals.css
+    // defines --font-display/--font-text/--font-ui at :root (which *is* <html>)
+    // in terms of --font-inter and --font-source-serif-4. Custom properties
+    // inherit downward only, so declaring them on <body> left every one of those
+    // unresolved at :root and silently fell back to the system UI font.
+    <html
+      lang="en"
+      className={`${sourceSerif4.variable} ${inter.variable}`}
+      suppressHydrationWarning
+    >
+      <body className="antialiased bg-bone text-ink">
         <div className="min-h-screen flex flex-col bg-bone">
           <Nav />
           <main className="flex-1">{children}</main>
