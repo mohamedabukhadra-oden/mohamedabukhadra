@@ -11,7 +11,6 @@ type Rule = { toPath: string; status: number }
 
 /* ── Static redirects: old URLs → new structure ── */
 const STATIC_REDIRECTS: Record<string, { to: string; status: 301 | 302 }> = {
-  '/insights':                                { to: '/',        status: 301 },
   '/speaking':                                { to: '/about',   status: 301 },
   '/books':                                   { to: '/book-one', status: 301 },
   '/books/before-you-say-yes-to-the-dog':     { to: '/book-one', status: 301 },

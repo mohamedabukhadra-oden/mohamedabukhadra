@@ -252,9 +252,31 @@ function FreeChapterCTA() {
 }
 
 /* ─── Home page (server component) ─── */
+/**
+ * WebSite schema, referencing the Person by @id rather than repeating it.
+ *
+ * Spec §13 puts one Person node on /about and has everything else point at it.
+ * Redeclaring the Person here would create a second entity competing with the
+ * first; referencing the @id is what actually consolidates them, and it is what
+ * lets oden.pet and theknowhow.uk name this URL as their founder.
+ */
+const siteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': 'https://www.mohamedabukhadra.com/#website',
+  url: 'https://www.mohamedabukhadra.com',
+  name: 'Mohamed Abu Khadra',
+  inLanguage: 'en',
+  publisher: { '@id': 'https://www.mohamedabukhadra.com/#person' },
+}
+
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema) }}
+      />
       <RevealObserver />
       <HeroSection />
       <PatternSection />

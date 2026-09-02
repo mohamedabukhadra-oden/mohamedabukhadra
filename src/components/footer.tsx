@@ -8,6 +8,9 @@ const footerNav = [
   { href: '/about', label: 'About' },
   { href: '/free', label: 'Free Chapter' },
   { href: '/book-two', label: 'Book Two' },
+  // Without this the published articles sit in the sitemap linked from nowhere
+  // on the site, which is how they were until now.
+  { href: '/insights', label: 'Writing' },
   { href: '/contact', label: 'Contact' },
 ]
 
@@ -20,12 +23,39 @@ export function Footer() {
   const year = new Date().getFullYear()
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState('')
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  /**
+   * This used to set `submitted` and clear the field without sending anything
+   * anywhere — the visitor saw a thank-you and the address was discarded, while
+   * a working /api/newsletter sat unused. It now actually subscribes, and only
+   * claims success when the request succeeded.
+   */
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (email.trim()) {
-      setSubmitted(true)
-      setEmail('')
+    const value = email.trim()
+    if (!value || busy) return
+
+    setBusy(true)
+    setError('')
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: value, source: 'footer' }),
+      })
+      if (res.ok) {
+        setSubmitted(true)
+        setEmail('')
+      } else {
+        const data = await res.json().catch(() => ({}))
+        setError(data.error || 'Could not subscribe. Please try again.')
+      }
+    } catch {
+      setError('No connection. Please try again.')
+    } finally {
+      setBusy(false)
     }
   }
 
@@ -102,11 +132,17 @@ export function Footer() {
                 />
                 <button
                   type="submit"
-                  className="font-ui text-sm font-medium text-accent hover:text-on-dark transition-colors whitespace-nowrap"
+                  disabled={busy}
+                  className="font-ui text-sm font-medium text-accent hover:text-on-dark transition-colors whitespace-nowrap disabled:opacity-50"
                 >
-                  Subscribe
+                  {busy ? 'Subscribing…' : 'Subscribe'}
                 </button>
               </form>
+            )}
+            {error && (
+              <p className="text-caption text-red-300 mt-2" role="alert">
+                {error}
+              </p>
             )}
           </div>
         </div>

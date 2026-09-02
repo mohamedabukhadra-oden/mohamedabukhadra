@@ -1,173 +1,127 @@
-'use client'
-
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ArrowRight, Clock, Loader2 } from 'lucide-react'
+import type { Metadata } from 'next'
+import { db } from '@/lib/db'
 
-interface Article {
-  id: string
-  slug: string
-  title: string
-  excerpt: string
-  category: string
-  tags: string
-  featured: boolean
-  publishedAt: string | null
-}
+/**
+ * The writing index.
+ *
+ * Two things were wrong here and both are fixed:
+ *
+ *  1. It was a client component that fetched articles in a useEffect, so a
+ *     crawler received a spinner and no list. Server-rendered now.
+ *
+ *  2. It was styled with tokens from the pre-v2 design system — warm-white,
+ *     plum, plum-50, prose-editorial — none of which still exist, so the page
+ *     rendered unstyled. That is almost certainly why it was redirected to the
+ *     homepage rather than fixed. Rebuilt on the current tokens.
+ *
+ * The redirect is removed alongside this, because with it in place the 22
+ * published articles sit in the sitemap linked from nowhere on the site.
+ */
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.mohamedabukhadra.com'
+
+export const revalidate = 300
 
 const CATEGORIES = [
-  { value: 'all', label: 'All' },
   { value: 'dogs-family', label: 'Dogs & Family' },
-  { value: 'business-strategy', label: 'Business & Strategy' },
-  { value: 'marketing-growth', label: 'Marketing & Growth' },
-  { value: 'writing-publishing', label: 'Writing & Publishing' },
-  { value: 'contrarian-thinking', label: 'Contrarian Thinking' },
   { value: 'life-reflection', label: 'Life & Reflection' },
+  { value: 'business-strategy', label: 'Business & Strategy' },
+  { value: 'contrarian-thinking', label: 'Contrarian Thinking' },
+  { value: 'writing-publishing', label: 'Writing & Publishing' },
   { value: 'behind-the-scenes', label: 'Behind the Scenes' },
+  { value: 'marketing-growth', label: 'Marketing & Growth' },
 ]
 
-export default function InsightsPage() {
-  const [articles, setArticles] = useState<Article[]>([])
-  const [loading, setLoading] = useState(true)
-  const [activeCategory, setActiveCategory] = useState('all')
+export const metadata: Metadata = {
+  title: 'Writing — Mohamed Abu Khadra',
+  description:
+    'What I’ve noticed, what I’ve changed my mind about, and what I’m still figuring out. On dogs and families, business, and the questions most people don’t stop to ask.',
+  alternates: { canonical: `${SITE_URL}/insights` },
+}
 
-  useEffect(() => {
-    setLoading(true)
-    fetch(`/api/articles?category=${activeCategory}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setArticles(Array.isArray(data) ? data : [])
-        setLoading(false)
-      })
-      .catch(() => setLoading(false))
-  }, [activeCategory])
+export default async function InsightsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>
+}) {
+  const { category } = await searchParams
+  const active = CATEGORIES.find((c) => c.value === category)?.value
 
-  const featured = articles.filter((a) => a.featured)
-  const regular = articles.filter((a) => !a.featured)
+  // Filtering happens server-side so each category is its own crawlable URL
+  // rather than a client-side state change Google never sees.
+  const articles = await db.article.findMany({
+    where: { status: 'PUBLISHED', ...(active ? { category: active } : {}) },
+    orderBy: [{ featured: 'desc' }, { publishedAt: 'desc' }],
+    select: {
+      id: true, slug: true, title: true, excerpt: true,
+      category: true, readTime: true, publishedAt: true, featured: true,
+    },
+  })
+
+  const label = (v: string) => CATEGORIES.find((c) => c.value === v)?.label || v
 
   return (
-    <div className="pt-24 pb-16 md:pt-32 md:pb-24 min-h-screen bg-warm-white">
+    <div className="section-gap">
       <div className="section-container">
-        {/* Header */}
-        <div className="mb-10">
-          <p className="section-label">Thinking</p>
-          <h2 className="font-serif text-3xl md:text-4xl font-light tracking-tight mt-3 mb-4">
-            What I&apos;ve noticed. What I&apos;ve changed my mind about. What I&apos;m still figuring out.
-          </h2>
-          <p className="prose-editorial max-w-2xl text-muted-foreground">
-            Strategy, marketing, growth, and the questions most people don&apos;t stop to ask.
-          </p>
-        </div>
+        <p className="section-label">Writing</p>
+        <h1 className="text-h2 text-ink mt-3 max-w-3xl">
+          What I&rsquo;ve noticed. What I&rsquo;ve changed my mind about. What I&rsquo;m still
+          figuring out.
+        </h1>
 
-        {/* Category pills */}
-        <div className="flex flex-wrap gap-2 mt-10 mb-12">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat.value}
-              onClick={() => setActiveCategory(cat.value)}
-              className={`font-sans text-xs tracking-wider uppercase px-4 py-2 rounded-full border transition-all duration-300 ${
-                activeCategory === cat.value
-                  ? 'bg-plum text-warm-white border-plum'
-                  : 'bg-transparent text-muted-foreground border-border hover:border-plum hover:text-plum'
+        {/* Real links, not buttons — each category is a URL a crawler can follow. */}
+        <nav className="mt-8 flex flex-wrap gap-2" aria-label="Filter by category">
+          <Link
+            href="/insights"
+            className={`rounded-full border px-4 py-1.5 text-xs uppercase tracking-wider transition-colors ${
+              !active ? 'border-ink bg-ink text-bone' : 'border-rule text-text-2 hover:border-ink hover:text-ink'
+            }`}
+          >
+            All
+          </Link>
+          {CATEGORIES.map((c) => (
+            <Link
+              key={c.value}
+              href={`/insights?category=${c.value}`}
+              className={`rounded-full border px-4 py-1.5 text-xs uppercase tracking-wider transition-colors ${
+                active === c.value
+                  ? 'border-ink bg-ink text-bone'
+                  : 'border-rule text-text-2 hover:border-ink hover:text-ink'
               }`}
             >
-              {cat.label}
-            </button>
+              {c.label}
+            </Link>
           ))}
-        </div>
+        </nav>
 
-        {/* Loading */}
-        {loading ? (
-          <div className="flex items-center justify-center py-20">
-            <Loader2 className="h-6 w-6 animate-spin text-plum" />
-          </div>
-        ) : articles.length === 0 ? (
-          <p className="font-sans text-muted-foreground text-center py-16">
-            No articles found for this category.
-          </p>
+        {articles.length === 0 ? (
+          <p className="mt-16 text-text-2">Nothing published in this category yet.</p>
         ) : (
-          <div className="space-y-12">
-            {/* Featured articles */}
-            {featured.length > 0 && (
-              <div className="grid md:grid-cols-2 gap-8">
-                {featured.map((article) => (
-                  <Link
-                    key={article.id}
-                    href={`/insights/${article.slug}`}
-                    className="group p-8 rounded-lg bg-card border border-border hover:-translate-y-1 hover:shadow-md transition-all duration-500"
-                  >
-                    {article.category && (
-                      <span className="font-sans text-xs tracking-wider uppercase bg-plum-50 text-plum px-3 py-1 rounded-full">
-                        {CATEGORIES.find((c) => c.value === article.category)?.label || article.category}
-                      </span>
+          <div className="mt-12 border-t border-rule">
+            {articles.map((a) => (
+              <article key={a.id} className="border-b border-rule py-7">
+                <Link href={`/insights/${a.slug}`} className="group block">
+                  <p className="text-xs uppercase tracking-wider text-accent">{label(a.category)}</p>
+                  <h2 className="font-display mt-2 text-xl font-medium leading-snug text-ink transition-colors group-hover:text-accent md:text-2xl">
+                    {a.title}
+                  </h2>
+                  {a.excerpt && (
+                    <p className="mt-2 max-w-2xl leading-relaxed text-text-2">{a.excerpt}</p>
+                  )}
+                  <div className="mt-3 flex flex-wrap gap-3 text-xs text-text-3">
+                    {a.publishedAt && (
+                      <time dateTime={a.publishedAt.toISOString()}>
+                        {a.publishedAt.toLocaleDateString('en-GB', {
+                          day: 'numeric', month: 'long', year: 'numeric',
+                        })}
+                      </time>
                     )}
-                    <h3 className="font-serif text-2xl md:text-3xl font-light tracking-tight mt-4 mb-3 group-hover:text-plum transition-colors">
-                      {article.title}
-                    </h3>
-                    <p className="prose-editorial text-base">
-                      {(article.excerpt || '').slice(0, 200)}
-                      {(article.excerpt || '').length > 200 ? '...' : ''}
-                    </p>
-                    <div className="flex items-center gap-4 mt-4">
-                      <span className="inline-flex items-center gap-1.5 font-sans text-sm text-plum group-hover:gap-2.5 transition-all duration-300">
-                        Read <ArrowRight className="w-4 h-4" />
-                      </span>
-                      {article.publishedAt && (
-                        <span className="font-sans text-xs text-muted-foreground flex items-center gap-1">
-                          <Clock className="w-3 h-3" />
-                          {new Date(article.publishedAt).toLocaleDateString('en-GB', {
-                            day: 'numeric',
-                            month: 'short',
-                            year: 'numeric',
-                          })}
-                        </span>
-                      )}
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            )}
-
-            {/* Regular articles */}
-            {regular.length > 0 && (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {regular.map((article) => (
-                  <Link
-                    key={article.id}
-                    href={`/insights/${article.slug}`}
-                    className="group p-6 rounded-lg border border-border hover:-translate-y-1 hover:shadow-md transition-all duration-500"
-                  >
-                    {article.category && (
-                      <span className="font-sans text-xs tracking-wider uppercase bg-plum-50 text-plum px-3 py-1 rounded-full">
-                        {CATEGORIES.find((c) => c.value === article.category)?.label || article.category}
-                      </span>
-                    )}
-                    <h3 className="font-serif text-xl font-light tracking-tight mt-3 mb-2 group-hover:text-plum transition-colors">
-                      {article.title}
-                    </h3>
-                    <p className="font-sans text-sm text-muted-foreground leading-relaxed">
-                      {(article.excerpt || '').slice(0, 120)}
-                      {(article.excerpt || '').length > 120 ? '...' : ''}
-                    </p>
-                    <div className="flex items-center gap-4 mt-4">
-                      <span className="inline-flex items-center gap-1.5 font-sans text-sm text-plum group-hover:gap-2.5 transition-all duration-300">
-                        Read <ArrowRight className="w-4 h-4" />
-                      </span>
-                      {article.publishedAt && (
-                        <span className="font-sans text-xs text-muted-foreground flex items-center gap-1">
-                          <Clock className="w-3 h-3" />
-                          {new Date(article.publishedAt).toLocaleDateString('en-GB', {
-                            day: 'numeric',
-                            month: 'short',
-                            year: 'numeric',
-                          })}
-                        </span>
-                      )}
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            )}
+                    {a.readTime > 0 && <span>· {a.readTime} min read</span>}
+                  </div>
+                </Link>
+              </article>
+            ))}
           </div>
         )}
       </div>

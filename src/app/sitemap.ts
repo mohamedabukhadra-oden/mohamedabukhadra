@@ -12,6 +12,7 @@ const STATIC_ROUTES: {
   { path: '/book-one', priority: 0.9, changeFreq: 'monthly' },
   { path: '/book-two', priority: 0.9, changeFreq: 'monthly' },
   { path: '/about', priority: 0.8, changeFreq: 'monthly' },
+  { path: '/insights', priority: 0.8, changeFreq: 'weekly' },
   { path: '/free', priority: 0.8, changeFreq: 'monthly' },
   { path: '/press', priority: 0.7, changeFreq: 'monthly' },
   { path: '/contact', priority: 0.6, changeFreq: 'yearly' },
