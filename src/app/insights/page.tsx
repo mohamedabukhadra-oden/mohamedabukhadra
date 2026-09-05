@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { db } from '@/lib/db'
+import { SITE_URL } from '@/lib/seo'
 
 /**
  * The writing index.
@@ -18,8 +19,6 @@ import { db } from '@/lib/db'
  * The redirect is removed alongside this, because with it in place the 22
  * published articles sit in the sitemap linked from nowhere on the site.
  */
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.mohamedabukhadra.com'
 
 export const revalidate = 300
 

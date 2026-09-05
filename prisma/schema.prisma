@@ -181,7 +181,15 @@ model AutoPublishConfig {
   enabled        Boolean   @default(true)
   postsPerDay    Int       @default(2)
   makeWebhookUrl String    @default("")
-  siteBaseUrl    String    @default("https://mohamedabukhadra.com")
+  // Was the bare apex, which 308-redirects to www in production — the same
+  // canonical-domain split fixed in src/lib/seo.ts. Only affects a *newly
+  // created* config row (getConfig() in src/lib/auto-publish.ts does
+  // `findFirst() ?? create({data:{}})`); the existing production row already
+  // has its own stored value and is untouched by this default. If auto-publish
+  // emails/social posts are linking to the apex domain, fix it via the Site
+  // Base URL field at /admin/publishing rather than a migration — this default
+  // only ever applies once, the first time the row is ever created.
+  siteBaseUrl    String    @default("https://www.mohamedabukhadra.com")
   hashtagSuffix  String    @default("")
   /// Send the new article to the newsletter list as well as to social.
   notifySubscribers Boolean @default(true)

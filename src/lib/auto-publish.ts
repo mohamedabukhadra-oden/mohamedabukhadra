@@ -1,6 +1,7 @@
 import { db } from '@/lib/db'
 import { sendBatch, emailConfigured } from '@/lib/email'
 import { newsletterHtml } from '@/lib/newsletter-template'
+import { SITE_URL } from '@/lib/seo'
 
 /**
  * The publishing run, shared by the cron route and the admin's "Publish next now"
@@ -59,7 +60,12 @@ export async function runAutoPublish(
     return { status: 'no_articles', message: 'No drafts left in the queue.' }
   }
 
-  const siteUrl = (config.siteBaseUrl || process.env.NEXT_PUBLIC_SITE_URL || '').replace(/\/$/, '')
+  // config.siteBaseUrl (set from /admin/publishing) wins when configured; it
+  // falls back to the same SITE_URL every other page uses rather than the raw
+  // env var, which production had set to the apex domain — the same domain
+  // split that broke canonical tags across /insights is possible here too if
+  // the admin's Site Base URL field is ever left blank.
+  const siteUrl = (config.siteBaseUrl || SITE_URL).replace(/\/$/, '')
   // A real route, not a "/#slug" fragment — fragments are discarded by search
   // engines, so the old form sent every post to the same homepage anchor.
   const articleUrl = `${siteUrl}/insights/${article.slug}`

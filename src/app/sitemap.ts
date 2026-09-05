@@ -1,7 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { db } from '@/lib/db'
-
-const SITE_URL = 'https://www.mohamedabukhadra.com'
+import { SITE_URL } from '@/lib/seo'
 
 const STATIC_ROUTES: {
   path: string

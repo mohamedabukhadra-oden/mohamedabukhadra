@@ -1,38 +1,23 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { RevealObserver } from '@/components/reveal-observer'
+import { SITE_URL } from '@/lib/seo'
+import { personNode } from '@/lib/json-ld'
 
 export const metadata: Metadata = {
   title: 'About | Mohamed Abu Khadra',
   description:
     'The real story behind three failed dogs and the system that made the fourth one stay. Mohamed Abu Khadra is a father who found that love was not enough.',
   alternates: {
-    canonical: 'https://www.mohamedabukhadra.com/about',
+    canonical: `${SITE_URL}/about`,
   },
 }
 
+// Shared with the homepage (src/app/page.tsx) so the Person entity referenced
+// by the WebSite schema's publisher @id is identical wherever it's declared.
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'Person',
-  '@id': 'https://www.mohamedabukhadra.com/#person',
-  name: 'Mohamed Abu Khadra',
-  url: 'https://www.mohamedabukhadra.com',
-  jobTitle: 'Author and Founder',
-  knowsAbout: [
-    'family dog ownership',
-    'puppy readiness',
-    'dog owner education',
-    'pet business operations',
-  ],
-  sameAs: [
-    'https://eg.linkedin.com/in/abu-khadra',
-    'https://www.oden.pet/founder',
-    'https://theknowhow.uk/about',
-  ],
-  founder: [
-    { '@type': 'Organization', name: 'Oden Pet', url: 'https://www.oden.pet' },
-    { '@type': 'Organization', name: 'The KnowHow Company', url: 'https://theknowhow.uk' },
-  ],
+  ...personNode,
 }
 
 export default function AboutPage() {

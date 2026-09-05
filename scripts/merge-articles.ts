@@ -56,6 +56,7 @@ import { articles as humanNature } from './legacy-mowebsite/seed-human-nature'
 import { articles as personalArticles } from './legacy-personal/seed-articles'
 import { articles as personalBusiness } from './legacy-personal/seed-business-articles'
 import { articles as personalDrafts } from './legacy-personal/seed-draft-articles'
+import { articles as contentGapArticles } from './legacy-personal/seed-content-gap-articles'
 
 // db replaced by getDb() — see top of file
 
@@ -198,6 +199,7 @@ function collect(): Normalised[] {
     ['articles', personalArticles],
     ['business', personalBusiness],
     ['drafts', personalDrafts],
+    ['content-gap-2026-09', contentGapArticles],
   ]
   for (const [name, list] of personal) {
     for (const a of list) out.push(fromPersonal(a, `personal/${name}`))

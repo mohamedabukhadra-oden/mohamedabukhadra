@@ -7,6 +7,7 @@ import { Suspense } from 'react'
 import { Analytics } from '@/components/analytics'
 import { CookieConsent } from '@/components/cookie-consent'
 import { FirstPartyAnalytics } from '@/components/first-party-analytics'
+import { SITE_URL } from '@/lib/seo'
 
 const sourceSerif4 = Source_Serif_4({
   variable: '--font-source-serif-4',
@@ -23,7 +24,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.mohamedabukhadra.com'),
+  metadataBase: new URL(SITE_URL),
   title: 'Mohamed Abu Khadra — Author',
   description:
     'Author of Before You Say Yes to the Dog and After You Say Yes to the Dog. Questions behind the decisions that shape your life with a dog.',
@@ -46,13 +47,13 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: 'https://www.mohamedabukhadra.com',
+    canonical: SITE_URL,
   },
   openGraph: {
     title: 'Mohamed Abu Khadra — Author',
     description:
       'Questions behind the decisions that shape your life with a dog.',
-    url: 'https://www.mohamedabukhadra.com',
+    url: SITE_URL,
     siteName: 'Mohamed Abu Khadra',
     type: 'website',
     // Was an empty array, so every share — LinkedIn, WhatsApp, X — rendered a

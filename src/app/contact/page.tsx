@@ -1,5 +1,18 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import { Mic, Briefcase, BookOpen, ArrowRight } from 'lucide-react'
+import { SITE_URL } from '@/lib/seo'
+
+// This page had no metadata export at all, so it silently inherited the
+// homepage's title and canonical — same defect as book-two and press had, on a
+// real indexable page that's also listed in sitemap.ts at priority 0.6.
+export const metadata: Metadata = {
+  title: 'Contact | Mohamed Abu Khadra',
+  description: 'Get in touch about speaking, teaching, business, consulting, or books and media.',
+  alternates: {
+    canonical: `${SITE_URL}/contact`,
+  },
+}
 
 export default function ContactPage() {
   return (

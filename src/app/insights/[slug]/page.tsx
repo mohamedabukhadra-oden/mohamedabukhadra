@@ -2,9 +2,8 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
-import { Nav } from '@/components/nav'
-import { Footer } from '@/components/footer'
 import { db } from '@/lib/db'
+import { SITE_URL } from '@/lib/seo'
 
 /**
  * Article page.
@@ -15,9 +14,17 @@ import { db } from '@/lib/db'
  * and a client component cannot export generateMetadata at all, so every article
  * inherited the site-wide title. Server-rendered here so the article exists in
  * the initial HTML.
+ *
+ * Nav/Footer are NOT rendered here — the root layout (src/app/layout.tsx) already
+ * wraps every route in one Nav and one Footer. This page used to import and render
+ * its own on top of those, which shipped two full nav bars and two footers in the
+ * DOM on every one of the 22 article pages.
  */
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.mohamedabukhadra.com'
+// Falls back to the homepage's own cover image so a share never renders a blank
+// card. Real per-article art (Article.ogImage / coverImage, set from the admin)
+// always wins when present.
+const DEFAULT_OG_IMAGE = '/book-cover-1.png'
 
 // Rebuild published articles every 5 minutes. Never set this to 0 — a fresh
 // render on every request means a transient DB error during a crawl becomes a
@@ -61,6 +68,7 @@ export async function generateMetadata({
 
   const url = `${SITE_URL}/insights/${article.slug}`
   const description = article.metaDescription || article.excerpt || undefined
+  const image = article.ogImage || article.coverImage || DEFAULT_OG_IMAGE
 
   return {
     title: `${article.title} — Mohamed Abu Khadra`,
@@ -73,12 +81,13 @@ export async function generateMetadata({
       url,
       publishedTime: article.publishedAt?.toISOString(),
       modifiedTime: article.updatedAt.toISOString(),
-      images: article.ogImage || article.coverImage || undefined,
+      images: image,
     },
     twitter: {
       card: 'summary_large_image',
       title: article.title,
       description,
+      images: [image],
     },
   }
 }
@@ -119,57 +128,53 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     author: { '@type': 'Person', name: 'Mohamed Abu Khadra', url: SITE_URL },
     publisher: { '@type': 'Person', name: 'Mohamed Abu Khadra', url: SITE_URL },
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
-    ...(article.ogImage || article.coverImage ? { image: article.ogImage || article.coverImage } : {}),
+    image: article.ogImage || article.coverImage || `${SITE_URL}${DEFAULT_OG_IMAGE}`,
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F5F1E8]">
+    <div className="bg-[#F5F1E8] pt-24 pb-16 md:pt-32 md:pb-24">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Nav />
-      <main className="flex-1 pt-24 pb-16 md:pt-32 md:pb-24">
-        <div className="max-w-2xl mx-auto px-5 md:px-8">
-          <Link href="/insights" className="inline-flex items-center gap-1 text-sm text-[#6B5D4F] hover:text-[#1B3B36] mb-6">
-            <ArrowLeft className="h-3.5 w-3.5" /> Back to Insights
-          </Link>
+      <div className="max-w-2xl mx-auto px-5 md:px-8">
+        <Link href="/insights" className="inline-flex items-center gap-1 text-sm text-[#6B5D4F] hover:text-[#1B3B36] mb-6">
+          <ArrowLeft className="h-3.5 w-3.5" /> Back to Insights
+        </Link>
 
-          <div className="flex items-center gap-2 mb-3">
-            <span className="text-xs font-medium text-[#C9A86A] uppercase tracking-wider">{article.category}</span>
-            {article.publishedAt && (
-              <time
-                dateTime={article.publishedAt.toISOString()}
-                className="text-xs text-[#6B5D4F]"
-              >
-                · {article.publishedAt.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
-              </time>
-            )}
-            {article.readTime > 0 && (
-              <span className="text-xs text-[#6B5D4F]">· {article.readTime} min read</span>
-            )}
-          </div>
-
-          <h1 className="font-serif text-3xl md:text-4xl font-bold text-[#1B3B36] mb-4">{article.title}</h1>
-          {article.excerpt && <p className="text-lg text-[#6B5D4F] italic mb-8">{article.excerpt}</p>}
-          <div className="w-16 h-1 bg-[#C9A86A] rounded-full mb-8" />
-
-          <div
-            className="prose prose-lg max-w-none"
-            dangerouslySetInnerHTML={{ __html: renderMarkdown(article.content) }}
-          />
-
-          {/* CTA */}
-          <div className="mt-12 p-6 rounded-xl bg-[#1B3B36] text-white text-center">
-            <h3 className="font-serif text-xl font-bold mb-2">Is Your Family Ready for a Dog?</h3>
-            <p className="text-sm text-white/70 mb-4">Take the free Family Dog Readiness Quick Check.</p>
-            <Link href="/quick-check" className="inline-flex items-center gap-2 bg-[#C9A86A] text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-[#DDB87A]">
-              Take the Quick Check <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-xs font-medium text-[#C9A86A] uppercase tracking-wider">{article.category}</span>
+          {article.publishedAt && (
+            <time
+              dateTime={article.publishedAt.toISOString()}
+              className="text-xs text-[#6B5D4F]"
+            >
+              · {article.publishedAt.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+            </time>
+          )}
+          {article.readTime > 0 && (
+            <span className="text-xs text-[#6B5D4F]">· {article.readTime} min read</span>
+          )}
         </div>
-      </main>
-      <Footer />
+
+        <h1 className="font-serif text-3xl md:text-4xl font-bold text-[#1B3B36] mb-4">{article.title}</h1>
+        {article.excerpt && <p className="text-lg text-[#6B5D4F] italic mb-8">{article.excerpt}</p>}
+        <div className="w-16 h-1 bg-[#C9A86A] rounded-full mb-8" />
+
+        <div
+          className="prose prose-lg max-w-none"
+          dangerouslySetInnerHTML={{ __html: renderMarkdown(article.content) }}
+        />
+
+        {/* CTA */}
+        <div className="mt-12 p-6 rounded-xl bg-[#1B3B36] text-white text-center">
+          <h3 className="font-serif text-xl font-bold mb-2">Is Your Family Ready for a Dog?</h3>
+          <p className="text-sm text-white/70 mb-4">Get the free Reset chapter from Before You Say Yes to the Dog.</p>
+          <Link href="/free" className="inline-flex items-center gap-2 bg-[#C9A86A] text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-[#DDB87A]">
+            Get the free chapter <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </div>
     </div>
   )
 }

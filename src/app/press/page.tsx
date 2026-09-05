@@ -1,7 +1,13 @@
 import type { Metadata } from 'next'
+import { SITE_URL } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Press & Recognition | Mohamed Abu Khadra',
+  // Was missing: without its own canonical this page silently inherited the
+  // homepage's, telling Google it was a duplicate of "/" rather than its own URL.
+  alternates: {
+    canonical: `${SITE_URL}/press`,
+  },
 }
 
 const pressItems = [

@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { RevealObserver } from '@/components/reveal-observer'
+import { SITE_URL } from '@/lib/seo'
+import { personNode } from '@/lib/json-ld'
 
 /* ─── 7.1 Hero — the one dark band ─── */
 function HeroSection() {
@@ -253,21 +255,29 @@ function FreeChapterCTA() {
 
 /* ─── Home page (server component) ─── */
 /**
- * WebSite schema, referencing the Person by @id rather than repeating it.
+ * WebSite schema, with the Person node it publishes bundled in via @graph.
  *
- * Spec §13 puts one Person node on /about and has everything else point at it.
- * Redeclaring the Person here would create a second entity competing with the
- * first; referencing the @id is what actually consolidates them, and it is what
- * lets oden.pet and theknowhow.uk name this URL as their founder.
+ * The WebSite's `publisher` points at the Person by @id rather than repeating
+ * its fields inline — that's the right way to consolidate one entity across a
+ * JSON-LD document. But structured-data parsers only resolve @id references
+ * within the page they're reading: the Person used to be declared solely on
+ * /about, so that reference was dangling everywhere else, including here on
+ * the homepage where the WebSite schema actually lives. Putting both nodes in
+ * one @graph makes the reference resolve on this page too.
  */
 const siteSchema = {
   '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  '@id': 'https://www.mohamedabukhadra.com/#website',
-  url: 'https://www.mohamedabukhadra.com',
-  name: 'Mohamed Abu Khadra',
-  inLanguage: 'en',
-  publisher: { '@id': 'https://www.mohamedabukhadra.com/#person' },
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: 'Mohamed Abu Khadra',
+      inLanguage: 'en',
+      publisher: { '@id': `${SITE_URL}/#person` },
+    },
+    personNode,
+  ],
 }
 
 export default function Home() {

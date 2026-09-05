@@ -8,7 +8,16 @@ import { db } from '@/lib/db'
  * wins. This is what makes titles and descriptions editable without a redeploy.
  */
 
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.mohamedabukhadra.com').replace(/\/$/, '')
+// Hardcoded, not env-derived, on purpose: production's NEXT_PUBLIC_SITE_URL was
+// set to the bare apex (https://mohamedabukhadra.com), while this file, the
+// sitemap, robots.txt and most pages hardcoded the www form. The apex 308s to
+// www in production, so every env-derived page (this file, the two insights
+// routes, auto-publish) was emitting a canonical/og:url/JSON-LD url that
+// immediately redirects elsewhere — a real, live contradiction with the
+// sitemap. Every file that needs the site origin imports SITE_URL from here
+// instead of reading the env var or hardcoding its own literal, so there is
+// exactly one place this can drift from what's actually served.
+export const SITE_URL = 'https://www.mohamedabukhadra.com'
 
 export async function buildMetadata(opts: {
   path: string

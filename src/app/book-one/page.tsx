@@ -1,13 +1,14 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { RevealObserver } from '@/components/reveal-observer'
+import { SITE_URL } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Before You Say Yes to the Dog | Mohamed Abu Khadra',
   description:
     'A decision framework and a family operating system — so the puppy arrives into a house that\'s ready for him.',
   alternates: {
-    canonical: 'https://www.mohamedabukhadra.com/book-one',
+    canonical: `${SITE_URL}/book-one`,
   },
 }
 
