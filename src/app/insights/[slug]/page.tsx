@@ -97,13 +97,13 @@ function renderMarkdown(md: string) {
   return md
     .split('\n')
     .map((line: string) => {
-      if (line.startsWith('### ')) return `<h3 class="font-serif text-xl font-bold text-[#1B3B36] mt-6 mb-2">${line.slice(4)}</h3>`
-      if (line.startsWith('## ')) return `<h2 class="font-serif text-2xl font-bold text-[#1B3B36] mt-8 mb-3">${line.slice(3)}</h2>`
-      if (line.startsWith('# ')) return `<h1 class="font-serif text-3xl font-bold text-[#1B3B36] mt-8 mb-4">${line.slice(2)}</h1>`
-      if (line.startsWith('> ')) return `<blockquote class="border-l-4 border-[#C9A86A] pl-4 italic text-[#6B5D4F] my-4">${line.slice(2)}</blockquote>`
-      if (line.startsWith('- ')) return `<li class="ml-4 text-[#2A2520]">${line.slice(2)}</li>`
+      if (line.startsWith('### ')) return `<h3 class="font-serif text-xl font-bold text-ink mt-6 mb-2">${line.slice(4)}</h3>`
+      if (line.startsWith('## ')) return `<h2 class="font-serif text-2xl font-bold text-ink mt-8 mb-3">${line.slice(3)}</h2>`
+      if (line.startsWith('# ')) return `<h1 class="font-serif text-3xl font-bold text-ink mt-8 mb-4">${line.slice(2)}</h1>`
+      if (line.startsWith('> ')) return `<blockquote class="border-l-4 border-gold pl-4 italic text-text-2 my-4">${line.slice(2)}</blockquote>`
+      if (line.startsWith('- ')) return `<li class="ml-4 text-ink">${line.slice(2)}</li>`
       if (line.trim() === '') return '<br/>'
-      return `<p class="text-[#2A2520] leading-relaxed mb-4">${line}</p>`
+      return `<p class="text-ink leading-relaxed mb-4">${line}</p>`
     })
     .join('')
 }
@@ -132,34 +132,34 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   }
 
   return (
-    <div className="bg-[#F5F1E8] pt-24 pb-16 md:pt-32 md:pb-24">
+    <div className="bg-bone pt-24 pb-16 md:pt-32 md:pb-24">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="max-w-2xl mx-auto px-5 md:px-8">
-        <Link href="/insights" className="inline-flex items-center gap-1 text-sm text-[#6B5D4F] hover:text-[#1B3B36] mb-6">
+        <Link href="/insights" className="inline-flex items-center gap-1 text-sm text-text-2 hover:text-ink mb-6">
           <ArrowLeft className="h-3.5 w-3.5" /> Back to Insights
         </Link>
 
         <div className="flex items-center gap-2 mb-3">
-          <span className="text-xs font-medium text-[#C9A86A] uppercase tracking-wider">{article.category}</span>
+          <span className="text-xs font-medium text-gold uppercase tracking-wider">{article.category}</span>
           {article.publishedAt && (
             <time
               dateTime={article.publishedAt.toISOString()}
-              className="text-xs text-[#6B5D4F]"
+              className="text-xs text-text-2"
             >
               · {article.publishedAt.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
             </time>
           )}
           {article.readTime > 0 && (
-            <span className="text-xs text-[#6B5D4F]">· {article.readTime} min read</span>
+            <span className="text-xs text-text-2">· {article.readTime} min read</span>
           )}
         </div>
 
-        <h1 className="font-serif text-3xl md:text-4xl font-bold text-[#1B3B36] mb-4">{article.title}</h1>
-        {article.excerpt && <p className="text-lg text-[#6B5D4F] italic mb-8">{article.excerpt}</p>}
-        <div className="w-16 h-1 bg-[#C9A86A] rounded-full mb-8" />
+        <h1 className="font-serif text-3xl md:text-4xl font-bold text-ink mb-4">{article.title}</h1>
+        {article.excerpt && <p className="text-lg text-text-2 italic mb-8">{article.excerpt}</p>}
+        <div className="w-16 h-1 bg-gold rounded-full mb-8" />
 
         <div
           className="prose prose-lg max-w-none"
@@ -167,10 +167,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         />
 
         {/* CTA */}
-        <div className="mt-12 p-6 rounded-xl bg-[#1B3B36] text-white text-center">
+        <div className="mt-12 p-6 rounded-xl bg-teal text-white text-center">
           <h3 className="font-serif text-xl font-bold mb-2">Is Your Family Ready for a Dog?</h3>
           <p className="text-sm text-white/70 mb-4">Get the free Reset chapter from Before You Say Yes to the Dog.</p>
-          <Link href="/free" className="inline-flex items-center gap-2 bg-[#C9A86A] text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-[#DDB87A]">
+          <Link href="/free" className="inline-flex items-center gap-2 bg-gold text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-gold/90">
             Get the free chapter <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
