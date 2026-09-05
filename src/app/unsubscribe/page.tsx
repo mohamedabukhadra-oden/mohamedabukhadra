@@ -59,14 +59,14 @@ export default async function UnsubscribePage({
   }[state]
 
   return (
-    <div className="flex items-center justify-center px-5 py-24 min-h-[60vh] bg-[#F5F1E8]">
+    <div className="flex items-center justify-center px-5 py-24 min-h-[60vh] bg-bone">
       <div className="max-w-md text-center">
-        <h1 className="font-serif text-3xl font-bold text-[#1B3B36] mb-3">{copy.heading}</h1>
-        <div className="w-16 h-1 bg-[#C9A86A] rounded-full mx-auto mb-6" />
-        <p className="text-[#6B5D4F] leading-relaxed mb-8">{copy.body}</p>
+        <h1 className="font-serif text-3xl font-bold text-ink mb-3">{copy.heading}</h1>
+        <div className="w-16 h-1 bg-gold rounded-full mx-auto mb-6" />
+        <p className="text-text-2 leading-relaxed mb-8">{copy.body}</p>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 bg-[#1B3B36] text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-[#2D5249]"
+          className="inline-flex items-center gap-2 bg-teal text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-teal/90"
         >
           Back to the site
         </Link>
