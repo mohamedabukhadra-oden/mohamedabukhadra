@@ -62,9 +62,9 @@ export const metadata: Metadata = {
     // better long-term answer, but a cropped cover beats nothing.
     images: [
       {
-        url: '/book-cover-1.png',
-        width: 853,
-        height: 1280,
+        url: '/book-one-cover.jpg',
+        width: 1600,
+        height: 2560,
         alt: 'Before You Say Yes to the Dog — A Family Guide Before Bringing Home a Puppy',
       },
     ],
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
     title: 'Mohamed Abu Khadra — Author',
     description:
       'Author of Before You Say Yes to the Dog. Questions behind the decisions that shape your life with a dog.',
-    images: ['/book-cover-1.png'],
+    images: ['/book-one-cover.jpg'],
   },
   verification: {
     ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION

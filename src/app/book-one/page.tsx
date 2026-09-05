@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { RevealObserver } from '@/components/reveal-observer'
 import { SITE_URL } from '@/lib/seo'
 
@@ -10,59 +11,28 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${SITE_URL}/book-one`,
   },
+  openGraph: {
+    images: [{ url: '/book-one-cover.jpg', width: 1600, height: 2560, alt: 'Before You Say Yes to the Dog — book cover' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: ['/book-one-cover.jpg'],
+  },
 }
 
-/* ─── Book cover placeholder (larger than home hero) ─── */
+/* ─── Real final cover (replaces the earlier CSS mockup) ─── */
 function BookCover() {
   return (
-    <div
-      className="relative w-64 sm:w-72 md:w-80 lg:w-96 rounded-[4px] flex-shrink-0"
-      style={{
-        backgroundColor: 'var(--paper)',
-        color: 'var(--ink-navy)',
-        padding: '3rem 2rem',
-        boxShadow:
-          '8px 8px 24px rgba(0,0,0,0.35), 2px 2px 6px rgba(0,0,0,0.2)',
-      }}
-    >
-      {/* Spine accent */}
-      <div
-        className="absolute left-0 top-0 bottom-0 w-[6px] rounded-l-[4px]"
-        style={{ backgroundColor: 'var(--teal)' }}
-      />
-      {/* Top decorative line */}
-      <div
-        className="w-12 h-[2px] mb-8"
-        style={{ backgroundColor: 'var(--gold)' }}
-      />
-      {/* Title */}
-      <p
-        className="font-display text-[0.7rem] font-medium tracking-[0.1em] uppercase mb-4"
-        style={{ color: 'var(--teal)' }}
-      >
-        Before You Say Yes
-      </p>
-      <h3
-        className="font-display text-3xl sm:text-4xl leading-tight font-bold tracking-tight"
-        style={{ color: 'var(--ink-navy)' }}
-      >
-        to the Dog
-      </h3>
-      {/* Subtitle / accent line */}
-      <div
-        className="w-full h-[1px] mt-6 mb-5"
-        style={{ backgroundColor: 'var(--gold)', opacity: 0.5 }}
-      />
-      <p
-        className="font-text text-sm italic leading-relaxed"
-        style={{ color: 'var(--ink-navy)', opacity: 0.7 }}
-      >
-        What every family needs to decide before the puppy arrives.
-      </p>
-      {/* Bottom decorative line */}
-      <div
-        className="w-8 h-[2px] mt-auto pt-8"
-        style={{ backgroundColor: 'var(--gold)' }}
+    <div className="relative w-64 sm:w-72 md:w-80 lg:w-96 flex-shrink-0">
+      <Image
+        src="/book-one-cover.jpg"
+        alt="Before You Say Yes to the Dog — A Family Guide Before Bringing Home a Puppy, by Mohamed Abu Khadra"
+        width={1600}
+        height={2560}
+        priority
+        sizes="(min-width: 1024px) 384px, (min-width: 768px) 320px, 288px"
+        className="w-full h-auto rounded-[2px]"
+        style={{ boxShadow: '8px 8px 24px rgba(0,0,0,0.35), 2px 2px 6px rgba(0,0,0,0.2)' }}
       />
     </div>
   )
@@ -132,7 +102,7 @@ function AudienceSection() {
       style={{ backgroundColor: 'var(--paper)' }}
     >
       <div className="section-container">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 reveal">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 reveal items-center">
           {/* This is for */}
           <div>
             <h2
@@ -158,12 +128,9 @@ function AudienceSection() {
                 able to name what is.
               </p>
             </div>
-          </div>
 
-          {/* This is not for */}
-          <div>
             <h2
-              className="text-h3 font-text mb-6"
+              className="text-h3 font-text mt-10 mb-6"
               style={{ color: 'var(--warn)' }}
             >
               This is not for
@@ -186,6 +153,15 @@ function AudienceSection() {
               </p>
             </div>
           </div>
+
+          <Image
+            src="/book-one/family-reading.jpg"
+            alt="A family gathered around the dog with books open"
+            width={1037}
+            height={694}
+            sizes="(min-width: 768px) 45vw, 90vw"
+            className="w-full h-auto rounded-[4px] shadow-lg"
+          />
         </div>
       </div>
     </section>
@@ -291,9 +267,9 @@ function ReadinessTestSection() {
       className="section-gap"
       style={{ backgroundColor: 'var(--paper)' }}
     >
-      <div className="section-container reveal">
+      <div className="section-container reveal grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-8 items-stretch">
         <div
-          className="p-8 md:p-12 rounded-[4px]"
+          className="md:col-span-3 p-8 md:p-12 rounded-[4px]"
           style={{
             backgroundColor: 'var(--teal)',
             color: 'var(--paper)',
@@ -319,6 +295,14 @@ function ReadinessTestSection() {
             The honesty is the differentiator.
           </p>
         </div>
+        <Image
+          src="/book-one/family-readiness-check.jpg"
+          alt="A family around the table going through a readiness checklist"
+          width={1024}
+          height={650}
+          sizes="(min-width: 768px) 35vw, 90vw"
+          className="md:col-span-2 w-full h-full object-cover rounded-[4px] shadow-lg"
+        />
       </div>
     </section>
   )
@@ -344,6 +328,15 @@ function SampleSection() {
         >
           From Chapter 1
         </h2>
+
+        <Image
+          src="/book-one/dog-resting-calm-room.jpg"
+          alt="A dog settled calmly beside its crate"
+          width={1024}
+          height={649}
+          sizes="(min-width: 768px) 68ch, 90vw"
+          className="reveal w-full max-w-[68ch] h-auto rounded-[4px] shadow-lg mb-10"
+        />
 
         <div className="reveal" style={{ maxWidth: '68ch' }}>
           <p

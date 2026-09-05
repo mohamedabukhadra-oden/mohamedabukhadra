@@ -24,7 +24,7 @@ import { SITE_URL } from '@/lib/seo'
 // Falls back to the homepage's own cover image so a share never renders a blank
 // card. Real per-article art (Article.ogImage / coverImage, set from the admin)
 // always wins when present.
-const DEFAULT_OG_IMAGE = '/book-cover-1.png'
+const DEFAULT_OG_IMAGE = '/book-one-cover.jpg'
 
 // Rebuild published articles every 5 minutes. Never set this to 0 — a fresh
 // render on every request means a transient DB error during a crawl becomes a

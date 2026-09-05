@@ -57,8 +57,9 @@ function HeroSection() {
           This was a CSS approximation of the cover. However closely it matched,
           it was still a placeholder: no og:image for shares, nothing for alt
           text, nothing for crawlers to see, and it would drift the moment a
-          token changed. public/book-cover-1.png is the real front cover
-          (853×1280; book-cover-0 is the back, -2 is the spine).
+          token changed. public/book-one-cover.jpg is the real, final front
+          cover (1600×2560) supplied by the author, replacing the earlier
+          draft (book-cover-1.png).
 
           No rotation. A tilted cover is the signature of a stock 3D mockup and
           reads infomercial — the one cue that would undercut an otherwise
@@ -82,10 +83,10 @@ function HeroSection() {
               }}
             />
             <Image
-              src="/book-cover-1.png"
+              src="/book-one-cover.jpg"
               alt="Before You Say Yes to the Dog — A Family Guide Before Bringing Home a Puppy, by Mohamed Abu Khadra. A family sits together in a hallway with a golden puppy on the doormat."
-              width={853}
-              height={1280}
+              width={1600}
+              height={2560}
               priority
               sizes="(min-width: 1024px) 288px, (min-width: 768px) 256px, 224px"
               className="relative w-56 sm:w-60 md:w-64 lg:w-72 h-auto rounded-[2px]"
