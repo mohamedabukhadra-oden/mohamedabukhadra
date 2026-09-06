@@ -238,23 +238,33 @@ function ContentsSection() {
         </div>
 
         {/* Chapter list */}
-        <ol className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-2 reveal">
-          {chapters.map((ch, i) => (
-            <li
-              key={i}
-              className="font-text text-base leading-relaxed flex gap-3"
-              style={{ color: 'var(--ink-navy)', opacity: 0.85 }}
-            >
-              <span
-                className="font-display text-sm shrink-0"
-                style={{ color: 'var(--gold)' }}
+        <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:items-start">
+          <ol className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-2 reveal">
+            {chapters.map((ch, i) => (
+              <li
+                key={i}
+                className="font-text text-base leading-relaxed flex gap-3"
+                style={{ color: 'var(--ink-navy)', opacity: 0.85 }}
               >
-                {String(i + 1).padStart(2, '0')}
-              </span>
-              <span>{ch}</span>
-            </li>
-          ))}
-        </ol>
+                <span
+                  className="font-display text-sm shrink-0"
+                  style={{ color: 'var(--gold)' }}
+                >
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span>{ch}</span>
+              </li>
+            ))}
+          </ol>
+          <Image
+            src="/book-one/setting-up-the-house.jpg"
+            alt="A family laying out zone mats for the puppy"
+            width={1068}
+            height={545}
+            sizes="(min-width: 1024px) 35vw, 90vw"
+            className="reveal w-full h-auto rounded-[4px] shadow-lg"
+          />
+        </div>
       </div>
     </section>
   )
@@ -429,6 +439,24 @@ function FormatSection() {
   )
 }
 
+/* ─── Section 7: Closing image ─── */
+function ClosingImageSection() {
+  return (
+    <section className="section-gap" style={{ backgroundColor: 'var(--paper)' }}>
+      <div className="section-container">
+        <Image
+          src="/book-one/walking-the-dog.jpg"
+          alt="A calm walk — the family and dog out together"
+          width={1075}
+          height={782}
+          sizes="(min-width: 768px) 68ch, 90vw"
+          className="reveal w-full max-w-[68ch] mx-auto h-auto rounded-[4px] shadow-lg"
+        />
+      </div>
+    </section>
+  )
+}
+
 /* ─── Section 8: Buy CTA repeat ─── */
 function BuyCTASection() {
   return (
@@ -496,6 +524,7 @@ export default function BookOnePage() {
       <ReadinessTestSection />
       <SampleSection />
       <FormatSection />
+      <ClosingImageSection />
       {/* Reviews section omitted until real reviews exist */}
       <BuyCTASection />
     </>
