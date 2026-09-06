@@ -14,27 +14,30 @@ const pressItems = [
   {
     title: 'Most Innovative CEO 2023 (Egypt)',
     source: 'MEA Markets',
-    href: '#',
+    href: 'https://meamarkets.digital/winners/cowpay/',
   },
   {
     title: "First Egyptian case study in Philip Kotler's Marketing Management",
     source: 'Think Marketing',
-    href: '#',
+    href: 'https://thinkmarketingmagazine.com/first-egyptian-case-study-in-phillip-kotlers-book/',
   },
   {
     title: 'CowPay CEO appointment',
-    source: 'Zawya / Adgully / Economic Times',
-    href: '#',
+    source: 'Zawya',
+    href: 'https://www.zawya.com/en/press-release/people-in-the-news/cowpay-appoints-mohamed-abu-khadra-as-ceo-juvo8kss',
   },
   {
+    // Not independently verifiable yet — no confirmed source URL found. Shown
+    // as plain text rather than a link that goes nowhere; add the real URL
+    // here once it's confirmed.
     title: 'CowPay–Visa partnership',
     source: 'Youm7',
-    href: '#',
+    href: null,
   },
   {
     title: 'Bee Egypt EGP 70M',
     source: 'Daily News Egypt',
-    href: '#',
+    href: null,
   },
   {
     title: 'Speaker, AUC Venture Lab Startup Launchpad',
@@ -44,7 +47,7 @@ const pressItems = [
   {
     title: 'Two recorded talks (YouTube)',
     source: null,
-    href: '#',
+    href: null,
   },
 ]
 

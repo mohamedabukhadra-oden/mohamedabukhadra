@@ -45,6 +45,21 @@ export async function generateStaticParams() {
   }
 }
 
+async function getMoreArticles(excludeSlug: string) {
+  try {
+    return await db.article.findMany({
+      where: { status: 'PUBLISHED', slug: { not: excludeSlug } },
+      orderBy: { publishedAt: 'desc' },
+      take: 3,
+      select: { slug: true, title: true, category: true },
+    })
+  } catch {
+    // A reader should never be blocked from reading the article they came for
+    // because the "more articles" query failed — just show no related list.
+    return []
+  }
+}
+
 async function getArticle(slug: string) {
   // Deliberately no .catch() swallowing errors into null: a DB failure must
   // surface as a 500 (which Google retries) rather than a 404 (which drops the
@@ -114,6 +129,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
   if (!article) notFound()
 
+  const moreArticles = await getMoreArticles(article.slug)
   const url = `${SITE_URL}/insights/${article.slug}`
 
   // Article structured data — lets Google show the headline, author and date
@@ -174,6 +190,28 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             Get the free chapter <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
+
+        {moreArticles.length > 0 && (
+          <div className="mt-12 border-t border-rule pt-8">
+            <h2 className="font-serif text-lg font-bold text-ink mb-4">More from Insights</h2>
+            <ul className="space-y-3">
+              {moreArticles.map((a) => (
+                <li key={a.slug}>
+                  <Link
+                    href={`/insights/${a.slug}`}
+                    className="group flex items-center justify-between gap-3 text-ink hover:text-accent"
+                  >
+                    <span>
+                      <span className="text-xs font-medium text-gold uppercase tracking-wider block mb-0.5">{a.category}</span>
+                      {a.title}
+                    </span>
+                    <ArrowRight className="h-4 w-4 shrink-0 opacity-0 translate-x-1 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   )

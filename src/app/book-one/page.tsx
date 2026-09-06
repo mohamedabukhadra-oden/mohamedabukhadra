@@ -1,8 +1,17 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import Image from 'next/image'
 import { RevealObserver } from '@/components/reveal-observer'
 import { SITE_URL } from '@/lib/seo'
+
+/**
+ * No retailer link exists yet — set NEXT_PUBLIC_BOOK_ONE_BUY_URL to the real
+ * Amazon/Kindle listing once it's live. Until then this falls back to a
+ * pre-filled email enquiry instead of a dead "#" link, so the CTA always goes
+ * somewhere a reader can actually act on.
+ */
+const BUY_URL =
+  process.env.NEXT_PUBLIC_BOOK_ONE_BUY_URL ||
+  'mailto:hello@mohamedabukhadra.com?subject=Before%20You%20Say%20Yes%20to%20the%20Dog%20%E2%80%94%20where%20to%20buy'
 
 export const metadata: Metadata = {
   title: 'Before You Say Yes to the Dog | Mohamed Abu Khadra',
@@ -69,12 +78,14 @@ function CoverSection() {
           </p>
 
           <div className="flex flex-wrap gap-3 mt-2 animate-fade-in-up stagger-4">
-            <Link
-              href="#"
+            <a
+              href={BUY_URL}
+              target={BUY_URL.startsWith('mailto:') ? undefined : '_blank'}
+              rel={BUY_URL.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
               className="b1-btn"
             >
               Get the book
-            </Link>
+            </a>
           </div>
 
           <p
@@ -477,9 +488,14 @@ function BuyCTASection() {
         >
           System first. Puppy second.
         </h2>
-        <Link href="#" className="b1-btn">
+        <a
+          href={BUY_URL}
+          target={BUY_URL.startsWith('mailto:') ? undefined : '_blank'}
+          rel={BUY_URL.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+          className="b1-btn"
+        >
           Get the book
-        </Link>
+        </a>
         <p
           className="text-caption mt-4"
           style={{ color: 'var(--ink-navy)', opacity: 0.5 }}

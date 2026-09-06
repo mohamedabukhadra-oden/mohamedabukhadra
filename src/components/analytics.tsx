@@ -24,6 +24,20 @@ import { useEffect, useRef } from "react";
  *   - Beehiiv — newsletter list management
  */
 
+/** Stable per-visitor id (localStorage) and per-session id (sessionStorage), shared by the pageview effect and trackEvent(). */
+function getOrCreateId(storage: Storage, key: string): string {
+  try {
+    let id = storage.getItem(key);
+    if (!id) {
+      id = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      storage.setItem(key, id);
+    }
+    return id;
+  } catch {
+    return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  }
+}
+
 declare global {
   interface Window {
     dataLayer?: unknown[];
@@ -102,41 +116,24 @@ export function Analytics() {
       window.uetq.push("event", "page_view", {});
     }
 
-    // First-party log (legacy events API — kept for backward compat with existing dashboard widgets)
-    void fetch("/api/analytics", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ event: "page_view", page: pathname }),
-      keepalive: true,
-    }).catch(() => {});
-
-    // ─── First-party session + pageview tracking (new) ───────────
+    // ─── First-party session + pageview tracking ───────────
     // This powers the marketing dashboard: visitors, bounce rate,
     // time-on-page, traffic sources, device breakdown, etc.
     if (typeof navigator === "undefined" || navigator.doNotTrack === "1") return;
 
-    // Get or create a stable sessionId for the visitor
-    const SESSION_KEY = "kh_sid";
-    let sessionId = sessionStorage.getItem(SESSION_KEY);
-    if (!sessionId) {
-      sessionId = crypto.randomUUID
-        ? crypto.randomUUID()
-        : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
-      sessionStorage.setItem(SESSION_KEY, sessionId);
-    }
+    const visitorId = getOrCreateId(localStorage, "kh_vid");
+    const sessionId = getOrCreateId(sessionStorage, "kh_sid");
 
     // Parse UTM params from URL (only captured on landing, then in sessionStorage)
     const UTM_KEY = "kh_utm";
-    let utm: Record<string, string> | undefined;
+    let utm: { source?: string; medium?: string; campaign?: string } | undefined;
     const urlParams = new URLSearchParams(window.location.search);
     const utmSource = urlParams.get("utm_source");
     if (utmSource) {
       utm = {
-        source: utmSource || "",
+        source: utmSource,
         medium: urlParams.get("utm_medium") || "",
         campaign: urlParams.get("utm_campaign") || "",
-        term: urlParams.get("utm_term") || "",
-        content: urlParams.get("utm_content") || "",
       };
       sessionStorage.setItem(UTM_KEY, JSON.stringify(utm));
     } else {
@@ -146,20 +143,21 @@ export function Analytics() {
       }
     }
 
-    // Beacon the pageview
+    // Beacon the pageview to the real first-party endpoint
     const payload = JSON.stringify({
+      visitorId,
       sessionId,
-      page: pathname,
-      title: document.title,
+      path: pathname,
       referrer: document.referrer || undefined,
-      utm,
-      screen: { width: window.screen.width, height: window.screen.height },
+      utmSource: utm?.source,
+      utmMedium: utm?.medium,
+      utmCampaign: utm?.campaign,
     });
     try {
-      navigator.sendBeacon("/api/analytics/collect", new Blob([payload], { type: "application/json" }));
+      navigator.sendBeacon("/api/track", new Blob([payload], { type: "application/json" }));
     } catch {
       // Fallback if sendBeacon is unavailable
-      void fetch("/api/analytics/collect", {
+      void fetch("/api/track", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: payload,
@@ -194,27 +192,6 @@ export function Analytics() {
             label: `${m}%`,
             value: m,
           });
-
-          // Also update the pageview's scroll depth in the new analytics system
-          const sid = sessionStorage.getItem("kh_sid");
-          if (sid) {
-            try {
-              navigator.sendBeacon(
-                "/api/analytics/collect",
-                new Blob(
-                  [JSON.stringify({ sessionId: sid, scrollDepth: m })],
-                  { type: "application/json" },
-                ),
-              );
-            } catch { /* ignore */ }
-            // Also PATCH the pageview scroll depth
-            void fetch("/api/analytics/collect", {
-              method: "PATCH",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ sessionId: sid, scrollDepth: m }),
-              keepalive: true,
-            }).catch(() => {});
-          }
         }
       }
     }
@@ -581,30 +558,20 @@ export async function trackEvent(
       window.rdt("track", rdtEvent, props);
     }
 
-    // First-party log (always fires)
-    void fetch("/api/analytics", {
+    // First-party log — always fires, single call to the real endpoint.
+    void fetch("/api/track", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ event, ...props, page: window.location.pathname }),
+      body: JSON.stringify({
+        visitorId: getOrCreateId(localStorage, "kh_vid"),
+        sessionId: getOrCreateId(sessionStorage, "kh_sid"),
+        path: window.location.pathname,
+        event,
+        value: typeof props?.value === "number" ? props.value : undefined,
+        meta: props,
+      }),
       keepalive: true,
     }).catch(() => {});
-
-    // Server-side conversion mirroring (Meta CAPI + GA4 MP)
-    if (isConversion) {
-      void fetch("/api/track", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          event,
-          eventId: props?.eventId,
-          value: props?.value,
-          currency: props?.currency || "USD",
-          page: window.location.pathname,
-          referrer: document.referrer,
-        }),
-        keepalive: true,
-      }).catch(() => {});
-    }
   } catch {
     // analytics should never break UX
   }
