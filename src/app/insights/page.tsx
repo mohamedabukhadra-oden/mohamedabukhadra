@@ -2,6 +2,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { db } from '@/lib/db'
 import { SITE_URL } from '@/lib/seo'
+import { STATIC_ARTICLES } from '@/components/static-article'
 
 /**
  * The writing index.
@@ -49,13 +50,27 @@ export default async function InsightsPage({
 
   // Filtering happens server-side so each category is its own crawlable URL
   // rather than a client-side state change Google never sees.
-  const articles = await db.article.findMany({
+  const dbArticles = await db.article.findMany({
     where: { status: 'PUBLISHED', ...(active ? { category: active } : {}) },
     orderBy: [{ featured: 'desc' }, { publishedAt: 'desc' }],
     select: {
       id: true, slug: true, title: true, excerpt: true,
       category: true, readTime: true, publishedAt: true, featured: true,
     },
+  })
+
+  // Static articles (published as files rather than DB rows — see
+  // components/static-article.tsx) are merged in here so they're actually
+  // discoverable by browsing rather than reachable only by direct URL.
+  const staticArticles = STATIC_ARTICLES
+    .filter((a) => !active || a.category === active)
+    .map((a) => ({ ...a, id: a.slug, publishedAt: new Date(a.publishedAt) }))
+
+  const articles = [...dbArticles, ...staticArticles].sort((a, b) => {
+    if (a.featured !== b.featured) return a.featured ? -1 : 1
+    const aTime = a.publishedAt?.getTime() ?? 0
+    const bTime = b.publishedAt?.getTime() ?? 0
+    return bTime - aTime
   })
 
   const label = (v: string) => CATEGORIES.find((c) => c.value === v)?.label || v

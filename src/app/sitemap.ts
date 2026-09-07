@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { db } from '@/lib/db'
 import { SITE_URL } from '@/lib/seo'
+import { STATIC_ARTICLES } from '@/components/static-article'
 
 const STATIC_ROUTES: {
   path: string
@@ -44,5 +45,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }))
 
-  return [...staticEntries, ...articleEntries]
+  // Articles published as static files rather than DB rows — see
+  // components/static-article.tsx.
+  const staticArticleEntries: MetadataRoute.Sitemap = STATIC_ARTICLES.map((a) => ({
+    url: `${SITE_URL}/insights/${a.slug}`,
+    lastModified: new Date(a.publishedAt),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  }))
+
+  return [...staticEntries, ...articleEntries, ...staticArticleEntries]
 }
