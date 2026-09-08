@@ -5,6 +5,7 @@ import { rateLimit } from '@/lib/rate-limit'
 import { sendEmail, emailConfigured } from '@/lib/email'
 import { welcomeEmailHtml } from '@/lib/newsletter-template'
 import { SITE_URL } from '@/lib/seo'
+import { LEAD_MAGNETS } from '@/lib/lead-magnets'
 
 export const runtime = 'nodejs'
 
@@ -24,14 +25,15 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
  * Best-effort: a Resend outage must not fail the signup itself, since the
  * subscriber row (the thing that actually matters) is already committed.
  *
- * FREE_CHAPTER_URL is not set anywhere in this repo — there's no Chapter 10
- * file or hosted page to point at. Until it's configured, a /free signup gets
- * the honest generic welcome instead of a chapter link that would 404.
+ * The Reset PDF now lives at a permanent, git-tracked path (see
+ * lib/lead-magnets.ts) rather than behind an unset FREE_CHAPTER_URL env var —
+ * this link is printed in physical books, so it belongs in source control,
+ * not in environment config that could silently go unset again.
  */
 async function sendWelcomeEmail(subscriber: { email: string; name: string | null; unsubToken: string }, source: string) {
   if (!emailConfigured()) return
 
-  const chapterUrl = source === 'reset-chapter' ? process.env.FREE_CHAPTER_URL || null : null
+  const chapterUrl = source === 'reset-chapter' ? `${SITE_URL}${LEAD_MAGNETS.reset.path}` : null
 
   try {
     await sendEmail({

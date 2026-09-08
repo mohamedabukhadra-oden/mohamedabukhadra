@@ -2,6 +2,8 @@
 
 import { useState, FormEvent } from 'react'
 import { RevealObserver } from '@/components/reveal-observer'
+import { DownloadButton } from '@/components/download-button'
+import { LEAD_MAGNETS } from '@/lib/lead-magnets'
 
 export default function FreePage() {
   const [email, setEmail] = useState('')
@@ -72,9 +74,18 @@ export default function FreePage() {
             {/* Email form */}
             <form onSubmit={handleSubmit} className="mb-12 md:mb-16 reveal">
               {status === 'sent' ? (
-                <p className="text-body text-ink font-medium">
-                  Check your inbox. The chapter is on its way.
-                </p>
+                <div>
+                  <p className="text-body text-ink font-medium mb-4">
+                    It&rsquo;s also on its way to your inbox, in case the tab
+                    closes.
+                  </p>
+                  <DownloadButton
+                    href={LEAD_MAGNETS.reset.path}
+                    magnet="reset"
+                    page="/free"
+                    label="Open the Reset chapter now (PDF)"
+                  />
+                </div>
               ) : (
                 <div className="flex flex-col sm:flex-row gap-3">
                   <input

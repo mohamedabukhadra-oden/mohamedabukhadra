@@ -2,16 +2,7 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import { RevealObserver } from '@/components/reveal-observer'
 import { SITE_URL } from '@/lib/seo'
-
-/**
- * No retailer link exists yet — set NEXT_PUBLIC_BOOK_ONE_BUY_URL to the real
- * Amazon/Kindle listing once it's live. Until then this falls back to a
- * pre-filled email enquiry instead of a dead "#" link, so the CTA always goes
- * somewhere a reader can actually act on.
- */
-const BUY_URL =
-  process.env.NEXT_PUBLIC_BOOK_ONE_BUY_URL ||
-  'mailto:hello@mohamedabukhadra.com?subject=Before%20You%20Say%20Yes%20to%20the%20Dog%20%E2%80%94%20where%20to%20buy'
+import { BOOK_ONE_BUY_URL as BUY_URL } from '@/lib/buy-url'
 
 export const metadata: Metadata = {
   title: 'Before You Say Yes to the Dog | Mohamed Abu Khadra',

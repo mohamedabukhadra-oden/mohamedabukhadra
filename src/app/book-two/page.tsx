@@ -3,8 +3,14 @@ import Image from 'next/image'
 import { WaitlistForm } from './waitlist-form'
 import { SITE_URL } from '@/lib/seo'
 
+// Live on Amazon as of 2026-09-08 (link provided directly by the author).
+// NEXT_PUBLIC_BOOK_TWO_BUY_URL can override this later without a code change
+// if the canonical link ever moves.
+const BUY_URL =
+  process.env.NEXT_PUBLIC_BOOK_TWO_BUY_URL || 'https://www.amazon.com/dp/B0HJ43D7J2'
+
 export const metadata: Metadata = {
-  title: 'After You Say Yes to the Dog — Coming Soon | Mohamed Abu Khadra',
+  title: 'After You Say Yes to the Dog | Mohamed Abu Khadra',
   // Was missing: without its own canonical this page silently inherited the
   // homepage's, telling Google it was a duplicate of "/" rather than its own URL.
   alternates: {
@@ -47,17 +53,31 @@ export default function BookTwoPage() {
             After You Say Yes to the Dog
           </h1>
 
-          <h2 className="text-h2 text-text-2 mb-8">Coming soon.</h2>
+          <h2 className="text-h2 text-text-2 mb-8">Available now.</h2>
 
           <p className="text-body text-text-2 mb-4">
             Book One is what you read to know. Book Two is what you print and
             stick on the fridge.
           </p>
 
-          <p className="text-body text-text-2 mb-12">
+          <p className="text-body text-text-2 mb-8">
             Manuals for the moments that actually happen — the first night, the
             vet visit, the guest at the door, the week it all falls apart. Written
             to be used with one hand while the other holds a leash.
+          </p>
+
+          <a
+            href={BUY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary mb-8 inline-flex"
+            style={{ backgroundColor: 'var(--teal)' }}
+          >
+            Get the book
+          </a>
+
+          <p className="text-caption text-text-3 mb-3">
+            Want updates on future books instead?
           </p>
 
           <WaitlistForm />

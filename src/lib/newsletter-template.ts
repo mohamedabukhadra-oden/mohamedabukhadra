@@ -102,7 +102,7 @@ export function welcomeEmailHtml(opts: {
   const heading = opts.chapterUrl ? 'Your Reset chapter is here' : "You're on the list"
 
   const body = opts.chapterUrl
-    ? "Thanks for asking for the Reset chapter — Chapter 10 of Before You Say Yes to the Dog, free in full. It's below. I'll also let you know when I publish something new; nothing more often than that."
+    ? "Here's the Reset — Chapter 10 of Before You Say Yes to the Dog, free in full. It's below."
     : "Thanks for subscribing. I'll email you when I publish something new — a new chapter, a new piece of writing, nothing more often than that."
 
   const ctaLabel = opts.chapterUrl ? 'Read the Reset chapter →' : 'Read the latest writing →'
@@ -148,6 +148,75 @@ export function welcomeEmailHtml(opts: {
             <td style="padding:20px 32px;border-top:1px solid #E3DFD8;font-family:Arial,Helvetica,sans-serif;">
               <p style="margin:0;font-size:12px;line-height:1.5;color:#5C6169;">
                 You're receiving this because you subscribed at mohamedabukhadra.com.<br>
+                <a href="${opts.unsubscribeUrl}" style="color:#5C6169;text-decoration:underline;">Unsubscribe</a>
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`
+}
+
+/**
+ * Generic single-CTA email — used for the Day-3 and Day-7 steps of the Reset
+ * signup sequence (see api/newsletter/sequence/route.ts). Same visual shell as
+ * welcomeEmailHtml, parameterized directly rather than through a source-specific
+ * conditional, since these two steps aren't tied to signup itself.
+ */
+export function sequenceEmailHtml(opts: {
+  recipientName?: string | null
+  heading: string
+  body: string
+  ctaLabel?: string
+  ctaUrl?: string
+  unsubscribeUrl: string
+}): string {
+  const greeting = opts.recipientName ? `Hello ${esc(opts.recipientName)},` : 'Hello,'
+
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${esc(opts.heading)}</title>
+</head>
+<body style="margin:0;padding:0;background-color:#FAF8F5;">
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;">${esc(opts.body.slice(0, 140))}</div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#FAF8F5;">
+    <tr>
+      <td align="center" style="padding:32px 16px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;background-color:#ffffff;border-radius:12px;overflow:hidden;">
+
+          <tr>
+            <td style="padding:28px 32px 8px 32px;font-family:Georgia,'Times New Roman',serif;">
+              <p style="margin:0 0 16px 0;font-size:15px;color:#5C6169;font-family:Arial,Helvetica,sans-serif;">${greeting}</p>
+              <h1 style="margin:0 0 12px 0;font-size:24px;line-height:1.3;color:#14161A;font-weight:bold;">${esc(opts.heading)}</h1>
+              <div style="width:48px;height:3px;background-color:#B4893B;border-radius:2px;margin:0 0 20px 0;"></div>
+              <p style="margin:0 0 24px 0;font-size:16px;line-height:1.6;color:#14161A;font-family:Arial,Helvetica,sans-serif;">${esc(opts.body)}</p>
+            </td>
+          </tr>
+
+          ${opts.ctaUrl ? `<tr>
+            <td style="padding:0 32px 32px 32px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="background-color:#14161A;border-radius:8px;">
+                    <a href="${opts.ctaUrl}" style="display:inline-block;padding:12px 24px;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;color:#ffffff;text-decoration:none;">${esc(opts.ctaLabel || 'Open →')}</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>` : ''}
+
+          <tr>
+            <td style="padding:20px 32px;border-top:1px solid #E3DFD8;font-family:Arial,Helvetica,sans-serif;">
+              <p style="margin:0;font-size:12px;line-height:1.5;color:#5C6169;">
+                You're receiving this because you asked for the Reset chapter at mohamedabukhadra.com.<br>
                 <a href="${opts.unsubscribeUrl}" style="color:#5C6169;text-decoration:underline;">Unsubscribe</a>
               </p>
             </td>
