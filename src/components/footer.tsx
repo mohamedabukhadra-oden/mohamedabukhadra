@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 
 const footerNav = [
@@ -66,11 +67,14 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr] gap-12 md:gap-8">
           {/* Col 1: Logo + tagline */}
           <div className="flex flex-col gap-4">
-            <Link
-              href="/"
-              className="font-display text-lg tracking-tight text-on-dark hover:text-accent transition-colors w-fit"
-            >
-              MAK
+            <Link href="/" className="w-fit" aria-label="Mohamed Abu Khadra — home">
+              <Image
+                src="/mohamed.jpg"
+                alt="Mohamed Abu Khadra"
+                width={40}
+                height={40}
+                className="w-10 h-10 rounded-full object-cover ring-1 ring-on-dark-2/30"
+              />
             </Link>
             <p className="text-caption text-on-dark-2 max-w-xs">
               Mohamed Abu Khadra is the founder of{' '}

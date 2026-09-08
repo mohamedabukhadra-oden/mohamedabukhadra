@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState, useEffect, useCallback } from 'react'
 import { Menu, X } from 'lucide-react'
 import { usePathname } from 'next/navigation'
@@ -58,11 +59,15 @@ export function Nav() {
         }`}
       >
         <nav className="section-container flex items-center justify-between h-16 md:h-18">
-          <Link
-            href="/"
-            className="font-display text-xl tracking-tight text-ink hover:text-accent transition-colors duration-200"
-          >
-            MAK
+          <Link href="/" className="shrink-0" aria-label="Mohamed Abu Khadra — home">
+            <Image
+              src="/mohamed.jpg"
+              alt="Mohamed Abu Khadra"
+              width={40}
+              height={40}
+              priority
+              className="w-10 h-10 rounded-full object-cover ring-1 ring-rule"
+            />
           </Link>
 
           {/* Desktop nav */}
