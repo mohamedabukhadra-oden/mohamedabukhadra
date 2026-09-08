@@ -90,7 +90,7 @@ export function Nav() {
           {/* Desktop CTA + hamburger row */}
           <div className="flex items-center gap-4">
             <Link
-              href="/book-one"
+              href={isActive('/book-two') ? '/book-two' : '/book-one'}
               className="hidden lg:inline-flex btn-primary text-sm"
             >
               Get the book
@@ -132,7 +132,7 @@ export function Nav() {
               </Link>
             ))}
             <Link
-              href="/book-one"
+              href={isActive('/book-two') ? '/book-two' : '/book-one'}
               onClick={closeMenu}
               className="btn-primary text-base mt-4"
             >

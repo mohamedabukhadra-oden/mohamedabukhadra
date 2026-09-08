@@ -60,7 +60,7 @@ export function WaitlistForm() {
               backgroundColor: 'var(--teal)',
             }}
           >
-            {status === 'loading' ? '...' : "Tell me when it's out"}
+            {status === 'loading' ? '...' : 'Get updates on new releases'}
           </button>
         </form>
       )}

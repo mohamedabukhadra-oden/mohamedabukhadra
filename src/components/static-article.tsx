@@ -9,17 +9,22 @@ import { db } from '@/lib/db'
  * insights/[slug] route, so a reader can't tell which kind of page they're on.
  */
 
+/** Inline markdown within a line — bold only, the one form actually used in content. */
+function renderInline(text: string): string {
+  return text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+}
+
 export function renderMarkdown(md: string) {
   return md
     .split('\n')
     .map((line: string) => {
-      if (line.startsWith('### ')) return `<h3 class="font-serif text-xl font-bold text-ink mt-6 mb-2">${line.slice(4)}</h3>`
-      if (line.startsWith('## ')) return `<h2 class="font-serif text-2xl font-bold text-ink mt-8 mb-3">${line.slice(3)}</h2>`
-      if (line.startsWith('# ')) return `<h1 class="font-serif text-3xl font-bold text-ink mt-8 mb-4">${line.slice(2)}</h1>`
-      if (line.startsWith('> ')) return `<blockquote class="border-l-4 border-gold pl-4 italic text-text-2 my-4">${line.slice(2)}</blockquote>`
-      if (line.startsWith('- ')) return `<li class="ml-4 text-ink">${line.slice(2)}</li>`
+      if (line.startsWith('### ')) return `<h3 class="font-serif text-xl font-bold text-ink mt-6 mb-2">${renderInline(line.slice(4))}</h3>`
+      if (line.startsWith('## ')) return `<h2 class="font-serif text-2xl font-bold text-ink mt-8 mb-3">${renderInline(line.slice(3))}</h2>`
+      if (line.startsWith('# ')) return `<h1 class="font-serif text-3xl font-bold text-ink mt-8 mb-4">${renderInline(line.slice(2))}</h1>`
+      if (line.startsWith('> ')) return `<blockquote class="border-l-4 border-gold pl-4 italic text-text-2 my-4">${renderInline(line.slice(2))}</blockquote>`
+      if (line.startsWith('- ')) return `<li class="ml-4 text-ink">${renderInline(line.slice(2))}</li>`
       if (line.trim() === '') return '<br/>'
-      return `<p class="text-ink leading-relaxed mb-4">${line}</p>`
+      return `<p class="text-ink leading-relaxed mb-4">${renderInline(line)}</p>`
     })
     .join('')
 }
