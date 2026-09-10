@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { RevealObserver } from '@/components/reveal-observer'
 import { SITE_URL } from '@/lib/seo'
 import { personNode } from '@/lib/json-ld'
+import { AUTHOR_URL } from '@/lib/buy-url'
 
 export const metadata: Metadata = {
   title: 'About | Mohamed Abu Khadra',
@@ -221,6 +222,15 @@ export default function AboutPage() {
                 <Link href="/press" className="text-accent hover:text-accent-hover transition-colors">
                   here
                 </Link>
+                , and his books are on{' '}
+                <a
+                  href={AUTHOR_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-accent hover:text-accent-hover transition-colors"
+                >
+                  Amazon
+                </a>
               </p>
             </section>
 

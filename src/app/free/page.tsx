@@ -4,6 +4,7 @@ import { useState, FormEvent } from 'react'
 import { RevealObserver } from '@/components/reveal-observer'
 import { DownloadButton } from '@/components/download-button'
 import { LEAD_MAGNETS } from '@/lib/lead-magnets'
+import { BOOK_ONE_BUY_URL } from '@/lib/buy-url'
 
 export default function FreePage() {
   const [email, setEmail] = useState('')
@@ -85,6 +86,17 @@ export default function FreePage() {
                     page="/free"
                     label="Open the Reset chapter now (PDF)"
                   />
+                  <p className="text-caption text-text-3 mt-4">
+                    This is Chapter 10. The other nine are in{' '}
+                    <a
+                      href={BOOK_ONE_BUY_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-accent hover:text-accent-hover transition-colors"
+                    >
+                      the full book
+                    </a>.
+                  </p>
                 </div>
               ) : (
                 <div className="flex flex-col sm:flex-row gap-3">

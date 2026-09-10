@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
+import { SERIES_URL } from '@/lib/buy-url'
 
 const footerNav = [
   { href: '/book-one', label: 'The Book' },
@@ -96,6 +97,14 @@ export function Footer() {
                 The KnowHow Company
               </a>.
             </p>
+            <a
+              href={SERIES_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-caption text-on-dark-2 hover:text-on-dark transition-colors underline underline-offset-2 w-fit"
+            >
+              See the full system — both books
+            </a>
           </div>
 
           {/* Col 2: Nav repeat */}
