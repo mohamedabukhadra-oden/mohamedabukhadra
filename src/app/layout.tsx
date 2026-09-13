@@ -33,7 +33,6 @@ export const metadata: Metadata = {
     'Before You Say Yes to the Dog',
     'After You Say Yes to the Dog',
     'family dog system',
-    'German Shepherd puppy',
     'first time dog owner',
     'puppy readiness',
     'dog ownership preparation',

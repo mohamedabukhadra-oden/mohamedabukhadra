@@ -3,16 +3,17 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { SERIES_URL } from '@/lib/buy-url'
 
 const footerNav = [
-  { href: '/book-one', label: 'The Book' },
-  { href: '/about', label: 'About' },
-  { href: '/free', label: 'Free Chapter' },
+  { href: '/book-one', label: 'Book One' },
   { href: '/book-two', label: 'Book Two' },
+  { href: '/about', label: 'About' },
+  { href: '/free', label: 'Free Guide' },
   // Without this the published articles sit in the sitemap linked from nowhere
   // on the site, which is how they were until now.
-  { href: '/insights', label: 'Writing' },
+  { href: '/insights', label: 'Insights' },
   { href: '/contact', label: 'Contact' },
 ]
 
@@ -21,8 +22,18 @@ const legalLinks = [
   { href: '/terms', label: 'Terms' },
 ]
 
+// Pages that already ask for an email themselves (a lead-magnet gate or a
+// waitlist form) skip the footer's own "Stay updated" box — two email
+// prompts stacked on one page is the redundancy this avoids, not a second
+// legitimate list.
+const SUPPRESS_NEWSLETTER_ON = ['/free', '/book-two']
+
 export function Footer() {
   const year = new Date().getFullYear()
+  const pathname = usePathname()
+  const showNewsletter = !SUPPRESS_NEWSLETTER_ON.some(
+    (p) => pathname === p || pathname?.startsWith(p + '/')
+  )
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [busy, setBusy] = useState(false)
@@ -69,7 +80,11 @@ export function Footer() {
     <footer className="bg-ink-dark text-on-dark">
       <div className="section-container py-16 md:py-20">
         {/* Top row: logo + nav + newsletter */}
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr] gap-12 md:gap-8">
+        <div
+          className={`grid grid-cols-1 gap-12 md:gap-8 ${
+            showNewsletter ? 'md:grid-cols-[1fr_1fr_1fr]' : 'md:grid-cols-[1fr_1fr]'
+          }`}
+        >
           {/* Col 1: Logo + tagline */}
           <div className="flex flex-col gap-4">
             <Link href="/" className="w-fit" aria-label="Mohamed Abu Khadra — home">
@@ -124,7 +139,9 @@ export function Footer() {
             ))}
           </nav>
 
-          {/* Col 3: Newsletter */}
+          {/* Col 3: Newsletter — skipped on pages that already have their own
+              email capture (see SUPPRESS_NEWSLETTER_ON above). */}
+          {showNewsletter && (
           <div className="flex flex-col gap-3">
             <p className="font-ui text-sm font-medium text-on-dark">
               Stay updated
@@ -171,6 +188,7 @@ export function Footer() {
               </p>
             )}
           </div>
+          )}
         </div>
 
         {/* Bottom row: copyright + legal */}

@@ -10,12 +10,14 @@ export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 /**
- * GET /api/newsletter/sequence — the Day-3 and Day-7 steps of the Reset
- * signup sequence. Called daily by Vercel Cron (see vercel.json), same
- * CRON_SECRET auth as /api/auto-publish.
+ * GET /api/newsletter/sequence — the Day-3 and Day-7 steps of the
+ * Starter-Pack signup sequence (from /free). Called daily by Vercel Cron
+ * (see vercel.json), same CRON_SECRET auth as /api/auto-publish.
  *
- * Immediately: the Reset PDF (sent from /api/newsletter on signup itself).
- * Day 3: the Puppy Starter Pack.
+ * Immediately: the Puppy Starter Pack (sent from /api/newsletter on signup
+ * itself).
+ * Day 3: the Reset chapter — for the family whose first weeks have already
+ * gone sideways.
  * Day 7: a short note about Book One. Then stop — no more scheduled mail.
  *
  * Deliberately schema-free: rather than a "sentAt" column (which would need a
@@ -57,23 +59,23 @@ export async function GET(req: NextRequest) {
   try {
     const [day3Subs, day7Subs] = await Promise.all([
       db.newsletterSubscriber.findMany({
-        where: { source: 'reset-chapter', active: true, createdAt: utcDayRange(3) },
+        where: { source: 'starter-pack', active: true, createdAt: utcDayRange(3) },
       }),
       db.newsletterSubscriber.findMany({
-        where: { source: 'reset-chapter', active: true, createdAt: utcDayRange(7) },
+        where: { source: 'starter-pack', active: true, createdAt: utcDayRange(7) },
       }),
     ])
 
     const day3Result = await sendBatch(
       day3Subs.map((s) => ({
         email: s.email,
-        subject: 'Your Puppy Starter Pack',
+        subject: 'If it’s already going badly, read this',
         html: sequenceEmailHtml({
           recipientName: s.name,
-          heading: 'Your Puppy Starter Pack',
-          body: 'A short, practical guide for the first weeks with a new puppy — the decisions that actually matter before the ones everyone argues about online.',
-          ctaLabel: 'Download the Starter Pack →',
-          ctaUrl: `${SITE_URL}${LEAD_MAGNETS.starterPack.path}`,
+          heading: 'The Reset',
+          body: 'One more free chapter: what to do when the puppy is already home and the week has gone wrong. Why a bad week is not a bad dog, and how to change the system instead of the effort.',
+          ctaLabel: 'Read the Reset chapter →',
+          ctaUrl: `${SITE_URL}${LEAD_MAGNETS.reset.path}`,
           unsubscribeUrl: `${SITE_URL}/unsubscribe?token=${s.unsubToken}`,
         }),
       }))

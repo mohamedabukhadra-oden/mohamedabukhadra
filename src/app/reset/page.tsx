@@ -4,12 +4,13 @@ import { RevealObserver } from '@/components/reveal-observer'
 import { DownloadButton } from '@/components/download-button'
 import { LEAD_MAGNETS } from '@/lib/lead-magnets'
 import { SITE_URL } from '@/lib/seo'
+import { SeriesFooter } from '@/components/series-footer'
 
 // Printed in both books and handed out as a QR code — this URL is permanent.
 export const metadata: Metadata = {
   title: 'The Reset — free, no email required | Mohamed Abu Khadra',
   description:
-    'Chapter 10 of Before You Say Yes to the Dog, free in full. What to do when the puppy is already home and the week has gone wrong. No email, no signup.',
+    'Chapter 13 of Before You Say Yes to the Dog, free in full. What to do when the puppy is already home and the week has gone wrong. No email, no signup.',
   alternates: { canonical: `${SITE_URL}/reset` },
 }
 
@@ -26,7 +27,7 @@ export default function ResetPage() {
             </h1>
 
             <p className="text-longform text-ink mb-4 reveal">
-              The Reset chapter is Chapter 10 of Before You Say Yes to the Dog.
+              The Reset chapter is Chapter 13 of Before You Say Yes to the Dog.
               Free, in full, right now — no email, no signup, no strings.
             </p>
 
@@ -76,6 +77,8 @@ export default function ResetPage() {
                 required. <strong className="text-ink">mohamedabukhadra.com/reset</strong>
               </p>
             </div>
+
+            <SeriesFooter />
 
           </div>
         </div>

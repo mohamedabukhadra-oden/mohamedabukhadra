@@ -85,12 +85,12 @@ export function newsletterHtml(opts: {
  * returned {ok:true}, so a subscriber who was told "check your inbox" (by the
  * /free page) or who simply signed up for the list never received anything.
  * This is the single template for both cases: plain signups get the generic
- * welcome copy, and /free's "Reset chapter" signups get the chapter-specific
+ * welcome copy, and /free's "Puppy Starter Pack" signups get the pack-specific
  * copy when `chapterUrl` is supplied.
  *
  * `chapterUrl` is intentionally a parameter, not a hardcoded link — this file
- * has no access to the actual Chapter 10 manuscript/PDF, so the caller decides
- * what to link to (see FREE_CHAPTER_URL in src/app/api/newsletter/route.ts).
+ * has no access to the actual PDF, so the caller decides what to link to (see
+ * lib/lead-magnets.ts and src/app/api/newsletter/route.ts).
  */
 export function welcomeEmailHtml(opts: {
   recipientName?: string | null
@@ -99,13 +99,13 @@ export function welcomeEmailHtml(opts: {
 }): string {
   const greeting = opts.recipientName ? `Hello ${esc(opts.recipientName)},` : 'Hello,'
 
-  const heading = opts.chapterUrl ? 'Your Reset chapter is here' : "You're on the list"
+  const heading = opts.chapterUrl ? 'Your Puppy Starter Pack is here' : "You're on the list"
 
   const body = opts.chapterUrl
-    ? "Here's the Reset — Chapter 10 of Before You Say Yes to the Dog, free in full. It's below."
+    ? "Here's the Puppy Starter Pack — a free, practical guide for the first weeks with a new puppy. It's below."
     : "Thanks for subscribing. I'll email you when I publish something new — a new chapter, a new piece of writing, nothing more often than that."
 
-  const ctaLabel = opts.chapterUrl ? 'Read the Reset chapter →' : 'Read the latest writing →'
+  const ctaLabel = opts.chapterUrl ? 'Download the Starter Pack →' : 'Read the latest writing →'
   const ctaUrl = opts.chapterUrl || undefined
 
   return `<!doctype html>
@@ -216,7 +216,7 @@ export function sequenceEmailHtml(opts: {
           <tr>
             <td style="padding:20px 32px;border-top:1px solid #E3DFD8;font-family:Arial,Helvetica,sans-serif;">
               <p style="margin:0;font-size:12px;line-height:1.5;color:#5C6169;">
-                You're receiving this because you asked for the Reset chapter at mohamedabukhadra.com.<br>
+                You're receiving this because you asked for the Puppy Starter Pack at mohamedabukhadra.com.<br>
                 <a href="${opts.unsubscribeUrl}" style="color:#5C6169;text-decoration:underline;">Unsubscribe</a>
               </p>
             </td>

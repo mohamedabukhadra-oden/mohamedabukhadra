@@ -3,6 +3,10 @@ import Image from 'next/image'
 import { RevealObserver } from '@/components/reveal-observer'
 import { SITE_URL } from '@/lib/seo'
 import { personNode } from '@/lib/json-ld'
+import { BOOK_ONE_BUY_URL } from '@/lib/buy-url'
+
+const BOOK_TWO_BUY_URL =
+  process.env.NEXT_PUBLIC_BOOK_TWO_BUY_URL || 'https://www.amazon.com/dp/B0HJ43D7J2'
 
 /* ─── 7.1 Hero — the one dark band ─── */
 function HeroSection() {
@@ -42,7 +46,7 @@ function HeroSection() {
               href="/free"
               className="btn-secondary border-on-dark-2 text-on-dark hover:bg-on-dark hover:text-ink-dark transition-all"
             >
-              Read the free chapter
+              Get the free guide
             </Link>
           </div>
 
@@ -184,6 +188,69 @@ function PatternSection() {
   )
 }
 
+/* ─── The two books — the whole system, not just the first title ─── */
+function BooksSection() {
+  return (
+    <section className="bg-bone-alt section-gap">
+      <div className="section-container">
+        <p className="section-label mb-4 reveal">THE SYSTEM COMES IN TWO BOOKS</p>
+        <h2 className="text-h2 text-ink mb-12 md:mb-16 reveal">
+          Read Book One to know. Use Book Two to do.
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
+          <div className="reveal flex flex-col items-center text-center gap-5">
+            <Image
+              src="/book-one-cover.jpg"
+              alt="Before You Say Yes to the Dog — book cover"
+              width={1600}
+              height={2560}
+              sizes="(min-width: 768px) 220px, 180px"
+              className="w-40 sm:w-48 h-auto rounded-[2px]"
+              style={{ boxShadow: '0 12px 30px -10px rgba(0,0,0,0.4)' }}
+            />
+            <h3 className="text-h3 text-ink">Before You Say Yes to the Dog</h3>
+            <p className="text-body text-text-2">
+              The decision framework — the real workload, the family roles,
+              and the Family Readiness Test, so the puppy arrives into a
+              house that&rsquo;s ready for him.
+            </p>
+            <a href={BOOK_ONE_BUY_URL} target="_blank" rel="noopener noreferrer" className="btn-primary">
+              Get Book One
+            </a>
+          </div>
+
+          <div className="reveal flex flex-col items-center text-center gap-5">
+            <Image
+              src="/book-two-cover.jpg"
+              alt="After You Say Yes to the Dog — book cover"
+              width={1600}
+              height={2560}
+              sizes="(min-width: 768px) 220px, 180px"
+              className="w-40 sm:w-48 h-auto rounded-[2px]"
+              style={{ boxShadow: '0 12px 30px -10px rgba(0,0,0,0.4)' }}
+            />
+            <h3 className="text-h3 text-ink">After You Say Yes to the Dog</h3>
+            <p className="text-body text-text-2">
+              The operating manual — one printable manual per pressure
+              moment, for the family who already said yes.
+            </p>
+            <a
+              href={BOOK_TWO_BUY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary"
+              style={{ backgroundColor: 'var(--teal)' }}
+            >
+              Pre-order Book Two
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 /* ─── 7.3 Signature — the four names ─── */
 /*
   Deliberately more air than any other section. Uniform 128px everywhere is what
@@ -230,25 +297,30 @@ function SignatureSection() {
   )
 }
 
-/* ─── 7.4 Free chapter CTA ─── */
+/* ─── 7.4 Free starter pack CTA ─── */
 function FreeChapterCTA() {
   return (
     <section className="bg-bone-alt section-gap">
       <div className="section-container max-w-2xl reveal">
-        <p className="section-label mb-4">ALREADY HAVE THE PUPPY?</p>
-        <h2 className="text-h2 text-ink mb-6">Start here.</h2>
+        <p className="section-label mb-4">NOT READY TO BUY YET?</p>
+        <h2 className="text-h2 text-ink mb-6">Start with the free guide.</h2>
         <p className="text-body text-text-2 mb-4">
-          The Reset chapter is the one people need most and the one nobody
-          writes. What to do when it&rsquo;s already going badly — why a bad
-          week is not a bad dog, and why &ldquo;try harder&rdquo; is the wrong
-          instruction.
+          The Puppy Starter Pack — four practical stages for choosing the
+          puppy, preparing the house, the first 48 hours, and what to do if
+          something goes wrong. Free, from the two books.
         </p>
-        <p className="text-body text-text-2 mb-8">
-          Free, in full. No purchase.
+        <div className="flex flex-wrap gap-3 mb-4">
+          <Link href="/free" className="btn-primary">
+            Send me the Starter Pack
+          </Link>
+        </div>
+        <p className="text-caption text-text-3">
+          Already home and it&rsquo;s going badly?{' '}
+          <Link href="/reset" className="text-accent hover:text-accent-hover transition-colors">
+            Read the Reset chapter
+          </Link>{' '}
+          — also free, no email required.
         </p>
-        <Link href="/free" className="btn-primary">
-          Send me the Reset chapter
-        </Link>
       </div>
     </section>
   )
@@ -291,6 +363,7 @@ export default function Home() {
       <RevealObserver />
       <HeroSection />
       <PatternSection />
+      <BooksSection />
       <SignatureSection />
       <FreeChapterCTA />
     </>

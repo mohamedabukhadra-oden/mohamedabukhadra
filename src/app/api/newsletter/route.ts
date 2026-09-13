@@ -27,20 +27,20 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
  * Best-effort: a Resend outage must not fail the signup itself, since the
  * subscriber row (the thing that actually matters) is already committed.
  *
- * The Reset PDF now lives at a permanent, git-tracked path (see
- * lib/lead-magnets.ts) rather than behind an unset FREE_CHAPTER_URL env var —
- * this link is printed in physical books, so it belongs in source control,
- * not in environment config that could silently go unset again.
+ * The lead-magnet PDFs live at permanent, git-tracked paths (see
+ * lib/lead-magnets.ts) rather than behind an unset env var — these links are
+ * printed in physical books, so they belong in source control, not in
+ * environment config that could silently go unset again.
  */
 async function sendWelcomeEmail(subscriber: { email: string; name: string | null; unsubToken: string }, source: string) {
   if (!emailConfigured()) return
 
-  const chapterUrl = source === 'reset-chapter' ? `${SITE_URL}${LEAD_MAGNETS.reset.path}` : null
+  const chapterUrl = source === 'starter-pack' ? `${SITE_URL}${LEAD_MAGNETS.starterPack.path}` : null
 
   try {
     await sendEmail({
       to: subscriber.email,
-      subject: chapterUrl ? 'Your Reset chapter is here' : "You're on the list",
+      subject: chapterUrl ? 'Your Puppy Starter Pack is here' : "You're on the list",
       html: welcomeEmailHtml({
         recipientName: subscriber.name,
         unsubscribeUrl: `${SITE_URL}/unsubscribe?token=${subscriber.unsubToken}`,

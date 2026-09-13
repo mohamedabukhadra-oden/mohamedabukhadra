@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Free Chapter — The Reset | Mohamed Abu Khadra',
+  title: 'The Puppy Starter Pack — free | Mohamed Abu Khadra',
   description:
-    'Chapter 10 of Before You Say Yes to the Dog, free in full. What to do when the puppy is already home and the week has gone wrong.',
+    'A free guide for the first weeks with a new puppy, sent straight to your inbox — plus updates when new chapters, tools, and both books are ready.',
   alternates: {
     canonical: `${SITE_URL}/free`,
   },

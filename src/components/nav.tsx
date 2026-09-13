@@ -7,10 +7,10 @@ import { Menu, X } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 
 const navLinks = [
-  { href: '/book-one', label: 'The Book' },
-  { href: '/about', label: 'About' },
-  { href: '/free', label: 'Free Chapter' },
+  { href: '/book-one', label: 'Book One' },
   { href: '/book-two', label: 'Book Two' },
+  { href: '/about', label: 'About' },
+  { href: '/free', label: 'Free Guide' },
   { href: '/insights', label: 'Insights' },
   { href: '/contact', label: 'Contact' },
 ]

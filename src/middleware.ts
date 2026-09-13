@@ -18,6 +18,13 @@ const STATIC_REDIRECTS: Record<string, { to: string; status: 301 | 302 }> = {
   '/quick-check':                             { to: '/free',    status: 301 },
   '/read-inside':                             { to: '/book-one', status: 301 },
   '/faq':                                     { to: '/contact', status: 301 },
+  // The real Reader Gift PDF is branded to /before in its own footer text —
+  // /reader was a placeholder URL from before that file existed.
+  '/reader':                                  { to: '/before',  status: 301 },
+  // The real free-guide PDF is branded to /free in its own footer text —
+  // /starter-pack was a placeholder URL parked here while /free still wrongly
+  // served the Reset chapter (see /free's own history).
+  '/starter-pack':                            { to: '/free',    status: 301 },
 }
 
 // This runs on every request, and redirects change rarely — so the table is

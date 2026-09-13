@@ -4,8 +4,8 @@ import { useState, FormEvent } from 'react'
 import { RevealObserver } from '@/components/reveal-observer'
 import { DownloadButton } from '@/components/download-button'
 import { LEAD_MAGNETS } from '@/lib/lead-magnets'
-import { BOOK_ONE_BUY_URL } from '@/lib/buy-url'
 import { Turnstile } from '@/components/forms/turnstile'
+import { SeriesFooter } from '@/components/series-footer'
 
 export default function FreePage() {
   const [email, setEmail] = useState('')
@@ -28,7 +28,7 @@ export default function FreePage() {
       const res = await fetch('/api/newsletter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.trim(), source: 'reset-chapter', website, renderedAt, turnstileToken }),
+        body: JSON.stringify({ email: email.trim(), source: 'starter-pack', website, renderedAt, turnstileToken }),
       })
 
       if (!res.ok) {
@@ -53,30 +53,21 @@ export default function FreePage() {
 
             {/* H1 */}
             <h1 className="text-h2 text-ink mb-6 reveal">
-              It&rsquo;s already going badly. That is not the end of the story.
+              The Puppy Starter Pack.
             </h1>
 
             {/* Body */}
             <p className="text-longform text-ink mb-4 reveal">
-              The Reset chapter is Chapter 10 of Before You Say Yes to the Dog.
-              Free, in full.
+              A free, practical guide for the first weeks with a new puppy —
+              the decisions that actually matter before the ones everyone
+              argues about online.
             </p>
 
             <p className="text-longform text-ink mb-6 reveal">
-              What to do when the puppy is already home and the week has gone
-              wrong: why a bad week is not a bad dog, why &ldquo;try harder&rdquo;
-              is the wrong instruction, and how to change the system instead of
-              the effort.
+              Sent straight to your inbox, along with occasional word when a
+              new chapter, tool, or book is ready. Nothing more often than
+              that.
             </p>
-
-            {/* Warning */}
-            <div className="mb-10 reveal">
-              <p className="font-text text-text-2 text-body italic">
-                One honest warning inside it: if the real answer was &ldquo;no,
-                not now,&rdquo; a reset won&rsquo;t fix that. The chapter says so
-                plainly.
-              </p>
-            </div>
 
             {/* Email form */}
             <form onSubmit={handleSubmit} className="mb-12 md:mb-16 reveal">
@@ -96,22 +87,11 @@ export default function FreePage() {
                     closes.
                   </p>
                   <DownloadButton
-                    href={LEAD_MAGNETS.reset.path}
-                    magnet="reset"
+                    href={LEAD_MAGNETS.starterPack.path}
+                    magnet="starterPack"
                     page="/free"
-                    label="Open the Reset chapter now (PDF)"
+                    label="Open the Starter Pack now (PDF)"
                   />
-                  <p className="text-caption text-text-3 mt-4">
-                    This is Chapter 10. The other nine are in{' '}
-                    <a
-                      href={BOOK_ONE_BUY_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-accent hover:text-accent-hover transition-colors"
-                    >
-                      the full book
-                    </a>.
-                  </p>
                 </div>
               ) : (
                 <div className="flex flex-col gap-3">
@@ -141,22 +121,7 @@ export default function FreePage() {
               )}
             </form>
 
-            {/* Pull-quote echo */}
-            <blockquote className="border-l-2 border-rule pl-8 mb-12 md:mb-16 reveal">
-              <p className="font-text italic text-text-2 text-body">
-                Koudy, Milo, and Snoopy all went to families who could give them
-                what we couldn&rsquo;t&hellip; It is the last responsible thing a
-                family can do for a dog.
-              </p>
-            </blockquote>
-
-            {/* Shelter & rescue block */}
-            <div className="bg-bone-alt p-6 rounded-[4px] reveal">
-              <p className="text-caption text-text-3">
-                Shelters and rescues: share this link freely with adopters and
-                returning families. No permission needed, no attribution required.
-              </p>
-            </div>
+            <SeriesFooter />
 
           </div>
         </div>

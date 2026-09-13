@@ -14,11 +14,12 @@ const STATIC_ROUTES: {
   { path: '/about', priority: 0.8, changeFreq: 'monthly' },
   { path: '/insights', priority: 0.8, changeFreq: 'weekly' },
   { path: '/free', priority: 0.8, changeFreq: 'monthly' },
+  { path: '/before', priority: 0.7, changeFreq: 'yearly' },
+  { path: '/after', priority: 0.6, changeFreq: 'yearly' },
   { path: '/reset', priority: 0.7, changeFreq: 'yearly' },
   { path: '/shelters', priority: 0.7, changeFreq: 'yearly' },
-  { path: '/starter-pack', priority: 0.6, changeFreq: 'yearly' },
-  // /reader is deliberately excluded — book-owner-only, never indexed (see its
-  // own noindex metadata in src/app/reader/page.tsx).
+  // /reader and /starter-pack are gone — both permanently 301 to their real
+  // canonical homes (/before and /free respectively, see middleware.ts).
   { path: '/press', priority: 0.7, changeFreq: 'monthly' },
   { path: '/contact', priority: 0.6, changeFreq: 'yearly' },
   { path: '/privacy', priority: 0.3, changeFreq: 'yearly' },

@@ -78,14 +78,6 @@ function CoverSection() {
               Get the book
             </a>
           </div>
-
-          <p
-            className="text-caption animate-fade-in-up stagger-5"
-            style={{ color: 'var(--ink-navy)', opacity: 0.5 }}
-          >
-            Kindle $9.99 &middot; Paperback $21.99 &middot; 7&times;10 &middot; 17
-            chapters
-          </p>
         </div>
 
         <div className="flex justify-center md:justify-end animate-fade-in-up stagger-3">
@@ -172,31 +164,34 @@ function AudienceSection() {
 
 /* ─── Section 3: What's inside ─── */
 const parts = [
-  { title: 'Part One', subtitle: 'The Decision Before the Dog' },
-  { title: 'Part Two', subtitle: 'The First Week' },
-  { title: 'Part Three', subtitle: 'The System' },
-  { title: 'Part Four', subtitle: 'When It Goes Wrong' },
-  { title: 'Part Five', subtitle: 'The Reset' },
+  { title: 'Part One', subtitle: 'Before the Decision' },
+  { title: 'Part Two', subtitle: 'The Family System Before Yes' },
+  { title: 'Part Three', subtitle: 'The First-Year Reality' },
+  { title: 'Part Four', subtitle: 'Pressure, Safety, and Daily Life' },
+  { title: 'Part Five', subtitle: 'The Final Decision' },
 ]
 
 const chapters = [
-  'Why Families Fail with Dogs, Not Dogs with Families',
-  'The Dog You Imagine vs. the Dog You Get',
-  'The Unasked Questions',
-  'Who Really Wants This Dog?',
-  'The Fear in the Room',
-  'Day One: What Actually Happens',
-  'The First Night',
-  'The Leash Problem',
-  'Zones, Rules, and the Words You Use',
-  'The Reset: When the First Week Has Gone Wrong',
-  'Children and Dogs: The Permission Structure',
-  'The Adult Who Is Rarely Home',
-  'Commands from Every Direction',
-  'When the Kids Fight Over the Dog',
-  'Chasing Games and the House That Has No Edges',
-  'Month Three: The Tired Family',
-  'The Family Readiness Test',
+  'Before the Puppy Enters the House',
+  'House Zones and Puppy-Free Spaces',
+  'The Six Family Systems',
+  'The Leading Adult Control Centre',
+  'Kids Operator System',
+  'Choosing the Right Puppy',
+  'The First 48 Hours',
+  'The First Week',
+  'Potty Training',
+  'The First Month',
+  'The First 3 Months',
+  'The First Year',
+  'The Reset',
+  'Dog Logic and Body Language',
+  'The SAFE System: Giving the Least-Ready Person a Real Say',
+  'Socialization System',
+  'Outdoor Freedom and Play',
+  'Mental Games and Brain Work',
+  'Grooming, Hygiene, and Health Watch',
+  'Emergencies and Vet Readiness',
 ]
 
 function ContentsSection() {
@@ -216,7 +211,7 @@ function ContentsSection() {
           className="text-h2 mb-12 md:mb-16 reveal"
           style={{ color: 'var(--ink-navy)' }}
         >
-          Five parts. Seventeen chapters.
+          Five parts. Twenty chapters.
         </h2>
 
         {/* Parts list */}
@@ -288,7 +283,7 @@ function ReadinessTestSection() {
           }}
         >
           <p className="text-eyebrow mb-4" style={{ color: 'var(--paper)', opacity: 0.7 }}>
-            CHAPTER 17
+            PART FIVE &middot; THE FINAL DECISION
           </p>
           <h2 className="text-h2 mb-6" style={{ color: 'var(--paper)' }}>
             The Family Readiness Test
@@ -355,85 +350,40 @@ function SampleSection() {
             className="font-text text-lg md:text-xl leading-relaxed md:leading-loose mb-6"
             style={{ color: 'var(--ink-navy)' }}
           >
-            There is a moment, usually in the afternoon, when the house goes
-            quiet and you look at the puppy sleeping on the floor and you think:
-            we made a mistake. Not a dramatic mistake. Not the kind you scream
-            about. The quiet kind. The kind that sits in your chest while the
-            children are at school and your spouse is at work and it is just you
-            and this animal who has been in your house for eleven days and has
-            already changed the shape of every room.
+            Here is the thing nobody warns you about. The dog that breaks a
+            family is almost never an unloved one. It is the dog everyone
+            wanted. The kids begged for him, the parents said yes, the whole
+            house celebrated the day he arrived — and a few months later that
+            same house is tense, tired, and quietly wondering what went wrong.
+            Nobody saw it coming, because the family prepared for the wrong
+            thing entirely. They prepared to love a puppy. They did not
+            prepare to live with one. Sometimes the dog was trained, but the
+            house was not.
           </p>
           <p
             className="font-text text-lg md:text-xl leading-relaxed md:leading-loose mb-6"
             style={{ color: 'var(--ink-navy)' }}
           >
-            You don&rsquo;t say it out loud. You don&rsquo;t say it because the
-            kids love him, and because you promised, and because everyone told
-            you it would be hard at first and you said you understood. But
-            &ldquo;hard at first&rdquo; is what people say when they don&rsquo;t
-            want to tell you the truth. The truth is that &ldquo;hard at
-            first&rdquo; means something specific for a family: it means the
-            adults are exhausted, the children have stopped following the rules
-            they agreed to, someone in the house is afraid, and the dog — the
-            dog is fine. The dog is a puppy. He is doing what puppies do.
+            I know how that ends, because it happened to me. Three times. And
+            the hardest part was never the mess or the noise. It was watching
+            my children fall in love with an animal we then could not keep,
+            and feeling the whole thing fail not for lack of love, but for
+            lack of a plan.
           </p>
           <p
             className="font-text text-lg md:text-xl leading-relaxed md:leading-loose mb-6"
             style={{ color: 'var(--ink-navy)' }}
           >
-            This book is not about the dog. I need to say that clearly because
-            most dog books are about the dog, and you may have picked this one up
-            expecting the same. This one is about the family. It is about the
-            conversations that didn&rsquo;t happen before the puppy arrived, the
-            agreements that were never written down, the person who was afraid
-            and was never asked, the schedule that was never built. It is about
-            the fact that families don&rsquo;t fail with dogs because they
-            don&rsquo;t love them. They fail because love is not a system.
-          </p>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-/* ─── Section 6: Format ─── */
-function FormatSection() {
-  return (
-    <section
-      className="section-gap"
-      style={{ backgroundColor: 'var(--paper)' }}
-    >
-      <div className="section-container reveal">
-        <p
-          className="section-label mb-4"
-          style={{ color: 'var(--teal)' }}
-        >
-          FORMAT
-        </p>
-        <h2
-          className="text-h3 mb-6"
-          style={{ color: 'var(--ink-navy)' }}
-        >
-          Available now
-        </h2>
-        <div
-          className="p-6 md:p-8 rounded-[4px] space-y-2"
-          style={{
-            backgroundColor: 'rgba(15, 35, 54, 0.05)',
-            border: '1px solid rgba(15, 35, 54, 0.1)',
-          }}
-        >
-          <p className="font-text text-base" style={{ color: 'var(--ink-navy)' }}>
-            <span style={{ color: 'var(--gold)' }}>Kindle</span> &mdash; $9.99
-          </p>
-          <p className="font-text text-base" style={{ color: 'var(--ink-navy)' }}>
-            <span style={{ color: 'var(--gold)' }}>Paperback</span> &mdash; $21.99
-          </p>
-          <p className="font-text text-base" style={{ color: 'var(--ink-navy)' }}>
-            <span style={{ color: 'var(--gold)' }}>Size</span> &mdash; 7&times;10 inches
-          </p>
-          <p className="font-text text-base" style={{ color: 'var(--ink-navy)' }}>
-            <span style={{ color: 'var(--gold)' }}>Chapters</span> &mdash; 17
+            A puppy will not live inside your dream of him. He will live
+            inside your actual house, with its school mornings, work calls,
+            tired parents, excited kids, open doors, visitors, food on the
+            floor, accidents, and days when nobody has enough energy left to
+            give. Love decides that you want him. It does not decide who
+            cleans the accident at eleven at night, who controls the door
+            when a delivery arrives, who ends the rough play before someone
+            cries, or how the least-ready person keeps their peace. Those
+            things are not solved by loving harder. They are solved by a
+            system — and a system is the one thing the dream never includes.
           </p>
         </div>
       </div>
@@ -487,12 +437,6 @@ function BuyCTASection() {
         >
           Get the book
         </a>
-        <p
-          className="text-caption mt-4"
-          style={{ color: 'var(--ink-navy)', opacity: 0.5 }}
-        >
-          Kindle $9.99 &middot; Paperback $21.99
-        </p>
       </div>
     </section>
   )
@@ -530,7 +474,6 @@ export default function BookOnePage() {
       <ContentsSection />
       <ReadinessTestSection />
       <SampleSection />
-      <FormatSection />
       <ClosingImageSection />
       {/* Reviews section omitted until real reviews exist */}
       <BuyCTASection />
