@@ -5,15 +5,21 @@ import { RevealObserver } from '@/components/reveal-observer'
 import { DownloadButton } from '@/components/download-button'
 import { LEAD_MAGNETS } from '@/lib/lead-magnets'
 import { BOOK_ONE_BUY_URL } from '@/lib/buy-url'
+import { Turnstile } from '@/components/forms/turnstile'
 
 export default function FreePage() {
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [errorMsg, setErrorMsg] = useState('')
+  // Bot signals — see src/lib/antibot.ts for what the server does with these.
+  const [renderedAt] = useState(() => Date.now())
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
 
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (!email.trim()) return
+
+    const website = (e.currentTarget.elements.namedItem('website') as HTMLInputElement | null)?.value
 
     setStatus('sending')
     setErrorMsg('')
@@ -22,7 +28,7 @@ export default function FreePage() {
       const res = await fetch('/api/newsletter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.trim(), source: 'reset-chapter' }),
+        body: JSON.stringify({ email: email.trim(), source: 'reset-chapter', website, renderedAt, turnstileToken }),
       })
 
       if (!res.ok) {
@@ -74,6 +80,15 @@ export default function FreePage() {
 
             {/* Email form */}
             <form onSubmit={handleSubmit} className="mb-12 md:mb-16 reveal">
+              {/* Honeypot — see src/lib/antibot.ts */}
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                style={{ position: 'absolute', left: '-9999px', top: 0, width: 1, height: 1, opacity: 0 }}
+              />
               {status === 'sent' ? (
                 <div>
                   <p className="text-body text-ink font-medium mb-4">
@@ -99,23 +114,26 @@ export default function FreePage() {
                   </p>
                 </div>
               ) : (
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Your email address"
-                    className="flex-1 px-4 py-3 font-ui text-sm rounded-[4px] bg-bone border border-rule text-ink placeholder:text-text-3 focus:outline-none focus:border-accent transition-colors"
-                    disabled={status === 'sending'}
-                  />
-                  <button
-                    type="submit"
-                    disabled={status === 'sending'}
-                    className="btn-primary shrink-0 disabled:opacity-60"
-                  >
-                    {status === 'sending' ? 'Sending…' : 'Send it to me'}
-                  </button>
+                <div className="flex flex-col gap-3">
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <input
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Your email address"
+                      className="flex-1 px-4 py-3 font-ui text-sm rounded-[4px] bg-bone border border-rule text-ink placeholder:text-text-3 focus:outline-none focus:border-accent transition-colors"
+                      disabled={status === 'sending'}
+                    />
+                    <button
+                      type="submit"
+                      disabled={status === 'sending'}
+                      className="btn-primary shrink-0 disabled:opacity-60"
+                    >
+                      {status === 'sending' ? 'Sending…' : 'Send it to me'}
+                    </button>
+                  </div>
+                  <Turnstile onVerify={setTurnstileToken} />
                 </div>
               )}
               {status === 'error' && errorMsg && (

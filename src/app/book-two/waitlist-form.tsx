@@ -5,17 +5,21 @@ import { useState, type FormEvent } from 'react'
 export function WaitlistForm() {
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle')
+  // Bot signals — see src/lib/antibot.ts for what the server does with these.
+  const [renderedAt] = useState(() => Date.now())
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!email.trim()) return
+
+    const website = (e.currentTarget.elements.namedItem('website') as HTMLInputElement | null)?.value
 
     setStatus('loading')
     try {
       const res = await fetch('/api/newsletter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.trim(), source: 'book-two-waitlist' }),
+        body: JSON.stringify({ email: email.trim(), source: 'book-two-waitlist', website, renderedAt }),
       })
       if (!res.ok) {
         const data = await res.json().catch(() => ({}))
@@ -39,6 +43,15 @@ export function WaitlistForm() {
           onSubmit={handleSubmit}
           className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
         >
+          {/* Honeypot — see src/lib/antibot.ts */}
+          <input
+            type="text"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            style={{ position: 'absolute', left: '-9999px', top: 0, width: 1, height: 1, opacity: 0 }}
+          />
           <label htmlFor="book-two-email" className="sr-only">
             Email address
           </label>

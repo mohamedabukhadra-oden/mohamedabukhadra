@@ -27,6 +27,8 @@ export function Footer() {
   const [submitted, setSubmitted] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  // Bot signals — see src/lib/antibot.ts for what the server does with these.
+  const [renderedAt] = useState(() => Date.now())
 
   /**
    * This used to set `submitted` and clear the field without sending anything
@@ -34,10 +36,12 @@ export function Footer() {
    * a working /api/newsletter sat unused. It now actually subscribes, and only
    * claims success when the request succeeded.
    */
-  const handleSubscribe = async (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const value = email.trim()
     if (!value || busy) return
+
+    const website = (e.currentTarget.elements.namedItem('website') as HTMLInputElement | null)?.value
 
     setBusy(true)
     setError('')
@@ -45,7 +49,7 @@ export function Footer() {
       const res = await fetch('/api/newsletter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: value, source: 'footer' }),
+        body: JSON.stringify({ email: value, source: 'footer', website, renderedAt }),
       })
       if (res.ok) {
         setSubmitted(true)
@@ -131,6 +135,15 @@ export function Footer() {
               </p>
             ) : (
               <form onSubmit={handleSubscribe} className="flex gap-2">
+                {/* Honeypot — see src/lib/antibot.ts */}
+                <input
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  style={{ position: 'absolute', left: '-9999px', top: 0, width: 1, height: 1, opacity: 0 }}
+                />
                 <label htmlFor="footer-email" className="sr-only">
                   Email address
                 </label>

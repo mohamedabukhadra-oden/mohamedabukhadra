@@ -6,6 +6,8 @@ import { sendEmail, emailConfigured } from '@/lib/email'
 import { welcomeEmailHtml } from '@/lib/newsletter-template'
 import { SITE_URL } from '@/lib/seo'
 import { LEAD_MAGNETS } from '@/lib/lead-magnets'
+import { isBotSubmission } from '@/lib/antibot'
+import { verifyTurnstile } from '@/lib/turnstile'
 
 export const runtime = 'nodejs'
 
@@ -57,6 +59,10 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json().catch(() => ({}))
+
+    if (isBotSubmission(body)) return NextResponse.json({ ok: true })
+    if (!(await verifyTurnstile(body.turnstileToken))) return NextResponse.json({ ok: true })
+
     const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
     const name = typeof body.name === 'string' ? body.name.trim().slice(0, 120) : null
     const source = typeof body.source === 'string' ? body.source.slice(0, 60) : 'site'
