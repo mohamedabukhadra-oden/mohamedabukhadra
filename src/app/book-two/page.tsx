@@ -78,7 +78,7 @@ export default function BookTwoPage() {
               After You Say Yes to the Dog
             </h1>
 
-            <h2 className="text-h2 text-text-2 mb-8">Pre-order · 4 November</h2>
+            <h2 className="text-h2 text-text-2 mb-8">Pre-order · 4 November 2026</h2>
 
             <p className="text-body text-text-2 mb-4">
               Book One is what you read to know. Book Two is what you print and

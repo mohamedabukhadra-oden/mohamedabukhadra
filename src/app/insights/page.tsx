@@ -75,6 +75,23 @@ export default async function InsightsPage({
 
   const label = (v: string) => CATEGORIES.find((c) => c.value === v)?.label || v
 
+  // Count published articles per category (DB + static, independent of the
+  // active filter) so the pill bar only offers categories that actually have
+  // something behind them — a pill for an empty category is a dead end that
+  // always lands on "Nothing published in this category yet."
+  const publishedCategoryRows = await db.article.findMany({
+    where: { status: 'PUBLISHED' },
+    select: { category: true },
+  })
+  const categoryCounts = new Map<string, number>()
+  for (const { category: cat } of publishedCategoryRows) {
+    categoryCounts.set(cat, (categoryCounts.get(cat) ?? 0) + 1)
+  }
+  for (const a of STATIC_ARTICLES) {
+    categoryCounts.set(a.category, (categoryCounts.get(a.category) ?? 0) + 1)
+  }
+  const visibleCategories = CATEGORIES.filter((c) => (categoryCounts.get(c.value) ?? 0) > 0)
+
   return (
     <div className="section-gap">
       <div className="section-container">
@@ -94,7 +111,7 @@ export default async function InsightsPage({
           >
             All
           </Link>
-          {CATEGORIES.map((c) => (
+          {visibleCategories.map((c) => (
             <Link
               key={c.value}
               href={`/insights?category=${c.value}`}

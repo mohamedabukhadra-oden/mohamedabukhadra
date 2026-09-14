@@ -78,14 +78,30 @@ export const STATIC_ARTICLES = [
   },
 ] as const
 
-export async function getMoreArticles(excludeSlug: string) {
+export async function getMoreArticles(excludeSlug: string, category: string) {
   try {
-    return await db.article.findMany({
-      where: { status: 'PUBLISHED', slug: { not: excludeSlug } },
+    // Prefer other articles in the same category, most recent first, so the
+    // list is actually relevant to what the reader is currently reading.
+    const sameCategory = await db.article.findMany({
+      where: { status: 'PUBLISHED', slug: { not: excludeSlug }, category },
       orderBy: { publishedAt: 'desc' },
       take: 3,
       select: { slug: true, title: true, category: true },
     })
+
+    if (sameCategory.length >= 3) return sameCategory
+
+    // Not enough in-category articles yet — fill the rest with the most
+    // recent articles overall, excluding the current one and any already picked.
+    const alreadyPicked = [excludeSlug, ...sameCategory.map((a) => a.slug)]
+    const fallback = await db.article.findMany({
+      where: { status: 'PUBLISHED', slug: { notIn: alreadyPicked } },
+      orderBy: { publishedAt: 'desc' },
+      take: 3 - sameCategory.length,
+      select: { slug: true, title: true, category: true },
+    })
+
+    return [...sameCategory, ...fallback]
   } catch {
     return []
   }

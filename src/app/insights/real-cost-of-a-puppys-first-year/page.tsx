@@ -90,7 +90,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Page() {
-  const moreArticles = await getMoreArticles(ARTICLE.slug)
+  const moreArticles = await getMoreArticles(ARTICLE.slug, ARTICLE.category)
   const url = `${SITE_URL}/insights/${ARTICLE.slug}`
   const jsonLd = {
     '@context': 'https://schema.org',

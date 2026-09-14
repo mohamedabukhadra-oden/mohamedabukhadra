@@ -45,14 +45,30 @@ export async function generateStaticParams() {
   }
 }
 
-async function getMoreArticles(excludeSlug: string) {
+async function getMoreArticles(excludeSlug: string, category: string) {
   try {
-    return await db.article.findMany({
-      where: { status: 'PUBLISHED', slug: { not: excludeSlug } },
+    // Prefer other articles in the same category, most recent first, so the
+    // list is actually relevant to what the reader is currently reading.
+    const sameCategory = await db.article.findMany({
+      where: { status: 'PUBLISHED', slug: { not: excludeSlug }, category },
       orderBy: { publishedAt: 'desc' },
       take: 3,
       select: { slug: true, title: true, category: true },
     })
+
+    if (sameCategory.length >= 3) return sameCategory
+
+    // Not enough in-category articles yet — fill the rest with the most
+    // recent articles overall, excluding the current one and any already picked.
+    const alreadyPicked = [excludeSlug, ...sameCategory.map((a) => a.slug)]
+    const fallback = await db.article.findMany({
+      where: { status: 'PUBLISHED', slug: { notIn: alreadyPicked } },
+      orderBy: { publishedAt: 'desc' },
+      take: 3 - sameCategory.length,
+      select: { slug: true, title: true, category: true },
+    })
+
+    return [...sameCategory, ...fallback]
   } catch {
     // A reader should never be blocked from reading the article they came for
     // because the "more articles" query failed — just show no related list.
@@ -134,7 +150,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
   if (!article) notFound()
 
-  const moreArticles = await getMoreArticles(article.slug)
+  const moreArticles = await getMoreArticles(article.slug, article.category)
   const url = `${SITE_URL}/insights/${article.slug}`
 
   // Article structured data — lets Google show the headline, author and date

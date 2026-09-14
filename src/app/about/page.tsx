@@ -201,9 +201,10 @@ export default function AboutPage() {
               <p className="text-longform text-ink">
                 Oden stayed. He is still here. And the system that made it
                 possible — the decision framework, the family operating model,
-                the readiness assessment — is now what canine behaviourists and
-                dog trainers use when they work with families. Not because I am
-                an expert in animal behaviour. I am not. But because someone
+                the readiness assessment — became the foundation for Oden, the
+                software I later built for canine behaviourists and dog
+                trainers. Not because I am an expert in animal behaviour. I am
+                not. But because someone
                 needed to solve the problem on the family side, and the family
                 side is where almost every failure actually lives. His name is
                 now on an operating system for canine behaviourists and dog
