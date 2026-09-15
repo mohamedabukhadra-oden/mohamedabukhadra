@@ -91,9 +91,9 @@ export function Footer() {
               <Image
                 src="/mohamed.jpg"
                 alt="Mohamed Abu Khadra"
-                width={72}
-                height={72}
-                className="w-[72px] h-[72px] rounded-[2px] object-cover ring-1 ring-on-dark-2/30 grayscale"
+                width={96}
+                height={96}
+                className="w-24 h-24 rounded-[2px] object-cover grayscale"
               />
             </Link>
             <p className="text-caption text-on-dark-2 max-w-xs">
