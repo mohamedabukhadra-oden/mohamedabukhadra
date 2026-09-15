@@ -12,6 +12,17 @@ export const metadata: Metadata = {
   description:
     'Chapter 13 of Before You Say Yes to the Dog, free in full. What to do when the puppy is already home and the week has gone wrong. No email, no signup.',
   alternates: { canonical: `${SITE_URL}/reset` },
+  openGraph: {
+    title: 'The Reset — free, no email required',
+    description:
+      'Chapter 13 of Before You Say Yes to the Dog, free in full. What to do when the puppy is already home and the week has gone wrong.',
+    url: `${SITE_URL}/reset`,
+    images: [{ url: '/book-one-cover.jpg', width: 1600, height: 2560, alt: 'Before You Say Yes to the Dog — book cover' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: ['/book-one-cover.jpg'],
+  },
 }
 
 export default function ResetPage() {

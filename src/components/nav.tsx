@@ -11,6 +11,7 @@ const navLinks = [
   { href: '/book-two', label: 'Book Two' },
   { href: '/about', label: 'About' },
   { href: '/free', label: 'Free Guide' },
+  { href: '/reset', label: 'Reset' },
   { href: '/insights', label: 'Insights' },
   { href: '/contact', label: 'Contact' },
 ]

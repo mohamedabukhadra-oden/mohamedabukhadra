@@ -106,6 +106,19 @@ function HeroSection() {
   )
 }
 
+/* ─── The line the whole book turns on ─── */
+function DreamHouseLine() {
+  return (
+    <section className="bg-bone-alt py-12 md:py-16">
+      <div className="section-container text-center">
+        <p className="text-h3 text-ink reveal">
+          A puppy does not enter your dream. He enters your house.
+        </p>
+      </div>
+    </section>
+  )
+}
+
 /* ─── 7.2 The pattern — 'We've had the same week.' ─── */
 const patternItems = [
   {
@@ -362,6 +375,7 @@ export default function Home() {
       />
       <RevealObserver />
       <HeroSection />
+      <DreamHouseLine />
       <PatternSection />
       <BooksSection />
       <SignatureSection />

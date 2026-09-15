@@ -11,6 +11,7 @@ const footerNav = [
   { href: '/book-two', label: 'Book Two' },
   { href: '/about', label: 'About' },
   { href: '/free', label: 'Free Guide' },
+  { href: '/reset', label: 'Reset' },
   // Without this the published articles sit in the sitemap linked from nowhere
   // on the site, which is how they were until now.
   { href: '/insights', label: 'Insights' },
