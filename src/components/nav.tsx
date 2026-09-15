@@ -63,10 +63,10 @@ export function Nav() {
             <Image
               src="/mohamed.jpg"
               alt="Mohamed Abu Khadra"
-              width={40}
-              height={40}
+              width={48}
+              height={48}
               priority
-              className="w-10 h-10 rounded-full object-cover ring-1 ring-rule"
+              className="w-12 h-12 rounded-full object-cover ring-1 ring-rule grayscale"
             />
           </Link>
 
